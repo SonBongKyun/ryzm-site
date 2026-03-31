@@ -2991,7 +2991,7 @@ function renderArchive() {
   let posts = [...postsCache];
 
   if (!isAdminLoggedIn) posts = posts.filter(p => p.is_public);
-  if (hideReplies) posts = posts.filter(p => !(p.tags||[]).includes('reply') && !(p.tags||[]).includes('quote'));
+  if (hideReplies) posts = posts.filter(p => !(p.tags||[]).includes('short-reply') && !(p.tags||[]).includes('quote'));
   if (archiveView === 'bookmarks') { const bm = getBookmarks(); posts = posts.filter(p => bm.includes(p.id)); }
   if (activeFilters.length > 0) posts = posts.filter(p => activeFilters.some(f => (p.tags||[]).includes(f)));
   if (activeSeries) posts = posts.filter(p => p.series === activeSeries);
@@ -3021,8 +3021,10 @@ function renderArchive() {
   grid.innerHTML = paginated.map((p, i) => {
     const date = new Date(p.created_at);
     const dateStr = `${date.getFullYear()}.${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}`;
-    const tags = (p.tags||[]).map(t => `<span class="archive-card-tag">${t}</span>`).join('');
-    const content = p.content.length > 280 ? p.content.substring(0, 280) + '...' : p.content;
+    const hiddenTags = ['reply','short-reply','quote'];
+    const tags = (p.tags||[]).filter(t => !hiddenTags.includes(t)).map(t => `<span class="archive-card-tag">${t}</span>`).join('');
+    const cleanContent = p.content.replace(/^@\w+\s*/, '').trim();
+    const content = cleanContent.length > 280 ? cleanContent.substring(0, 280) + '...' : cleanContent;
     const primaryTag = (p.tags||[])[0] || '';
     const bm = bookmarks.includes(p.id);
 
@@ -3058,8 +3060,9 @@ function openModal(id) {
   const dateStr = `${date.getFullYear()}.${String(date.getMonth()+1).padStart(2,'0')}.${String(date.getDate()).padStart(2,'0')}`;
 
   document.getElementById('modalDate').textContent = dateStr;
-  document.getElementById('modalBody').innerHTML = renderMarkdown(post.content);
-  document.getElementById('modalTags').innerHTML = (post.tags||[]).map(t => `<span class="archive-card-tag">${t}</span>`).join('');
+  const modalContent = post.content.replace(/^@\w+\s*/, '').trim();
+  document.getElementById('modalBody').innerHTML = renderMarkdown(modalContent);
+  document.getElementById('modalTags').innerHTML = (post.tags||[]).filter(t => t !== 'reply' && t !== 'short-reply' && t !== 'quote').map(t => `<span class="archive-card-tag">${t}</span>`).join('');
   document.getElementById('modalSeriesBadge').innerHTML = post.series ? `<span class="modal-series-badge">${post.series}</span>` : '';
 
   const bm = isBookmarked(id);
