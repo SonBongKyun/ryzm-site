@@ -2991,7 +2991,7 @@ function renderArchive() {
   let posts = [...postsCache];
 
   if (!isAdminLoggedIn) posts = posts.filter(p => p.is_public);
-  if (hideReplies) posts = posts.filter(p => !(p.tags||[]).includes('reply'));
+  if (hideReplies) posts = posts.filter(p => !(p.tags||[]).includes('reply') && !(p.tags||[]).includes('quote'));
   if (archiveView === 'bookmarks') { const bm = getBookmarks(); posts = posts.filter(p => bm.includes(p.id)); }
   if (activeFilters.length > 0) posts = posts.filter(p => activeFilters.some(f => (p.tags||[]).includes(f)));
   if (activeSeries) posts = posts.filter(p => p.series === activeSeries);
