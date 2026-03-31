@@ -2517,6 +2517,7 @@ body.light-theme .archive-date-range input[type="date"] {
   <div class="archive-view-toggle">
     <button class="view-toggle-btn active" onclick="setArchiveView('all')">All Posts</button>
     <button class="view-toggle-btn" onclick="setArchiveView('bookmarks')">Bookmarked</button>
+    <button class="view-toggle-btn" id="replyToggleBtn" onclick="toggleReplies()" style="margin-left:auto; border:1px solid var(--border); border-radius:6px;">Hide Replies</button>
   </div>
 
   <div class="archive-count" id="archiveCount"></div>
@@ -2880,6 +2881,7 @@ let isAdminLoggedIn = false;
 let archiveView = 'all';
 let currentPage = 1;
 let filteredPostsCache = [];
+let hideReplies = true; // default: hide replies
 
 /* ═══════════════════════════════════════
    ARCHIVE — Tags & Series
@@ -2932,6 +2934,14 @@ function toggleArchiveSort() {
   currentPage = 1; renderArchive();
 }
 
+function toggleReplies() {
+  hideReplies = !hideReplies;
+  const btn = document.getElementById('replyToggleBtn');
+  btn.textContent = hideReplies ? 'Hide Replies' : 'Show All';
+  btn.classList.toggle('active', !hideReplies);
+  currentPage = 1; renderArchive();
+}
+
 function setArchiveView(view) {
   archiveView = view; currentPage = 1;
   document.querySelectorAll('.view-toggle-btn').forEach((btn, i) => {
@@ -2972,6 +2982,7 @@ function renderArchive() {
   let posts = [...postsCache];
 
   if (!isAdminLoggedIn) posts = posts.filter(p => p.is_public);
+  if (hideReplies) posts = posts.filter(p => !(p.tags||[]).includes('reply'));
   if (archiveView === 'bookmarks') { const bm = getBookmarks(); posts = posts.filter(p => bm.includes(p.id)); }
   if (activeFilters.length > 0) posts = posts.filter(p => activeFilters.some(f => (p.tags||[]).includes(f)));
   if (activeSeries) posts = posts.filter(p => p.series === activeSeries);
