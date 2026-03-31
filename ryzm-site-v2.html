@@ -2786,9 +2786,18 @@ function simpleHash(str) {
 }
 
 async function fetchPosts() {
-  const { data, error } = await sb.from('posts').select('*').order('created_at', { ascending: false });
-  if (error) { console.error('Supabase fetch error:', error); return []; }
-  postsCache = data || [];
+  let allPosts = [];
+  let from = 0;
+  const pageSize = 1000;
+  while (true) {
+    const { data, error } = await sb.from('posts').select('*').order('created_at', { ascending: false }).range(from, from + pageSize - 1);
+    if (error) { console.error('Supabase fetch error:', error); break; }
+    if (!data || data.length === 0) break;
+    allPosts = allPosts.concat(data);
+    if (data.length < pageSize) break;
+    from += pageSize;
+  }
+  postsCache = allPosts;
   return postsCache;
 }
 
