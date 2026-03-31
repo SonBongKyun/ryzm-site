@@ -2517,7 +2517,7 @@ body.light-theme .archive-date-range input[type="date"] {
   <div class="archive-view-toggle">
     <button class="view-toggle-btn active" onclick="setArchiveView('all')">All Posts</button>
     <button class="view-toggle-btn" onclick="setArchiveView('bookmarks')">Bookmarked</button>
-    <button class="view-toggle-btn" id="replyToggleBtn" onclick="toggleReplies()" style="margin-left:auto; border:1px solid var(--border); border-radius:6px;">Hide Replies</button>
+    <button class="view-toggle-btn active" id="replyToggleBtn" onclick="toggleReplies()" style="margin-left:auto; border:1px solid var(--border); border-radius:6px;">Originals Only</button>
   </div>
 
   <div class="archive-count" id="archiveCount"></div>
@@ -2946,8 +2946,8 @@ function toggleArchiveSort() {
 function toggleReplies() {
   hideReplies = !hideReplies;
   const btn = document.getElementById('replyToggleBtn');
-  btn.textContent = hideReplies ? 'Hide Replies' : 'Show All';
-  btn.classList.toggle('active', !hideReplies);
+  btn.textContent = hideReplies ? 'Originals Only' : 'Show All';
+  btn.classList.toggle('active', hideReplies);
   currentPage = 1; renderArchive();
 }
 
