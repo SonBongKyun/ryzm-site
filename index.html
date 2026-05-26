@@ -486,6 +486,59 @@ a {
   text-transform: uppercase;
 }
 
+.market-tape {
+  position: relative;
+  z-index: 2;
+  border-top: 1px solid rgba(255, 225, 106, 0.26);
+  border-bottom: 1px solid rgba(255, 225, 106, 0.22);
+  background:
+    linear-gradient(90deg, rgba(255, 225, 106, 0.14), transparent 18%, transparent 82%, rgba(255, 225, 106, 0.1)),
+    rgba(9, 8, 6, 0.96);
+  box-shadow:
+    inset 0 1px rgba(255, 225, 106, 0.16),
+    inset 0 -1px rgba(255, 225, 106, 0.1),
+    0 16px 60px rgba(0, 0, 0, 0.28);
+}
+
+.market-tape-head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 18px;
+  padding: 13px 28px 11px;
+  border-bottom: 1px solid rgba(240, 229, 210, 0.1);
+  color: rgba(240, 229, 210, 0.68);
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.market-tape-head::before,
+.market-tape-head::after {
+  content: "";
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 225, 106, 0.52), transparent);
+}
+
+.market-tape-head::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 225, 106, 0.52));
+}
+
+.market-tape-shell {
+  height: 54px;
+  overflow: hidden;
+}
+
+.tradingview-widget-container,
+.tradingview-widget-container__widget {
+  height: 54px;
+}
+
+.tradingview-widget-copyright {
+  display: none !important;
+}
+
 .section {
   padding: 120px 28px;
 }
@@ -855,6 +908,40 @@ h2 {
           </div>
         </div>
       </div>
+
+      <section class="market-tape" aria-label="Live market prices">
+        <div class="market-tape-head">
+          <span>Live market tape</span>
+        </div>
+        <div class="market-tape-shell">
+          <div class="tradingview-widget-container">
+            <div class="tradingview-widget-container__widget"></div>
+            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+            {
+              "symbols": [
+                { "proName": "NASDAQ:IXIC", "title": "NASDAQ" },
+                { "proName": "NASDAQ:NDX", "title": "NASDAQ 100" },
+                { "proName": "SP:SPX", "title": "S&P 500" },
+                { "proName": "DJ:DJI", "title": "DOW" },
+                { "proName": "BITSTAMP:BTCUSD", "title": "Bitcoin" },
+                { "proName": "BITSTAMP:ETHUSD", "title": "Ethereum" },
+                { "proName": "KRX:KOSPI", "title": "KOSPI" },
+                { "proName": "KRX:KOSDAQ", "title": "KOSDAQ" },
+                { "proName": "KRX:005930", "title": "Samsung Elec" },
+                { "proName": "NASDAQ:NVDA", "title": "NVIDIA" },
+                { "proName": "NASDAQ:TSLA", "title": "Tesla" },
+                { "proName": "NASDAQ:AAPL", "title": "Apple" }
+              ],
+              "showSymbolLogo": true,
+              "isTransparent": true,
+              "displayMode": "regular",
+              "colorTheme": "dark",
+              "locale": "en"
+            }
+            </script>
+          </div>
+        </div>
+      </section>
 
       <div class="hero-bottom" aria-label="Research principles">
         <div class="metric">
