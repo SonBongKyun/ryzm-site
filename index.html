@@ -55,6 +55,11 @@ body {
   overflow-x: hidden;
 }
 
+::selection {
+  background: var(--gold-bright);
+  color: var(--ink);
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -85,6 +90,21 @@ a {
 .page {
   position: relative;
   z-index: 1;
+}
+
+.page::before {
+  content: "RYZM";
+  position: fixed;
+  left: -0.18em;
+  top: 14vh;
+  z-index: -1;
+  color: rgba(240, 229, 210, 0.028);
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(180px, 35vw, 560px);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 0.8;
+  pointer-events: none;
 }
 
 .nav {
@@ -141,6 +161,39 @@ a {
   display: grid;
   grid-template-rows: auto 1fr auto;
   padding: 42px 28px 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  width: min(72vw, 1040px);
+  height: min(72vw, 1040px);
+  transform: translate(-50%, -50%) rotate(-10deg);
+  border: 1px solid rgba(199, 150, 82, 0.2);
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgba(199, 150, 82, 0.22) 50%, transparent 50.2%),
+    linear-gradient(0deg, transparent 49.8%, rgba(199, 150, 82, 0.16) 50%, transparent 50.2%);
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+  opacity: 0.56;
+  pointer-events: none;
+}
+
+.hero::after {
+  content: "SIGNAL / RISK / LIQUIDITY";
+  position: absolute;
+  right: 28px;
+  top: 96px;
+  color: rgba(240, 229, 210, 0.42);
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  pointer-events: none;
 }
 
 .eyebrow {
@@ -169,6 +222,8 @@ a {
   place-items: center;
   text-align: center;
   gap: 28px;
+  position: relative;
+  z-index: 1;
 }
 
 .wordmark {
@@ -179,6 +234,7 @@ a {
   line-height: 0.78;
   letter-spacing: -0.055em;
   text-transform: uppercase;
+  text-shadow: 0 18px 72px rgba(0, 0, 0, 0.62);
 }
 
 .wordmark span {
@@ -189,6 +245,9 @@ a {
   color: transparent;
   -webkit-text-stroke: 1.4px rgba(240, 229, 210, 0.54);
   text-stroke: 1.4px rgba(240, 229, 210, 0.54);
+  background: linear-gradient(90deg, transparent, rgba(241, 199, 126, 0.28), transparent);
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .hero-copy {
@@ -243,10 +302,12 @@ a {
 .hero-visual {
   position: relative;
   width: min(920px, calc(100vw - 56px));
-  min-height: 260px;
+  min-height: 300px;
   margin: 6px auto 0;
   border: 1px solid rgba(240, 229, 210, 0.22);
   background:
+    radial-gradient(circle at 26% 42%, rgba(241, 199, 126, 0.22), transparent 13rem),
+    radial-gradient(circle at 74% 46%, rgba(143, 164, 119, 0.16), transparent 12rem),
     linear-gradient(135deg, rgba(199, 150, 82, 0.18), transparent 34%),
     linear-gradient(180deg, rgba(240, 229, 210, 0.08), rgba(240, 229, 210, 0.02)),
     #120f0b;
@@ -255,10 +316,19 @@ a {
 }
 
 .hero-visual::before {
-  content: "";
+  content: "RYZM SIGNAL INDEX";
   position: absolute;
   inset: 18px;
   border: 1px solid rgba(199, 150, 82, 0.3);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 15px 16px;
+  color: rgba(240, 229, 210, 0.48);
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
 }
 
 .hero-visual::after {
@@ -281,6 +351,16 @@ a {
 .chart {
   position: absolute;
   inset: 40px 36px 58px;
+}
+
+.chart::before {
+  content: "";
+  position: absolute;
+  inset: 14px 10%;
+  border: 1px solid rgba(240, 229, 210, 0.12);
+  background:
+    linear-gradient(90deg, transparent 19%, rgba(240, 229, 210, 0.1) 20%, transparent 21%, transparent 39%, rgba(240, 229, 210, 0.1) 40%, transparent 41%, transparent 59%, rgba(240, 229, 210, 0.1) 60%, transparent 61%, transparent 79%, rgba(240, 229, 210, 0.1) 80%, transparent 81%),
+    linear-gradient(0deg, transparent 24%, rgba(240, 229, 210, 0.09) 25%, transparent 26%, transparent 49%, rgba(240, 229, 210, 0.09) 50%, transparent 51%, transparent 74%, rgba(240, 229, 210, 0.09) 75%, transparent 76%);
 }
 
 .chart-line {
@@ -320,6 +400,60 @@ a {
   opacity: 0.86;
 }
 
+.bars {
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: 18px;
+  height: 72px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 7px;
+  align-items: end;
+}
+
+.bars i {
+  display: block;
+  min-height: 15px;
+  border: 1px solid rgba(241, 199, 126, 0.32);
+  background: linear-gradient(180deg, rgba(241, 199, 126, 0.34), rgba(199, 150, 82, 0.06));
+}
+
+.bars i:nth-child(1) { height: 28%; }
+.bars i:nth-child(2) { height: 46%; }
+.bars i:nth-child(3) { height: 34%; }
+.bars i:nth-child(4) { height: 70%; }
+.bars i:nth-child(5) { height: 52%; }
+.bars i:nth-child(6) { height: 86%; }
+.bars i:nth-child(7) { height: 62%; }
+.bars i:nth-child(8) { height: 76%; }
+.bars i:nth-child(9) { height: 42%; }
+.bars i:nth-child(10) { height: 66%; }
+.bars i:nth-child(11) { height: 54%; }
+.bars i:nth-child(12) { height: 90%; }
+
+.stamp {
+  position: absolute;
+  right: 36px;
+  top: 34px;
+  width: 112px;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(241, 199, 126, 0.58);
+  color: var(--gold-bright);
+  font-family: "Space Mono", monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.25;
+  text-align: center;
+  text-transform: uppercase;
+  transform: rotate(7deg);
+  background: rgba(9, 8, 6, 0.55);
+  box-shadow: inset 0 0 0 8px rgba(199, 150, 82, 0.05);
+}
+
 .hero-bottom {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -335,6 +469,7 @@ a {
   gap: 6px;
   padding: 18px 22px;
   border-right: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(240, 229, 210, 0.04), transparent);
 }
 
 .metric:last-child {
@@ -404,9 +539,11 @@ h2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   border: 1px solid var(--line);
+  box-shadow: 0 32px 90px rgba(0, 0, 0, 0.24);
 }
 
 .card {
+  position: relative;
   min-height: 260px;
   padding: 30px;
   border-right: 1px solid var(--line);
@@ -414,6 +551,29 @@ h2 {
   background:
     linear-gradient(145deg, rgba(240, 229, 210, 0.07), transparent 54%),
     rgba(20, 17, 12, 0.72);
+  overflow: hidden;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0 62%, rgba(199, 150, 82, 0.12) 62% 64%, transparent 64%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  background:
+    linear-gradient(145deg, rgba(199, 150, 82, 0.16), transparent 58%),
+    rgba(24, 19, 13, 0.9);
+  border-color: rgba(199, 150, 82, 0.36);
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:nth-child(3n) {
@@ -453,7 +613,10 @@ h2 {
   overflow: hidden;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
-  background: rgba(199, 150, 82, 0.08);
+  background:
+    linear-gradient(90deg, rgba(155, 62, 39, 0.18), transparent 26%, transparent 74%, rgba(143, 164, 119, 0.13)),
+    rgba(199, 150, 82, 0.08);
+  box-shadow: inset 0 1px rgba(240, 229, 210, 0.08), inset 0 -1px rgba(240, 229, 210, 0.08);
 }
 
 .ticker-track {
@@ -473,14 +636,50 @@ h2 {
   white-space: nowrap;
 }
 
+.ticker span::after {
+  content: "/";
+  margin-left: 36px;
+  color: rgba(240, 229, 210, 0.26);
+}
+
 @keyframes marquee {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
 
 .cta {
+  position: relative;
   padding: 126px 28px 92px;
   text-align: center;
+  overflow: hidden;
+}
+
+.cta::before {
+  content: "NOISE";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(240, 229, 210, 0.08);
+  text-stroke: 1px rgba(240, 229, 210, 0.08);
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(110px, 22vw, 320px);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.cta::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 46px;
+  width: min(520px, 72vw);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(241, 199, 126, 0.78), transparent);
 }
 
 .cta h2 {
@@ -557,6 +756,10 @@ h2 {
     gap: 42px;
   }
 
+  .hero::after {
+    display: none;
+  }
+
   .wordmark {
     font-size: clamp(72px, 24vw, 110px);
   }
@@ -577,6 +780,18 @@ h2 {
   .hero-visual {
     min-height: 220px;
     width: 100%;
+  }
+
+  .stamp {
+    width: 82px;
+    height: 82px;
+    right: 24px;
+    top: 26px;
+    font-size: 8px;
+  }
+
+  .bars {
+    gap: 4px;
   }
 
   .section,
@@ -631,6 +846,7 @@ h2 {
           <a class="button" href="mailto:contact@ryzm.xyz">Contact desk</a>
         </div>
         <div class="hero-visual" aria-label="Market signal graphic">
+          <div class="stamp" aria-hidden="true">Desk<br>Grade<br>Signal</div>
           <div class="chart" aria-hidden="true">
             <span class="chart-line"></span>
             <span class="chart-line"></span>
@@ -639,6 +855,10 @@ h2 {
             <span class="pulse one"></span>
             <span class="pulse two"></span>
             <span class="pulse three"></span>
+            <span class="bars">
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+              <i></i><i></i><i></i><i></i><i></i><i></i>
+            </span>
           </div>
         </div>
       </div>
