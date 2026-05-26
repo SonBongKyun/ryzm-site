@@ -221,7 +221,7 @@ a {
   display: grid;
   place-items: center;
   text-align: center;
-  gap: 28px;
+  gap: 34px;
   position: relative;
   z-index: 1;
 }
@@ -234,20 +234,14 @@ a {
   line-height: 0.78;
   letter-spacing: -0.055em;
   text-transform: uppercase;
-  text-shadow: 0 18px 72px rgba(0, 0, 0, 0.62);
+  color: #ffe16a;
+  text-shadow:
+    0 0 18px rgba(255, 225, 106, 0.24),
+    0 20px 76px rgba(0, 0, 0, 0.68);
 }
 
 .wordmark span {
   display: block;
-}
-
-.wordmark .ghost {
-  color: transparent;
-  -webkit-text-stroke: 1.4px rgba(240, 229, 210, 0.54);
-  text-stroke: 1.4px rgba(240, 229, 210, 0.54);
-  background: linear-gradient(90deg, transparent, rgba(241, 199, 126, 0.28), transparent);
-  -webkit-background-clip: text;
-  background-clip: text;
 }
 
 .hero-copy {
@@ -833,9 +827,8 @@ h2 {
       <div class="eyebrow">Seoul / New York research desk</div>
 
       <div class="hero-center">
-        <h1 class="wordmark" aria-label="RYZM Research">
+        <h1 class="wordmark" aria-label="RYZM">
           <span>RYZM</span>
-          <span class="ghost">RESEARCH</span>
         </h1>
         <p class="hero-copy">
           Macro, rates, crypto, Korea data, and market psychology &mdash; simplified without flattening the edge.
