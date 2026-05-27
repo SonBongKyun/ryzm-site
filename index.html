@@ -6,6 +6,7 @@
 <title>RYZM &mdash; Advanced Macro Intelligence</title>
 <meta name="description" content="RYZM turns macro, rates, crypto, Korea data, and market psychology into clear market intelligence.">
 <meta name="theme-color" content="#090806">
+<meta name="ryzm-version" content="avatar-visible-2026-05-27">
 
 <meta property="og:title" content="RYZM &mdash; Advanced Macro Intelligence">
 <meta property="og:description" content="Macro, rates, crypto, Korea data, and market psychology. Simplified without losing the edge.">
@@ -113,18 +114,18 @@ a {
 .laser-field {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 4;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0.92;
+  opacity: 0.72;
   mix-blend-mode: screen;
 }
 
 .laser {
   position: absolute;
   top: -32vh;
-  width: 1px;
-  height: 34vh;
+  width: 2px;
+  height: 42vh;
   background: linear-gradient(
     180deg,
     transparent 0%,
@@ -134,8 +135,8 @@ a {
     transparent 100%
   );
   box-shadow:
-    0 0 10px rgba(255, 243, 109, 0.52),
-    0 0 28px rgba(255, 225, 106, 0.28);
+    0 0 12px rgba(255, 243, 109, 0.7),
+    0 0 38px rgba(255, 225, 106, 0.38);
   transform: translateY(-120%);
   animation: laserDrop 5.8s linear infinite;
 }
@@ -281,6 +282,45 @@ a {
   position: relative;
   z-index: 1;
   padding: 22px 0 4px;
+}
+
+.hero-avatar-float {
+  position: absolute;
+  right: min(7vw, 96px);
+  top: clamp(110px, 17vh, 190px);
+  z-index: 6;
+  width: clamp(132px, 12vw, 190px);
+  border: 1px solid rgba(255, 225, 106, 0.62);
+  background:
+    linear-gradient(180deg, rgba(255, 225, 106, 0.18), rgba(9, 8, 6, 0.78)),
+    rgba(9, 8, 6, 0.84);
+  box-shadow:
+    0 0 0 1px rgba(255, 225, 106, 0.12),
+    0 28px 100px rgba(0, 0, 0, 0.56),
+    0 0 64px rgba(255, 225, 106, 0.24);
+  transform: rotate(3deg);
+  overflow: hidden;
+}
+
+.hero-avatar-float::before {
+  content: "RYZM / DESK";
+  display: block;
+  padding: 10px 11px 8px;
+  border-bottom: 1px solid rgba(255, 225, 106, 0.32);
+  color: var(--gold-bright);
+  font-family: "Space Mono", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-avatar-float img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  filter: saturate(0.94) contrast(1.08);
 }
 
 .wordmark {
@@ -548,7 +588,7 @@ a {
   right: 32px;
   bottom: 44px;
   z-index: 3;
-  width: clamp(118px, 14vw, 168px);
+  width: clamp(92px, 10vw, 128px);
   border: 1px solid rgba(255, 225, 106, 0.46);
   background:
     linear-gradient(180deg, rgba(255, 225, 106, 0.14), rgba(9, 8, 6, 0.72)),
@@ -1059,8 +1099,20 @@ h2 {
     display: none;
   }
 
+  .hero-avatar-float {
+    right: 18px;
+    top: 132px;
+    width: 84px;
+    transform: rotate(2deg);
+  }
+
+  .hero-avatar-float::before {
+    padding: 7px 8px 6px;
+    font-size: 7px;
+  }
+
   .laser-field {
-    opacity: 0.52;
+    opacity: 0.5;
   }
 
   .laser:nth-child(even) {
@@ -1089,9 +1141,9 @@ h2 {
   }
 
   .avatar-card {
-    right: 18px;
+    right: 16px;
     bottom: 38px;
-    width: 96px;
+    width: 72px;
   }
 
   .avatar-card::before {
@@ -1157,6 +1209,9 @@ h2 {
 
     <section class="hero" id="top">
       <div class="eyebrow">Seoul / New York research desk</div>
+      <figure class="hero-avatar-float" aria-label="RYZM desk avatar">
+        <img src="assets/ryzm-avatar.jpg" alt="RYZM desk avatar">
+      </figure>
 
       <div class="hero-center">
         <h1 class="wordmark" aria-label="RYZM">
