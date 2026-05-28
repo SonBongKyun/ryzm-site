@@ -6,7 +6,7 @@
 <title>RYZM &mdash; Advanced Macro Intelligence</title>
 <meta name="description" content="RYZM turns macro, rates, crypto, Korea data, and market psychology into clear market intelligence.">
 <meta name="theme-color" content="#090806">
-<meta name="ryzm-version" content="market-tape-symbol-fix-2026-05-27">
+<meta name="ryzm-version" content="graphic-effects-upgrade-2026-05-28">
 
 <meta property="og:title" content="RYZM &mdash; Advanced Macro Intelligence">
 <meta property="og:description" content="Macro, rates, crypto, Korea data, and market psychology. Simplified without losing the edge.">
@@ -160,6 +160,37 @@ a {
 .laser:nth-child(7) { left: 86%; animation-delay: -5.4s; animation-duration: 7.6s; opacity: 0.36; }
 .laser:nth-child(8) { left: 94%; animation-delay: -2.9s; animation-duration: 6.2s; opacity: 0.42; }
 
+.particle-field {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  mix-blend-mode: screen;
+}
+
+.particle {
+  position: absolute;
+  top: -16px;
+  width: 3px;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--gold-bright);
+  box-shadow:
+    0 0 10px rgba(255, 243, 109, 0.7),
+    0 0 28px rgba(255, 225, 106, 0.32);
+  opacity: 0;
+  animation: particleFall 9s linear infinite;
+}
+
+.particle:nth-child(1) { left: 12%; animation-delay: -1.1s; animation-duration: 8.2s; }
+.particle:nth-child(2) { left: 24%; animation-delay: -5.2s; animation-duration: 10.4s; }
+.particle:nth-child(3) { left: 37%; animation-delay: -2.8s; animation-duration: 7.6s; }
+.particle:nth-child(4) { left: 49%; animation-delay: -7.1s; animation-duration: 11.2s; }
+.particle:nth-child(5) { left: 63%; animation-delay: -3.6s; animation-duration: 8.9s; }
+.particle:nth-child(6) { left: 78%; animation-delay: -6.4s; animation-duration: 9.7s; }
+.particle:nth-child(7) { left: 91%; animation-delay: -4.3s; animation-duration: 12s; }
+
 .nav {
   position: sticky;
   top: 0;
@@ -237,6 +268,7 @@ a {
   clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
   opacity: 0.56;
   pointer-events: none;
+  animation: heroGridDrift 18s ease-in-out infinite alternate;
 }
 
 .hero::after {
@@ -444,6 +476,51 @@ a {
   overflow: hidden;
 }
 
+.hero-visual .signal-orbit {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: min(70%, 520px);
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 225, 106, 0.16);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: orbitSpin 22s linear infinite;
+}
+
+.hero-visual .signal-orbit::before,
+.hero-visual .signal-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 13%;
+  border: 1px dashed rgba(255, 243, 109, 0.22);
+  border-radius: 50%;
+}
+
+.hero-visual .signal-orbit::after {
+  inset: 33%;
+  border-style: solid;
+  border-color: rgba(255, 225, 106, 0.12);
+}
+
+.hero-visual .signal-sweep {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1;
+  width: min(80%, 620px);
+  height: min(80%, 620px);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 72%, rgba(255, 243, 109, 0.2), transparent 83% 100%);
+  filter: blur(0.2px);
+  opacity: 0.72;
+  animation: orbitSpin 9s linear infinite;
+  pointer-events: none;
+}
+
 .hero-visual::before {
   content: "RYZM SIGNAL INDEX";
   position: absolute;
@@ -480,6 +557,7 @@ a {
 .chart {
   position: absolute;
   inset: 40px 36px 58px;
+  z-index: 2;
 }
 
 .chart::before {
@@ -497,12 +575,14 @@ a {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(240, 229, 210, 0.18), transparent);
+  background: linear-gradient(90deg, transparent, rgba(240, 229, 210, 0.18), rgba(255, 243, 109, 0.38), rgba(240, 229, 210, 0.18), transparent);
+  background-size: 220% 100%;
+  animation: scanLine 5.2s linear infinite;
 }
 
 .chart-line:nth-child(1) { top: 18%; }
-.chart-line:nth-child(2) { top: 44%; }
-.chart-line:nth-child(3) { top: 70%; }
+.chart-line:nth-child(2) { top: 44%; animation-delay: -1.7s; }
+.chart-line:nth-child(3) { top: 70%; animation-delay: -3.1s; }
 
 .pulse {
   position: absolute;
@@ -511,11 +591,12 @@ a {
   border-radius: 999px;
   background: var(--gold-bright);
   box-shadow: 0 0 34px rgba(255, 243, 109, 0.72);
+  animation: pulseGlow 2.8s ease-in-out infinite;
 }
 
 .pulse.one { left: 16%; top: 58%; }
-.pulse.two { left: 48%; top: 24%; background: var(--moss); }
-.pulse.three { right: 17%; top: 44%; background: var(--rust); }
+.pulse.two { left: 48%; top: 24%; background: var(--moss); animation-delay: -0.9s; }
+.pulse.three { right: 17%; top: 44%; background: var(--rust); animation-delay: -1.7s; }
 
 .curve {
   position: absolute;
@@ -527,6 +608,8 @@ a {
   border-radius: 55% 45% 0 0;
   transform: rotate(-6deg);
   opacity: 0.86;
+  filter: drop-shadow(0 0 12px rgba(255, 243, 109, 0.28));
+  animation: curveFloat 7s ease-in-out infinite;
 }
 
 .bars {
@@ -546,6 +629,7 @@ a {
   min-height: 15px;
   border: 1px solid rgba(255, 243, 109, 0.32);
   background: linear-gradient(180deg, rgba(255, 243, 109, 0.34), rgba(255, 225, 106, 0.06));
+  animation: barPulse 4.8s ease-in-out infinite;
 }
 
 .bars i:nth-child(1) { height: 28%; }
@@ -560,6 +644,8 @@ a {
 .bars i:nth-child(10) { height: 66%; }
 .bars i:nth-child(11) { height: 54%; }
 .bars i:nth-child(12) { height: 90%; }
+.bars i:nth-child(2n) { animation-delay: -1.2s; }
+.bars i:nth-child(3n) { animation-delay: -2.4s; }
 
 .stamp {
   position: absolute;
@@ -958,6 +1044,83 @@ h2 {
   }
 }
 
+@keyframes particleFall {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -5vh, 0) scale(0.7);
+  }
+  12% {
+    opacity: 0.55;
+  }
+  78% {
+    opacity: 0.18;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(36px, 118vh, 0) scale(1.2);
+  }
+}
+
+@keyframes heroGridDrift {
+  from {
+    transform: translate(-50%, -50%) rotate(-12deg) scale(0.96);
+    opacity: 0.42;
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(-4deg) scale(1.04);
+    opacity: 0.66;
+  }
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes scanLine {
+  from {
+    background-position: 140% 0;
+  }
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 28px rgba(255, 243, 109, 0.46);
+  }
+  50% {
+    transform: scale(1.55);
+    box-shadow: 0 0 46px rgba(255, 243, 109, 0.86);
+  }
+}
+
+@keyframes curveFloat {
+  0%, 100% {
+    transform: rotate(-6deg) translateY(0);
+  }
+  50% {
+    transform: rotate(-3deg) translateY(-8px);
+  }
+}
+
+@keyframes barPulse {
+  0%, 100% {
+    filter: brightness(0.92);
+    transform: scaleY(1);
+  }
+  50% {
+    filter: brightness(1.45);
+    transform: scaleY(1.08);
+  }
+}
+
 .cta {
   position: relative;
   padding: 140px 28px 108px;
@@ -1180,6 +1343,21 @@ h2 {
     transform: translateY(10vh);
     opacity: 0.16;
   }
+
+  .particle,
+  .hero::before,
+  .signal-orbit,
+  .signal-sweep,
+  .chart-line,
+  .pulse,
+  .curve,
+  .bars i {
+    animation: none !important;
+  }
+
+  .particle-field {
+    display: none;
+  }
 }
 </style>
 </head>
@@ -1195,6 +1373,15 @@ h2 {
       <span class="laser"></span>
       <span class="laser"></span>
       <span class="laser"></span>
+    </div>
+    <div class="particle-field" aria-hidden="true">
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
+      <span class="particle"></span>
     </div>
 
     <nav class="nav" aria-label="Main navigation">
@@ -1231,6 +1418,8 @@ h2 {
           <a class="button" href="mailto:contact@ryzm.xyz">Contact desk</a>
         </div>
         <div class="hero-visual" aria-label="Market signal graphic">
+          <span class="signal-orbit" aria-hidden="true"></span>
+          <span class="signal-sweep" aria-hidden="true"></span>
           <div class="stamp" aria-hidden="true">Desk<br>Grade<br>Signal</div>
           <figure class="avatar-card" aria-label="RYZM desk avatar">
             <img src="assets/ryzm-avatar.jpg" alt="RYZM desk avatar">
