@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RYZM &mdash; Advanced Macro Intelligence</title>
-<meta name="description" content="RYZM turns macro, rates, crypto, Korea data, and market psychology into clear market intelligence.">
+<title>RYZM — 시장을 연결하는 매크로 리서치</title>
+<meta name="description" content="거시경제와 금리, 가상자산, 한국 시장과 투자 심리를 연결하는 RYZM의 리서치와 주요 소식.">
 <meta name="theme-color" content="#090806">
-<meta name="ryzm-version" content="graphic-effects-upgrade-2026-05-28">
+<meta name="ryzm-version" content="bilingual-news-2026-10-29">
+<script>try{document.documentElement.lang=localStorage.getItem("ryzm-language")==="en"?"en":"ko";}catch{document.documentElement.lang="ko";}</script>
 
-<meta property="og:title" content="RYZM &mdash; Advanced Macro Intelligence">
-<meta property="og:description" content="Macro, rates, crypto, Korea data, and market psychology. Simplified without losing the edge.">
+<meta property="og:title" content="RYZM — 시장을 연결하는 매크로 리서치">
+<meta property="og:description" content="거시경제와 금리, 가상자산, 한국 시장과 투자 심리를 연결하는 RYZM의 리서치와 주요 소식.">
 <meta property="og:type" content="website">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1405,11 +1406,49 @@ h2 {
   .pick-meta time { flex-basis: 100%; }
 }
 
+
+/* Language controls and responsive navigation */
+.nav { grid-template-columns: auto minmax(0,1fr) auto auto; gap: 22px; }
+.nav-tagline { text-align: center; }
+.nav-links { gap: 16px; }
+.language-switch { display: inline-flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line-strong); border-radius: 4px; justify-self: end; }
+.language-switch button { appearance: none; border: 0; border-radius: 2px; background: transparent; color: var(--paper-dim); min-height: 38px; padding: 0 10px; font: inherit; font-size: 11px; letter-spacing: 0; cursor: pointer; white-space: nowrap; }
+.language-switch button[aria-pressed="true"] { color: var(--ink); background: var(--gold); font-weight: 700; }
+.language-switch button:focus-visible { outline: 2px solid var(--gold-hot); outline-offset: 3px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+html[lang="ko"] { --desk-mark: "RYZM / 리서치"; --signal-mark: "RYZM 시장 시그널"; --tape-mark: "BTC  금리  원화  신용  유동성"; --side-mark: "시그널 / 위험 / 유동성"; --noise-mark: "노이즈"; }
+html[lang="en"] { --desk-mark: "RYZM / DESK"; --signal-mark: "RYZM SIGNAL INDEX"; --tape-mark: "BTC  RATES  KRW  CREDIT  LIQUIDITY"; --side-mark: "SIGNAL / RISK / LIQUIDITY"; --noise-mark: "NOISE"; }
+.hero-avatar-float::before, .avatar-card::before { content: var(--desk-mark); }
+.hero-visual::before { content: var(--signal-mark); }
+.hero-visual::after { content: var(--tape-mark); }
+.hero::after { content: var(--side-mark); }
+.cta::before { content: var(--noise-mark); }
+html[lang="ko"] body { font-family: "Manrope", "Malgun Gothic", sans-serif; }
+html[lang="ko"] .section h2, html[lang="ko"] .cta h2 { word-break: keep-all; font-size: clamp(34px,5vw,72px); line-height: 1.22; letter-spacing: -.035em; }
+html[lang="ko"] .picks-heading h2 { font-size: clamp(36px,4.8vw,64px); }
+html[lang="ko"] .hero-copy, html[lang="ko"] .section-copy, html[lang="ko"] .card p, html[lang="ko"] .cta p { word-break: keep-all; overflow-wrap: anywhere; }
+@media (max-width: 1150px) {
+ .nav { grid-template-columns: auto minmax(0,1fr) auto; }
+ .nav-tagline { display: none; }
+}
+@media (max-width: 900px) {
+ .nav { grid-template-columns: auto minmax(0,1fr) auto; text-align: left; gap: 14px; padding: 12px 18px; }
+ .nav-links { justify-self: end; gap: 12px; }
+}
+@media (max-width: 700px) {
+ .nav { grid-template-columns: auto 1fr; gap: 10px 16px; }
+ .nav-brand { grid-column: 1; grid-row: 1; }
+ .language-switch { grid-column: 2; grid-row: 1; }
+ .nav-links { grid-column: 1 / -1; grid-row: 2; justify-self: stretch; justify-content: center; gap: 16px; }
+ .language-switch button { min-height: 38px; }
+}
+
 </style>
 </head>
 
 <body>
   <main class="page">
+    <p class="language-status visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="laser-field" aria-hidden="true">
       <span class="laser"></span>
       <span class="laser"></span>
@@ -1430,48 +1469,50 @@ h2 {
       <span class="particle"></span>
     </div>
 
-    <nav class="nav" aria-label="Main navigation">
+    <nav class="nav" aria-label="주 메뉴" data-en-aria-label="Main navigation" data-ko-aria-label="주 메뉴">
       <a class="nav-brand" href="#top">RYZM</a>
-      <div>Advanced Market Intelligence</div>
+      <div class="nav-tagline" data-en="Advanced Market Intelligence" data-ko="시장 흐름을 읽는 매크로 인사이트">시장 흐름을 읽는 매크로 인사이트</div>
       <div class="nav-links">
-        <a class="news-nav picks-nav" href="#picks" lang="ko">중요 속보</a>
-        <a class="news-nav" href="#news">News</a>
-        <a href="#coverage">Coverage</a>
-        <a href="#signal">Signal</a>
-        <a class="nav-cta" href="https://substack.com/@ryzm" target="_blank" rel="noopener">Subscribe</a>
+        <a class="news-nav picks-nav" href="#picks" data-en="Top stories" data-ko="중요 속보">중요 속보</a>
+        <a class="news-nav" href="#news" data-en="News" data-ko="뉴스">뉴스</a>
+        <a href="#coverage" data-en="Coverage" data-ko="분석 분야">분석 분야</a>
+        <a href="#signal" data-en="Signal" data-ko="시그널">시그널</a>
+        <a class="nav-cta" href="https://substack.com/@ryzm" target="_blank" rel="noopener" data-en="Subscribe" data-ko="구독하기">구독하기</a>
+      </div>
+
+      <div class="language-switch" role="group" aria-label="언어 선택" data-en-aria-label="Language" data-ko-aria-label="언어 선택">
+        <button type="button" data-language="ko" lang="ko" aria-pressed="true">한국어</button>
+        <button type="button" data-language="en" lang="en" aria-pressed="false">English</button>
       </div>
     </nav>
 
     <section class="hero" id="top">
-      <div class="eyebrow">Seoul / New York research desk</div>
-      <figure class="hero-avatar-float" aria-label="RYZM desk avatar">
-        <img src="assets/ryzm-avatar.jpg" alt="RYZM desk avatar">
+      <div class="eyebrow" data-en="Seoul / New York research desk" data-ko="서울과 뉴욕을 잇는 리서치">서울과 뉴욕을 잇는 리서치</div>
+      <figure class="hero-avatar-float" aria-label="RYZM 리서치 아바타" data-en-aria-label="RYZM desk avatar" data-ko-aria-label="RYZM 리서치 아바타">
+        <img src="assets/ryzm-avatar.jpg" alt="RYZM 리서치 아바타" data-en-alt="RYZM desk avatar" data-ko-alt="RYZM 리서치 아바타">
       </figure>
 
       <div class="hero-center">
         <h1 class="wordmark" aria-label="RYZM">
           <span>RYZM</span>
         </h1>
-        <p class="hero-copy">
-          Macro, rates, crypto, Korea data, and market psychology &mdash; simplified without flattening the edge.
-          Built for readers who want the full picture before the story catches up.
-        </p>
-        <div class="hero-badges" aria-label="Research desk signals">
-          <span class="hero-badge">Liquidity pulse</span>
-          <span class="hero-badge">Korea bridge</span>
-          <span class="hero-badge">Risk cycle</span>
+        <p class="hero-copy" data-en="Macro, rates, crypto, Korea data, and market psychology — simplified without flattening the edge. Built for readers who want the full picture before the story catches up." data-ko="거시경제와 금리, 가상자산, 한국 시장과 투자 심리까지. 복잡한 시장을 핵심부터 이해하고, 뉴스 너머의 흐름을 연결합니다.">거시경제와 금리, 가상자산, 한국 시장과 투자 심리까지. 복잡한 시장을 핵심부터 이해하고, 뉴스 너머의 흐름을 연결합니다.</p>
+        <div class="hero-badges" aria-label="리서치 핵심 신호" data-en-aria-label="Research desk signals" data-ko-aria-label="리서치 핵심 신호">
+          <span class="hero-badge" data-en="Liquidity pulse" data-ko="유동성 흐름">유동성 흐름</span>
+          <span class="hero-badge" data-en="Korea bridge" data-ko="한국 시장 연결">한국 시장 연결</span>
+          <span class="hero-badge" data-en="Risk cycle" data-ko="위험 사이클">위험 사이클</span>
         </div>
-        <div class="actions" aria-label="Primary actions">
-          <a class="button primary" href="https://substack.com/@ryzm" target="_blank" rel="noopener">Read the brief</a>
-          <a class="button" href="mailto:contact@ryzm.xyz">Contact desk</a>
-          <a class="button" href="#picks" lang="ko">중요 속보 보기 &darr;</a>
+        <div class="actions" aria-label="주요 바로가기" data-en-aria-label="Primary actions" data-ko-aria-label="주요 바로가기">
+          <a class="button primary" href="https://substack.com/@ryzm" target="_blank" rel="noopener" data-en="Read the brief" data-ko="브리핑 읽기">브리핑 읽기</a>
+          <a class="button" href="mailto:contact@ryzm.xyz" data-en="Contact desk" data-ko="문의하기">문의하기</a>
+          <a class="button" href="#picks" data-en="Read top stories ↓" data-ko="중요 속보 보기 ↓">중요 속보 보기 ↓</a>
         </div>
-        <div class="hero-visual" aria-label="Market signal graphic">
+        <div class="hero-visual" aria-label="시장 흐름 그래픽" data-en-aria-label="Market signal graphic" data-ko-aria-label="시장 흐름 그래픽">
           <span class="signal-orbit" aria-hidden="true"></span>
           <span class="signal-sweep" aria-hidden="true"></span>
-          <div class="stamp" aria-hidden="true">Desk<br>Grade<br>Signal</div>
-          <figure class="avatar-card" aria-label="RYZM desk avatar">
-            <img src="assets/ryzm-avatar.jpg" alt="RYZM desk avatar">
+          <div class="stamp" aria-hidden="true" data-en="Desk-grade signal" data-ko="리서치 시그널">리서치 시그널</div>
+          <figure class="avatar-card" aria-label="RYZM 리서치 아바타" data-en-aria-label="RYZM desk avatar" data-ko-aria-label="RYZM 리서치 아바타">
+            <img src="assets/ryzm-avatar.jpg" alt="RYZM 리서치 아바타" data-en-alt="RYZM desk avatar" data-ko-alt="RYZM 리서치 아바타">
           </figure>
           <div class="chart" aria-hidden="true">
             <span class="chart-line"></span>
@@ -1489,117 +1530,90 @@ h2 {
         </div>
       </div>
 
-      <section class="market-tape" aria-label="Live market prices">
+      <section class="market-tape" aria-label="시장 시세" data-en-aria-label="Market prices" data-ko-aria-label="시장 시세">
         <div class="market-tape-head">
-          <span>Live market tape</span>
+          <span data-en="Live market tape" data-ko="시장 시세">시장 시세</span>
         </div>
         <div class="market-tape-shell">
-          <div class="tradingview-widget-container">
-            <div class="tradingview-widget-container__widget"></div>
-            <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-            {
-              "symbols": [
-                { "proName": "NASDAQ:NDX", "title": "NASDAQ 100" },
-                { "proName": "AMEX:QQQ", "title": "Nasdaq ETF" },
-                { "proName": "SP:SPX", "title": "S&P 500" },
-                { "proName": "AMEX:SPY", "title": "S&P ETF" },
-                { "proName": "DJ:DJI", "title": "DOW" },
-                { "proName": "AMEX:DIA", "title": "Dow ETF" },
-                { "proName": "BINANCE:BTCUSDT", "title": "Bitcoin" },
-                { "proName": "BINANCE:ETHUSDT", "title": "Ethereum" },
-                { "proName": "KRX:KOSPI", "title": "KOSPI" },
-                { "proName": "KRX:KOSDAQ", "title": "KOSDAQ" },
-                { "proName": "KRX:005930", "title": "Samsung Elec" },
-                { "proName": "KRX:000660", "title": "SK Hynix" },
-                { "proName": "NASDAQ:NVDA", "title": "NVIDIA" },
-                { "proName": "NASDAQ:TSLA", "title": "Tesla" },
-                { "proName": "NASDAQ:AAPL", "title": "Apple" }
-              ],
-              "showSymbolLogo": true,
-              "isTransparent": true,
-              "displayMode": "regular",
-              "colorTheme": "dark",
-              "locale": "en"
-            }
-            </script>
-          </div>
+          <div class="tradingview-widget-container" id="market-widget"></div>
+          <noscript><a href="https://www.tradingview.com/markets/" target="_blank" rel="noopener">TradingView 시장 시세 ↗</a></noscript>
         </div>
       </section>
 
-      <div class="hero-bottom" aria-label="Research principles">
+      <div class="hero-bottom" aria-label="리서치 원칙" data-en-aria-label="Research principles" data-ko-aria-label="리서치 원칙">
         <div class="metric">
           <strong>01</strong>
-          <span>No timeline clutter</span>
+          <span data-en="No timeline clutter" data-ko="핵심에 집중">핵심에 집중</span>
         </div>
         <div class="metric">
           <strong>02</strong>
-          <span>Markets connected</span>
+          <span data-en="Markets connected" data-ko="시장 간 연결">시장 간 연결</span>
         </div>
         <div class="metric">
           <strong>03</strong>
-          <span>Korea signal included</span>
+          <span data-en="Korea signal included" data-ko="한국 시장까지">한국 시장까지</span>
         </div>
         <div class="metric">
           <strong>04</strong>
-          <span>Numbers before narrative</span>
+          <span data-en="Numbers before narrative" data-ko="해석보다 데이터">해석보다 데이터</span>
         </div>
       </div>
     </section>
 
 
     <!-- RYZM Picks: verified high-impact developments, refreshed daily; do not invent publication times. -->
-    <section class="section picks-section" id="picks" lang="ko" aria-labelledby="picks-title" data-picks-date="2026-10-29">
+    <section class="section picks-section" id="picks" aria-labelledby="picks-title" data-picks-date="2026-10-29">
       <div class="section-inner">
         <div class="picks-heading">
           <div>
-            <div class="label">RYZM Picks / Editor's selection</div>
-            <h2 id="picks-title">중요 속보</h2>
-            <p class="picks-intro">시장을 움직이는 핵심 소식만 짧고 명확하게.</p>
+            <div class="label" data-en="RYZM Picks / Editor’s selection" data-ko="RYZM Picks / 오늘의 주요 소식">RYZM Picks / 오늘의 주요 소식</div>
+            <h2 id="picks-title" data-en="Top stories" data-ko="중요 속보">중요 속보</h2>
+            <p class="picks-intro" data-en="The developments that matter, clearly and concisely." data-ko="시장을 움직이는 핵심 소식만 짧고 명확하게.">시장을 움직이는 핵심 소식만 짧고 명확하게.</p>
           </div>
           <div class="picks-update">
-            <p>마지막 확인 <time datetime="2026-10-29T18:09:00+09:00">2026.10.29 18:09 KST</time></p>
-            <p>매일 오전 9시 갱신 · 한국 시간 기준</p>
-            <a href="#news" class="news-source">일반 뉴스·주요 일정 보기 &darr;</a>
+            <p><span data-en="Last checked" data-ko="마지막 확인">마지막 확인</span> <time datetime="2026-10-29T18:09:00+09:00" data-en="29 Oct 2026 / 18:09 KST" data-ko="2026.10.29 18:09 KST">2026.10.29 18:09 KST</time></p>
+            <p data-en="Updated daily at 09:00 KST" data-ko="매일 오전 9시 갱신 · 한국 시간 기준">매일 오전 9시 갱신 · 한국 시간 기준</p>
+            <a href="#news" class="news-source" data-en="Market news &amp; upcoming events ↓" data-ko="일반 뉴스·주요 일정 보기 ↓">일반 뉴스·주요 일정 보기 ↓</a>
           </div>
         </div>
-        <ol class="picks-list" aria-label="확인된 주요 속보">
+        <ol class="picks-list" aria-label="확인된 주요 속보" data-en-aria-label="Verified top stories" data-ko-aria-label="확인된 주요 속보">
           <li class="pick-item" id="pick-samsung-20261029">
             <div class="pick-meta">
-              <span class="pick-topic">반도체 · 실적</span>
-              <span class="pick-status">실적 발표</span>
-              <time datetime="2026-10-29">발표 10.29 · 시각 미공개</time>
+              <span class="pick-topic" data-en="Semiconductors · Earnings" data-ko="반도체 · 실적">반도체 · 실적</span>
+              <span class="pick-status" data-en="Results released" data-ko="실적 발표">실적 발표</span>
+              <time datetime="2026-10-29" data-en="Released 29 Oct · time not disclosed" data-ko="발표 10.29 · 시각 미공개">발표 10.29 · 시각 미공개</time>
             </div>
             <article>
-              <h3>삼성전자, 3분기 영업이익 107.4조원 발표</h3>
-              <p>삼성전자는 3분기 연결 매출 195.3조원, 영업이익 107.4조원을 공시했습니다. 반도체(DS) 부문 영업이익은 106.5조원으로 집계됐습니다.</p>
-              <p class="pick-watch"><strong>체크 포인트</strong> 메모리 수요·공급 전망과 향후 투자 계획을 함께 확인하세요.</p>
-              <a class="news-source" href="https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results" target="_blank" rel="noopener noreferrer">삼성전자 공식 실적 발표 &nearr;</a>
+              <h3 data-en="Samsung reports KRW 107.4 trillion in third-quarter operating profit" data-ko="삼성전자, 3분기 영업이익 107.4조원 발표">삼성전자, 3분기 영업이익 107.4조원 발표</h3>
+              <p data-en="Samsung reported consolidated third-quarter revenue of KRW 195.3 trillion and operating profit of KRW 107.4 trillion. Its Device Solutions (DS) division recorded KRW 106.5 trillion in operating profit." data-ko="삼성전자는 3분기 연결 매출 195.3조원, 영업이익 107.4조원을 공시했습니다. 반도체(DS) 부문 영업이익은 106.5조원으로 집계됐습니다.">삼성전자는 3분기 연결 매출 195.3조원, 영업이익 107.4조원을 공시했습니다. 반도체(DS) 부문 영업이익은 106.5조원으로 집계됐습니다.</p>
+              <p class="pick-watch"><strong data-en="What to watch" data-ko="체크 포인트">체크 포인트</strong> <span data-en="Watch memory supply and demand, alongside the company’s investment plans." data-ko="메모리 수요·공급 전망과 향후 투자 계획을 함께 확인하세요.">메모리 수요·공급 전망과 향후 투자 계획을 함께 확인하세요.</span></p>
+              <a class="news-source" href="https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results" target="_blank" rel="noopener noreferrer" data-en="Samsung Electronics / official results ↗" data-ko="삼성전자 공식 실적 발표 ↗">삼성전자 공식 실적 발표 ↗</a>
             </article>
           </li>
           <li class="pick-item" id="pick-fed-20261029">
             <div class="pick-meta">
-              <span class="pick-topic">미국 · 통화정책</span>
-              <span class="pick-status">정책 결정</span>
-              <time datetime="2026-10-29T03:00:00+09:00">발표 10.29 03:00 KST</time>
+              <span class="pick-topic" data-en="US · Monetary policy" data-ko="미국 · 통화정책">미국 · 통화정책</span>
+              <span class="pick-status" data-en="Policy decision" data-ko="정책 결정">정책 결정</span>
+              <time datetime="2026-10-29T03:00:00+09:00" data-en="Released 29 Oct / 03:00 KST" data-ko="발표 10.29 03:00 KST">발표 10.29 03:00 KST</time>
             </div>
             <article>
-              <h3>연준, 기준금리 3.75~4.00% 동결…2명은 인상 주장</h3>
-              <p>연준은 10대 2 표결로 정책금리 목표 범위를 유지했습니다. 리사 쿡과 베스 해맥은 0.25%포인트 인상을 지지했으며, 성명은 높은 물가와 견조한 경기 흐름을 언급했습니다.</p>
-              <p class="pick-watch"><strong>체크 포인트</strong> 다음 물가 지표와 연준의 추가 정책 발언을 확인하세요.</p>
-              <a class="news-source" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" target="_blank" rel="noopener noreferrer">미 연방준비제도 FOMC 성명 &nearr;</a>
+              <h3 data-en="Fed holds rates at 3.75%–4.00%; two officials favor a hike" data-ko="연준, 기준금리 3.75~4.00% 동결…2명은 인상 주장">연준, 기준금리 3.75~4.00% 동결…2명은 인상 주장</h3>
+              <p data-en="The Fed held its policy-rate range in a 10–2 vote. Lisa Cook and Beth Hammack favored a quarter-point increase. The statement cited elevated inflation and strong economic activity." data-ko="연준은 10대 2 표결로 정책금리 목표 범위를 유지했습니다. 리사 쿡과 베스 해맥은 0.25%포인트 인상을 지지했으며, 성명은 높은 물가와 견조한 경기 흐름을 언급했습니다.">연준은 10대 2 표결로 정책금리 목표 범위를 유지했습니다. 리사 쿡과 베스 해맥은 0.25%포인트 인상을 지지했으며, 성명은 높은 물가와 견조한 경기 흐름을 언급했습니다.</p>
+              <p class="pick-watch"><strong data-en="What to watch" data-ko="체크 포인트">체크 포인트</strong> <span data-en="Watch the next inflation releases and further policy comments from the Fed." data-ko="다음 물가 지표와 연준의 추가 정책 발언을 확인하세요.">다음 물가 지표와 연준의 추가 정책 발언을 확인하세요.</span></p>
+              <a class="news-source" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" target="_blank" rel="noopener noreferrer" data-en="Federal Reserve / FOMC statement ↗" data-ko="미 연방준비제도 FOMC 성명 ↗">미 연방준비제도 FOMC 성명 ↗</a>
             </article>
           </li>
           <li class="pick-item" id="pick-skhynix-20261028">
             <div class="pick-meta">
-              <span class="pick-topic">반도체 · 잠정실적</span>
-              <span class="pick-status">잠정 공시</span>
-              <time datetime="2026-10-28T09:00:00+09:00">발표 10.28 09:00 KST</time>
+              <span class="pick-topic" data-en="Semiconductors · Preliminary results" data-ko="반도체 · 잠정실적">반도체 · 잠정실적</span>
+              <span class="pick-status" data-en="Preliminary filing" data-ko="잠정 공시">잠정 공시</span>
+              <time datetime="2026-10-28T09:00:00+09:00" data-en="Released 28 Oct / 09:00 KST" data-ko="발표 10.28 09:00 KST">발표 10.28 09:00 KST</time>
             </div>
             <article>
-              <h3>SK하이닉스, 3분기 매출 104.6조원·영업이익 83.3조원</h3>
-              <p>SEC 제출 자료 기준 잠정 연결 매출은 전분기 대비 31.9%, 영업이익은 37.6% 증가했습니다. 외부감사가 완료되지 않은 잠정 수치로 최종 결과는 달라질 수 있습니다.</p>
-              <p class="pick-watch"><strong>체크 포인트</strong> 잠정 공시와 최종 재무제표를 구분해 확인하세요.</p>
-              <a class="news-source" href="https://www.sec.gov/Archives/edgar/data/2120882/000119312526434994/d162547d6k.htm" target="_blank" rel="noopener noreferrer">SK하이닉스 SEC Form 6-K &nearr;</a>
+              <h3 data-en="SK hynix reports KRW 104.6 trillion in revenue and KRW 83.3 trillion in operating profit" data-ko="SK하이닉스, 3분기 매출 104.6조원·영업이익 83.3조원">SK하이닉스, 3분기 매출 104.6조원·영업이익 83.3조원</h3>
+              <p data-en="The SEC filing shows preliminary consolidated revenue up 31.9% from the previous quarter and operating profit up 37.6%. The figures have not completed an external audit and may differ from final results." data-ko="SEC 제출 자료 기준 잠정 연결 매출은 전분기 대비 31.9%, 영업이익은 37.6% 증가했습니다. 외부감사가 완료되지 않은 잠정 수치로 최종 결과는 달라질 수 있습니다.">SEC 제출 자료 기준 잠정 연결 매출은 전분기 대비 31.9%, 영업이익은 37.6% 증가했습니다. 외부감사가 완료되지 않은 잠정 수치로 최종 결과는 달라질 수 있습니다.</p>
+              <p class="pick-watch"><strong data-en="What to watch" data-ko="체크 포인트">체크 포인트</strong> <span data-en="Distinguish the preliminary filing from the final financial statements." data-ko="잠정 공시와 최종 재무제표를 구분해 확인하세요.">잠정 공시와 최종 재무제표를 구분해 확인하세요.</span></p>
+              <a class="news-source" href="https://www.sec.gov/Archives/edgar/data/2120882/000119312526434994/d162547d6k.htm" target="_blank" rel="noopener noreferrer" data-en="SK hynix / SEC Form 6-K ↗" data-ko="SK하이닉스 SEC Form 6-K ↗">SK하이닉스 SEC Form 6-K ↗</a>
             </article>
           </li>
         </ol>
@@ -1611,47 +1625,47 @@ h2 {
       <div class="section-inner">
         <div class="split-heading">
           <div>
-            <div class="label">Daily news / Seoul desk</div>
-            <h2 id="news-title">Latest market news.</h2>
+            <div class="label" data-en="Daily news / Seoul desk" data-ko="매일 전하는 시장 소식">매일 전하는 시장 소식</div>
+            <h2 id="news-title" data-en="Latest market news." data-ko="시장 뉴스와 주요 일정">시장 뉴스와 주요 일정</h2>
           </div>
           <div>
-            <p class="news-updated">Updated <time datetime="2026-10-29T18:09:00+09:00">29 Oct 2026 / 18:09 KST</time></p>
-            <p class="section-copy">Market closes and upcoming events. Read the selected major developments in RYZM Picks above. Updated daily at 09:00 KST; closing levels are dated snapshots.</p>
+            <p class="news-updated"><span data-en="Updated" data-ko="업데이트">업데이트</span> <time datetime="2026-10-29T18:09:00+09:00" data-en="29 Oct 2026 / 18:09 KST" data-ko="2026.10.29 18:09 KST">2026.10.29 18:09 KST</time></p>
+            <p class="section-copy" data-en="Market closes and upcoming events. Read the selected major developments in RYZM Picks above. Updated daily at 09:00 KST; closing levels are dated snapshots." data-ko="시장 마감 소식과 예정된 주요 일정을 모았습니다. 핵심 이슈는 위의 중요 속보에서 확인하세요. 매일 오전 9시(한국 시간)에 갱신하며, 지수는 표시된 거래일의 종가입니다.">시장 마감 소식과 예정된 주요 일정을 모았습니다. 핵심 이슈는 위의 중요 속보에서 확인하세요. 매일 오전 9시(한국 시간)에 갱신하며, 지수는 표시된 거래일의 종가입니다.</p>
           </div>
         </div>
         <ol class="news-list">
           <li class="news-item">
-            <div class="news-meta"><span class="news-kind">US / Market close</span><time datetime="2026-10-28">Close: 28 Oct 2026</time></div>
+            <div class="news-meta"><span class="news-kind" data-en="US / Market close" data-ko="미국 / 증시 마감">미국 / 증시 마감</span><time datetime="2026-10-28" data-en="Close: 28 Oct 2026" data-ko="마감: 2026.10.28">마감: 2026.10.28</time></div>
             <article>
-              <h3>Wall Street closes slightly higher after the Fed decision</h3>
-              <p>The S&amp;P 500 rose 0.3% to 7,743.98, the Nasdaq Composite gained 0.3% to 26,549.85, and the Dow added 0.2% to 52,475.10 at Wednesday’s close. These are closing levels for the US session on 28 October, not live quotes.</p>
-              <a class="news-source" href="https://apnews.com/article/7864eac2e13db75f07758ed9c39ad96b" target="_blank" rel="noopener noreferrer">Associated Press / 28 October close &nearr;</a>
+              <h3 data-en="Wall Street closes slightly higher after the Fed decision" data-ko="미국 증시, 연준 금리 동결 후 소폭 상승 마감">미국 증시, 연준 금리 동결 후 소폭 상승 마감</h3>
+              <p data-en="The S&amp;P 500 rose 0.3% to 7,743.98, the Nasdaq Composite gained 0.3% to 26,549.85, and the Dow added 0.2% to 52,475.10 at Wednesday’s close. These are closing levels for the US session on 28 October, not live quotes." data-ko="미국 시간 10월 28일 종가 기준 S&amp;P 500은 0.3% 오른 7,743.98, 나스닥 종합지수는 0.3% 오른 26,549.85, 다우지수는 0.2% 오른 52,475.10을 기록했습니다. 실시간 시세가 아닌 해당 거래일의 마감 수치입니다.">미국 시간 10월 28일 종가 기준 S&amp;P 500은 0.3% 오른 7,743.98, 나스닥 종합지수는 0.3% 오른 26,549.85, 다우지수는 0.2% 오른 52,475.10을 기록했습니다. 실시간 시세가 아닌 해당 거래일의 마감 수치입니다.</p>
+              <a class="news-source" href="https://apnews.com/article/7864eac2e13db75f07758ed9c39ad96b" target="_blank" rel="noopener noreferrer" data-en="Associated Press / 28 October close ↗" data-ko="AP통신 / 10월 28일 증시 마감 ↗">AP통신 / 10월 28일 증시 마감 ↗</a>
             </article>
           </li>
           <li class="news-item">
-            <div class="news-meta"><span class="news-kind">US / Upcoming call</span><time datetime="2026-10-30T06:00:00+09:00">30 Oct / 06:00 KST</time></div>
+            <div class="news-meta"><span class="news-kind" data-en="US / Upcoming call" data-ko="미국 / 실적 발표 일정">미국 / 실적 발표 일정</span><time datetime="2026-10-30T06:00:00+09:00" data-en="30 Oct / 06:00 KST" data-ko="10.30 / 06:00 KST">10.30 / 06:00 KST</time></div>
             <article>
-              <h3>Amazon earnings call follows early Friday in Seoul</h3>
-              <p>Amazon has scheduled its third-quarter results call for 29 October at 5:00 p.m. ET, equivalent to 30 October at 06:00 KST. The company will provide a live webcast and make the audio and slides available afterward.</p>
-              <a class="news-source" href="https://www.aboutamazon.com/news/company-news/amazon-earnings-q3-2026-report" target="_blank" rel="noopener noreferrer">Amazon / official earnings-call announcement &nearr;</a>
+              <h3 data-en="Amazon earnings call follows early Friday in Seoul" data-ko="아마존 실적 콘퍼런스콜, 한국 시간 금요일 오전 6시 예정">아마존 실적 콘퍼런스콜, 한국 시간 금요일 오전 6시 예정</h3>
+              <p data-en="Amazon has scheduled its third-quarter results call for 29 October at 5:00 p.m. ET, equivalent to 30 October at 06:00 KST. The company will provide a live webcast and make the audio and slides available afterward." data-ko="아마존의 3분기 실적 콘퍼런스콜은 미국 동부 시간 10월 29일 오후 5시, 한국 시간 10월 30일 오전 6시에 예정돼 있습니다. 온라인으로 생중계되며 종료 후 녹음과 발표 자료가 제공됩니다.">아마존의 3분기 실적 콘퍼런스콜은 미국 동부 시간 10월 29일 오후 5시, 한국 시간 10월 30일 오전 6시에 예정돼 있습니다. 온라인으로 생중계되며 종료 후 녹음과 발표 자료가 제공됩니다.</p>
+              <a class="news-source" href="https://www.aboutamazon.com/news/company-news/amazon-earnings-q3-2026-report" target="_blank" rel="noopener noreferrer" data-en="Amazon / official earnings-call announcement ↗" data-ko="아마존 / 공식 콘퍼런스콜 안내 ↗">아마존 / 공식 콘퍼런스콜 안내 ↗</a>
             </article>
           </li>
         </ol>
       </div>
     </section>
 
-    <section class="brief-strip" aria-label="RYZM briefing principles">
+    <section class="brief-strip" aria-label="RYZM 브리핑 원칙" data-en-aria-label="RYZM briefing principles" data-ko-aria-label="RYZM 브리핑 원칙">
       <div class="brief-cell">
-        <strong>01 / Signal first</strong>
-        <span>Markets do not move in isolated headlines. RYZM connects rates, liquidity, credit, crypto, FX, and psychology into one operating map.</span>
+        <strong data-en="01 / Signal first" data-ko="01 / 핵심 신호부터">01 / 핵심 신호부터</strong>
+        <span data-en="Markets do not move in isolated headlines. RYZM connects rates, liquidity, credit, crypto, FX, and psychology into one operating map." data-ko="시장은 개별 뉴스만으로 움직이지 않습니다. RYZM은 금리·유동성·신용·가상자산·환율·투자 심리를 하나의 흐름으로 연결합니다.">시장은 개별 뉴스만으로 움직이지 않습니다. RYZM은 금리·유동성·신용·가상자산·환율·투자 심리를 하나의 흐름으로 연결합니다.</span>
       </div>
       <div class="brief-cell">
-        <strong>02 / Korea included</strong>
-        <span>BOK decisions, KRW pressure, chips, exports, and PF credit stress are part of the global risk tape.</span>
+        <strong data-en="02 / Korea included" data-ko="02 / 한국 시장까지">02 / 한국 시장까지</strong>
+        <span data-en="BOK decisions, KRW pressure, chips, exports, and PF credit stress are part of the global risk tape." data-ko="한국은행의 결정, 원화 흐름, 반도체와 수출, 부동산 PF의 신용 위험까지 글로벌 시장과 함께 살핍니다.">한국은행의 결정, 원화 흐름, 반도체와 수출, 부동산 PF의 신용 위험까지 글로벌 시장과 함께 살핍니다.</span>
       </div>
       <div class="brief-cell">
-        <strong>03 / Narrative checked</strong>
-        <span>No hype cycle worship. No panic theater. Price action gets measured before it gets explained.</span>
+        <strong data-en="03 / Narrative checked" data-ko="03 / 해석은 데이터로 검증">03 / 해석은 데이터로 검증</strong>
+        <span data-en="No hype cycle worship. No panic theater. Price action gets measured before it gets explained." data-ko="과열과 공포에 휩쓸리지 않고, 가격이 어떻게 움직였는지 데이터로 확인한 뒤 해석합니다.">과열과 공포에 휩쓸리지 않고, 가격이 어떻게 움직였는지 데이터로 확인한 뒤 해석합니다.</span>
       </div>
     </section>
 
@@ -1659,45 +1673,42 @@ h2 {
       <div class="section-inner">
         <div class="split-heading">
           <div>
-            <div class="label">The full picture</div>
-            <h2>Every angle that moves risk.</h2>
+            <div class="label" data-en="The full picture" data-ko="시장을 보는 넓은 시야">시장을 보는 넓은 시야</div>
+            <h2 data-en="Every angle that moves risk." data-ko="시장을 움직이는 여섯 가지 관점">시장을 움직이는 여섯 가지 관점</h2>
           </div>
-          <p class="section-copy">
-            RYZM is not a public feed dump. It is a tighter front door for the research:
-            fewer distractions, stronger context, and a cleaner map of what matters.
-          </p>
+          <p class="section-copy" data-en="RYZM is not a public feed dump. It is a tighter front door for the research: fewer distractions, stronger context, and a cleaner map of what matters." data-ko="쏟아지는 뉴스를 그대로 나열하기보다, 시장을 이해하는 데 필요한 맥락과 연결고리를 골라 전합니다.">쏟아지는 뉴스를 그대로 나열하기보다, 시장을 이해하는 데 필요한 맥락과 연결고리를 골라 전합니다.</p>
         </div>
 
         <div class="cards">
           <article class="card" data-index="01">
             <span class="card-number">01 / 06</span>
-            <h3>Market Research</h3>
-            <p>Deep reads on liquidity, cycles, positioning, and the hidden mechanics behind large moves.</p>
+            <h3 data-en="Market Research" data-ko="시장 리서치">시장 리서치</h3>
+            <p data-en="Deep reads on liquidity, cycles, positioning, and the hidden mechanics behind large moves." data-ko="유동성, 시장 사이클, 투자자 포지션과 큰 가격 변동의 배경을 깊이 살펴봅니다.">유동성, 시장 사이클, 투자자 포지션과 큰 가격 변동의 배경을 깊이 살펴봅니다.</p>
           </article>
           <article class="card" data-index="02">
             <span class="card-number">02 / 06</span>
-            <h3>Rates & Credit</h3>
-            <p>Fed path, treasury curves, collateral stress, private credit, and the plumbing beneath price action.</p>
+            <h3 data-en="Rates &amp; Credit" data-ko="금리와 신용">금리와 신용</h3>
+            <p data-en="Fed path, treasury curves, collateral stress, private credit, and the plumbing beneath price action." data-ko="연준의 정책 경로, 국채 수익률 곡선, 담보 시장과 사모신용 등 금융시장의 자금 흐름을 분석합니다.">연준의 정책 경로, 국채 수익률 곡선, 담보 시장과 사모신용 등 금융시장의 자금 흐름을 분석합니다.</p>
           </article>
           <article class="card" data-index="03">
             <span class="card-number">03 / 06</span>
-            <h3>Crypto Structure</h3>
-            <p>Bitcoin liquidity, ETF flows, leverage, exchange behavior, and cycle-level market structure.</p>
+            <h3 data-en="Crypto Structure" data-ko="가상자산 시장 구조">가상자산 시장 구조</h3>
+            <p data-en="Bitcoin liquidity, ETF flows, leverage, exchange behavior, and cycle-level market structure." data-ko="비트코인 유동성, ETF 자금 흐름, 레버리지와 거래소 동향을 시장 사이클과 연결합니다.">비트코인 유동성, ETF 자금 흐름, 레버리지와 거래소 동향을 시장 사이클과 연결합니다.</p>
           </article>
           <article class="card" data-index="04">
             <span class="card-number">04 / 06</span>
-            <h3>Korea Bridge</h3>
-            <p>BOK decisions, KRW pressure, semiconductor exports, PF debt, and data English markets miss.</p>
+            <h3 data-en="Korea Bridge" data-ko="한국 시장 연결">한국 시장 연결</h3>
+            <p data-en="BOK decisions, KRW pressure, semiconductor exports, PF debt, and data English markets miss." data-ko="한국은행, 원화, 반도체 수출과 PF 부채 등 글로벌 뉴스에서 놓치기 쉬운 한국의 신호를 짚습니다.">한국은행, 원화, 반도체 수출과 PF 부채 등 글로벌 뉴스에서 놓치기 쉬운 한국의 신호를 짚습니다.</p>
           </article>
           <article class="card" data-index="05">
             <span class="card-number">05 / 06</span>
-            <h3>Macro Watch</h3>
-            <p>Oil, FX, geopolitics, trade, inflation, and global liquidity when one market becomes everyone's problem.</p>
+            <h3 data-en="Macro Watch" data-ko="글로벌 매크로">글로벌 매크로</h3>
+            <p data-en="Oil, FX, geopolitics, trade, inflation, and global liquidity when one market becomes everyone's problem." data-ko="원유·환율·지정학·무역·물가·글로벌 유동성이 다른 시장으로 번지는 경로를 살핍니다.">원유·환율·지정학·무역·물가·글로벌 유동성이 다른 시장으로 번지는 경로를 살핍니다.</p>
           </article>
           <article class="card" data-index="06">
             <span class="card-number">06 / 06</span>
-            <h3>Psychology</h3>
-            <p>Narratives, panic, euphoria, conviction, incentives, and the behavioral traps traders keep repeating.</p>
+            <h3 data-en="Psychology" data-ko="투자 심리">투자 심리</h3>
+            <p data-en="Narratives, panic, euphoria, conviction, incentives, and the behavioral traps traders keep repeating." data-ko="시장의 이야기, 공포와 낙관, 확신과 이해관계가 투자 판단에 미치는 영향을 들여다봅니다.">시장의 이야기, 공포와 낙관, 확신과 이해관계가 투자 판단에 미치는 영향을 들여다봅니다.</p>
           </article>
         </div>
       </div>
@@ -1705,28 +1716,69 @@ h2 {
 
     <div class="ticker" aria-hidden="true" id="signal">
       <div class="ticker-track">
-        <span>Macro</span><span>Rates</span><span>Credit</span><span>Crypto</span><span>Korea</span><span>Liquidity</span><span>Market Psychology</span><span>Risk</span>
-        <span>Macro</span><span>Rates</span><span>Credit</span><span>Crypto</span><span>Korea</span><span>Liquidity</span><span>Market Psychology</span><span>Risk</span>
+        <span data-en="Macro" data-ko="거시경제">거시경제</span><span data-en="Rates" data-ko="금리">금리</span><span data-en="Credit" data-ko="신용">신용</span><span data-en="Crypto" data-ko="가상자산">가상자산</span><span data-en="Korea" data-ko="한국">한국</span><span data-en="Liquidity" data-ko="유동성">유동성</span><span data-en="Market Psychology" data-ko="투자 심리">투자 심리</span><span data-en="Risk" data-ko="위험">위험</span>
+        <span data-en="Macro" data-ko="거시경제">거시경제</span><span data-en="Rates" data-ko="금리">금리</span><span data-en="Credit" data-ko="신용">신용</span><span data-en="Crypto" data-ko="가상자산">가상자산</span><span data-en="Korea" data-ko="한국">한국</span><span data-en="Liquidity" data-ko="유동성">유동성</span><span data-en="Market Psychology" data-ko="투자 심리">투자 심리</span><span data-en="Risk" data-ko="위험">위험</span>
       </div>
     </div>
 
     <section class="cta">
-      <div class="label">Do not miss the move</div>
-      <h2>Cleaner signal. Less noise.</h2>
-      <p>
-        Subscribe for the RYZM research stream: macro intelligence, market structure, and reality checks
-        written for people who care about what actually moves price.
-      </p>
+      <div class="label" data-en="Do not miss the move" data-ko="시장의 다음 흐름을 놓치지 마세요">시장의 다음 흐름을 놓치지 마세요</div>
+      <h2 data-en="Cleaner signal. Less noise." data-ko="소음은 덜고, 핵심은 더 선명하게.">소음은 덜고, 핵심은 더 선명하게.</h2>
+      <p data-en="Subscribe for the RYZM research stream: macro intelligence, market structure, and reality checks written for people who care about what actually moves price." data-ko="거시경제와 시장 구조를 연결하고, 시장을 둘러싼 해석을 데이터로 점검합니다. RYZM의 리서치를 구독하고 핵심 흐름을 받아보세요.">거시경제와 시장 구조를 연결하고, 시장을 둘러싼 해석을 데이터로 점검합니다. RYZM의 리서치를 구독하고 핵심 흐름을 받아보세요.</p>
       <div class="actions">
-        <a class="button primary" href="https://substack.com/@ryzm" target="_blank" rel="noopener">Subscribe on Substack</a>
-        <a class="button" href="mailto:contact@ryzm.xyz">Contact</a>
+        <a class="button primary" href="https://substack.com/@ryzm" target="_blank" rel="noopener" data-en="Subscribe on Substack" data-ko="Substack에서 구독하기">Substack에서 구독하기</a>
+        <a class="button" href="mailto:contact@ryzm.xyz" data-en="Contact" data-ko="문의하기">문의하기</a>
       </div>
     </section>
 
     <footer class="footer">
       <span>RYZM &copy; 2026</span>
-      <span>Independent macro intelligence. Not financial advice.</span>
+      <span data-en="Independent macro intelligence. Not financial advice." data-ko="독립 매크로 리서치. 투자 권유가 아닙니다.">독립 매크로 리서치. 투자 권유가 아닙니다.</span>
     </footer>
   </main>
+<script>
+(() => {
+  const key = 'ryzm-language';
+  const buttons = Array.from(document.querySelectorAll('[data-language]'));
+  const status = document.querySelector('.language-status');
+  const widget = document.getElementById('market-widget');
+  const market = {"symbols":[{"proName":"NASDAQ:NDX","title":"NASDAQ 100"},{"proName":"AMEX:QQQ","title":"Nasdaq ETF"},{"proName":"SP:SPX","title":"S&P 500"},{"proName":"AMEX:SPY","title":"S&P ETF"},{"proName":"DJ:DJI","title":"DOW"},{"proName":"AMEX:DIA","title":"Dow ETF"},{"proName":"BINANCE:BTCUSDT","title":"Bitcoin"},{"proName":"BINANCE:ETHUSDT","title":"Ethereum"},{"proName":"KRX:KOSPI","title":"KOSPI"},{"proName":"KRX:KOSDAQ","title":"KOSDAQ"},{"proName":"KRX:005930","title":"Samsung Elec"},{"proName":"KRX:000660","title":"SK Hynix"},{"proName":"NASDAQ:NVDA","title":"NVIDIA"},{"proName":"NASDAQ:TSLA","title":"Tesla"},{"proName":"NASDAQ:AAPL","title":"Apple"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"regular","colorTheme":"dark","locale":"en"};
+  const koreanSymbols = {'NASDAQ 100':'나스닥 100','Nasdaq ETF':'나스닥 ETF','S&P 500':'S&P 500','S&P ETF':'S&P ETF','DOW':'다우','Dow ETF':'다우 ETF','Bitcoin':'비트코인','Ethereum':'이더리움','KOSPI':'코스피','KOSDAQ':'코스닥','Samsung Elec':'삼성전자','SK Hynix':'SK하이닉스','NVIDIA':'엔비디아','Tesla':'테슬라','Apple':'애플'};
+  function mountMarket(language) {
+    if (!widget || widget.dataset.language === language) return;
+    const container = document.createElement('div');
+    container.className = 'tradingview-widget-container__widget';
+    const script = document.createElement('script');
+    script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
+    script.async = true;
+    script.textContent = JSON.stringify({ ...market, locale: language === 'ko' ? 'kr' : 'en', symbols: market.symbols.map(symbol => ({ ...symbol, title: language === 'ko' ? koreanSymbols[symbol.title] || symbol.title : symbol.title })) });
+    widget.dataset.language = language;
+    widget.replaceChildren(container, script);
+  }
+  function applyLanguage(language, persist = false, announce = false) {
+    if (language !== 'ko' && language !== 'en') return;
+    document.documentElement.lang = language;
+    document.querySelectorAll('[data-en][data-ko]').forEach(element => { element.textContent = element.getAttribute('data-' + language); });
+    ['aria-label', 'alt'].forEach(attribute => {
+      document.querySelectorAll('[data-en-' + attribute + '][data-ko-' + attribute + ']').forEach(element => { element.setAttribute(attribute, element.getAttribute('data-' + language + '-' + attribute)); });
+    });
+    buttons.forEach(button => { button.setAttribute('aria-pressed', String(button.dataset.language === language)); });
+    const title = language === 'ko' ? 'RYZM — 시장을 연결하는 매크로 리서치' : 'RYZM — Advanced Macro Intelligence';
+    const description = language === 'ko' ? '거시경제와 금리, 가상자산, 한국 시장과 투자 심리를 연결하는 RYZM의 리서치와 주요 소식.' : 'RYZM turns macro, rates, crypto, Korea data, and market psychology into clear market intelligence.';
+    document.title = title;
+    document.querySelector('meta[name="description"]').content = description;
+    document.querySelector('meta[property="og:title"]').content = title;
+    document.querySelector('meta[property="og:description"]').content = description;
+    if (persist) { try { localStorage.setItem(key, language); } catch {} }
+    if (announce && status) status.textContent = language === 'ko' ? '한국어로 변경했습니다.' : 'Language changed to English.';
+    mountMarket(language);
+  }
+  buttons.forEach(button => { button.addEventListener('click', () => applyLanguage(button.dataset.language, true, true)); });
+  window.addEventListener('storage', event => { if (event.key === key) applyLanguage(event.newValue === 'en' ? 'en' : 'ko'); });
+  applyLanguage(document.documentElement.lang === 'en' ? 'en' : 'ko');
+})();
+</script>
 </body>
 </html>
+
+
