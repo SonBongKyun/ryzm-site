@@ -1379,6 +1379,32 @@ h2 {
   .nav-links a.news-nav { display: inline; }
 }
 
+
+/* RYZM Picks: concise high-impact news, alongside the general briefing. */
+.picks-section { scroll-margin-top: 120px; padding-top: 66px; padding-bottom: 66px; border-top: 1px solid var(--line-strong); background: linear-gradient(120deg, rgba(255,225,106,.075), transparent 58%); }
+.picks-heading { display: flex; justify-content: space-between; align-items: end; gap: 28px; margin-bottom: 30px; }
+.picks-heading h2 { font-size: clamp(36px, 4.8vw, 64px); line-height: 1.2; letter-spacing: -.04em; margin: 12px 0; }
+.picks-intro { color: var(--paper-soft); font-size: 16px; line-height: 1.7; margin: 0; word-break: keep-all; }
+.picks-update { flex-shrink: 0; text-align: right; color: var(--paper-dim); font-size: 12px; line-height: 1.8; }
+.picks-update p { margin: 0 0 5px; }
+.picks-list { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line-strong); }
+.pick-item { display: grid; grid-template-columns: 175px minmax(0,1fr); gap: 30px; padding: 28px 0; border-bottom: 1px solid var(--line); scroll-margin-top: 120px; }
+.pick-meta { display: flex; flex-direction: column; align-items: start; gap: 10px; font-size: 11px; line-height: 1.7; color: var(--paper-dim); }
+.pick-topic { color: var(--gold); font-weight: 700; }
+.pick-status { display: inline-block; padding: 3px 8px; border: 1px solid rgba(255,225,106,.32); color: var(--paper-soft); font-size: 10px; }
+.pick-item h3 { margin: 0 0 12px; color: var(--paper); font-size: clamp(19px,2.1vw,26px); line-height: 1.5; font-weight: 600; letter-spacing: -.025em; word-break: keep-all; overflow-wrap: anywhere; }
+.pick-item p { margin: 0 0 12px; color: var(--paper-soft); font-size: 15px; line-height: 1.9; word-break: keep-all; overflow-wrap: anywhere; }
+.pick-item .pick-watch { color: var(--paper-dim); font-size: 13px; }
+.pick-watch strong { color: var(--gold); font-weight: 500; margin-right: 6px; }
+.picks-nav { color: var(--gold); }
+@media (max-width: 700px) {
+  .picks-heading { flex-direction: column; align-items: start; gap: 20px; }
+  .picks-update { text-align: left; flex-shrink: 1; }
+  .pick-item { grid-template-columns: 1fr; gap: 14px; }
+  .pick-meta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+  .pick-meta time { flex-basis: 100%; }
+}
+
 </style>
 </head>
 
@@ -1408,6 +1434,7 @@ h2 {
       <a class="nav-brand" href="#top">RYZM</a>
       <div>Advanced Market Intelligence</div>
       <div class="nav-links">
+        <a class="news-nav picks-nav" href="#picks" lang="ko">중요 속보</a>
         <a class="news-nav" href="#news">News</a>
         <a href="#coverage">Coverage</a>
         <a href="#signal">Signal</a>
@@ -1437,6 +1464,7 @@ h2 {
         <div class="actions" aria-label="Primary actions">
           <a class="button primary" href="https://substack.com/@ryzm" target="_blank" rel="noopener">Read the brief</a>
           <a class="button" href="mailto:contact@ryzm.xyz">Contact desk</a>
+          <a class="button" href="#picks" lang="ko">중요 속보 보기 &darr;</a>
         </div>
         <div class="hero-visual" aria-label="Market signal graphic">
           <span class="signal-orbit" aria-hidden="true"></span>
@@ -1519,6 +1547,65 @@ h2 {
     </section>
 
 
+    <!-- RYZM Picks: verified high-impact developments, refreshed daily; do not invent publication times. -->
+    <section class="section picks-section" id="picks" lang="ko" aria-labelledby="picks-title" data-picks-date="2026-10-29">
+      <div class="section-inner">
+        <div class="picks-heading">
+          <div>
+            <div class="label">RYZM Picks / Editor's selection</div>
+            <h2 id="picks-title">중요 속보</h2>
+            <p class="picks-intro">시장을 움직이는 핵심 소식만 짧고 명확하게.</p>
+          </div>
+          <div class="picks-update">
+            <p>마지막 확인 <time datetime="2026-10-29T18:09:00+09:00">2026.10.29 18:09 KST</time></p>
+            <p>매일 오전 9시 갱신 · 한국 시간 기준</p>
+            <a href="#news" class="news-source">일반 뉴스·주요 일정 보기 &darr;</a>
+          </div>
+        </div>
+        <ol class="picks-list" aria-label="확인된 주요 속보">
+          <li class="pick-item" id="pick-samsung-20261029">
+            <div class="pick-meta">
+              <span class="pick-topic">반도체 · 실적</span>
+              <span class="pick-status">실적 발표</span>
+              <time datetime="2026-10-29">발표 10.29 · 시각 미공개</time>
+            </div>
+            <article>
+              <h3>삼성전자, 3분기 영업이익 107.4조원 발표</h3>
+              <p>삼성전자는 3분기 연결 매출 195.3조원, 영업이익 107.4조원을 공시했습니다. 반도체(DS) 부문 영업이익은 106.5조원으로 집계됐습니다.</p>
+              <p class="pick-watch"><strong>체크 포인트</strong> 메모리 수요·공급 전망과 향후 투자 계획을 함께 확인하세요.</p>
+              <a class="news-source" href="https://news.samsung.com/global/samsung-electronics-announces-third-quarter-2026-results" target="_blank" rel="noopener noreferrer">삼성전자 공식 실적 발표 &nearr;</a>
+            </article>
+          </li>
+          <li class="pick-item" id="pick-fed-20261029">
+            <div class="pick-meta">
+              <span class="pick-topic">미국 · 통화정책</span>
+              <span class="pick-status">정책 결정</span>
+              <time datetime="2026-10-29T03:00:00+09:00">발표 10.29 03:00 KST</time>
+            </div>
+            <article>
+              <h3>연준, 기준금리 3.75~4.00% 동결…2명은 인상 주장</h3>
+              <p>연준은 10대 2 표결로 정책금리 목표 범위를 유지했습니다. 리사 쿡과 베스 해맥은 0.25%포인트 인상을 지지했으며, 성명은 높은 물가와 견조한 경기 흐름을 언급했습니다.</p>
+              <p class="pick-watch"><strong>체크 포인트</strong> 다음 물가 지표와 연준의 추가 정책 발언을 확인하세요.</p>
+              <a class="news-source" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" target="_blank" rel="noopener noreferrer">미 연방준비제도 FOMC 성명 &nearr;</a>
+            </article>
+          </li>
+          <li class="pick-item" id="pick-skhynix-20261028">
+            <div class="pick-meta">
+              <span class="pick-topic">반도체 · 잠정실적</span>
+              <span class="pick-status">잠정 공시</span>
+              <time datetime="2026-10-28T09:00:00+09:00">발표 10.28 09:00 KST</time>
+            </div>
+            <article>
+              <h3>SK하이닉스, 3분기 매출 104.6조원·영업이익 83.3조원</h3>
+              <p>SEC 제출 자료 기준 잠정 연결 매출은 전분기 대비 31.9%, 영업이익은 37.6% 증가했습니다. 외부감사가 완료되지 않은 잠정 수치로 최종 결과는 달라질 수 있습니다.</p>
+              <p class="pick-watch"><strong>체크 포인트</strong> 잠정 공시와 최종 재무제표를 구분해 확인하세요.</p>
+              <a class="news-source" href="https://www.sec.gov/Archives/edgar/data/2120882/000119312526434994/d162547d6k.htm" target="_blank" rel="noopener noreferrer">SK하이닉스 SEC Form 6-K &nearr;</a>
+            </article>
+          </li>
+        </ol>
+      </div>
+    </section>
+
     <!-- Daily news: replace this dated section with verified sources on each update. -->
     <section class="section news-section" id="news" aria-labelledby="news-title" data-news-date="2026-10-29">
       <div class="section-inner">
@@ -1528,41 +1615,17 @@ h2 {
             <h2 id="news-title">Latest market news.</h2>
           </div>
           <div>
-            <p class="news-updated">Updated <time datetime="2026-10-29T09:02:00+09:00">29 Oct 2026 / 09:02 KST</time></p>
-            <p class="section-copy">Source-linked reporting and upcoming events. Each item distinguishes published results from scheduled calls; market levels show the dated US close.</p>
+            <p class="news-updated">Updated <time datetime="2026-10-29T18:09:00+09:00">29 Oct 2026 / 18:09 KST</time></p>
+            <p class="section-copy">Market closes and upcoming events. Read the selected major developments in RYZM Picks above. Updated daily at 09:00 KST; closing levels are dated snapshots.</p>
           </div>
         </div>
         <ol class="news-list">
-          <li class="news-item">
-            <div class="news-meta"><span class="news-kind">Rates / Decision</span><time datetime="2026-10-28">Decision: 28 Oct 2026</time></div>
-            <article>
-              <h3>Fed holds rates at 3.75%–4.00% in a split vote</h3>
-              <p>The FOMC kept its policy-rate range unchanged by a 10–2 vote. Lisa Cook and Beth Hammack favored a quarter-point increase. The statement describes strong economic growth and elevated inflation, with further policy decisions depending on incoming information.</p>
-              <a class="news-source" href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" target="_blank" rel="noopener noreferrer">Federal Reserve / 28 October statement &nearr;</a>
-            </article>
-          </li>
           <li class="news-item">
             <div class="news-meta"><span class="news-kind">US / Market close</span><time datetime="2026-10-28">Close: 28 Oct 2026</time></div>
             <article>
               <h3>Wall Street closes slightly higher after the Fed decision</h3>
               <p>The S&amp;P 500 rose 0.3% to 7,743.98, the Nasdaq Composite gained 0.3% to 26,549.85, and the Dow added 0.2% to 52,475.10 at Wednesday’s close. These are closing levels for the US session on 28 October, not live quotes.</p>
               <a class="news-source" href="https://apnews.com/article/7864eac2e13db75f07758ed9c39ad96b" target="_blank" rel="noopener noreferrer">Associated Press / 28 October close &nearr;</a>
-            </article>
-          </li>
-          <li class="news-item">
-            <div class="news-meta"><span class="news-kind">Korea / Reported results</span><time datetime="2026-10-28">Filing: 28 Oct 2026</time></div>
-            <article>
-              <h3>SK hynix reports KRW 104.62 trillion in quarterly revenue</h3>
-              <p>Its SEC filing reports preliminary third-quarter consolidated revenue of KRW 104.615 trillion and operating profit of KRW 83.334 trillion. Revenue increased 31.9% from the previous quarter and operating profit rose 37.6%. The company states that preliminary figures may differ from final results.</p>
-              <a class="news-source" href="https://www.sec.gov/Archives/edgar/data/2120882/000119312526434994/d162547d6k.htm" target="_blank" rel="noopener noreferrer">SK hynix / SEC Form 6-K &nearr;</a>
-            </article>
-          </li>
-          <li class="news-item">
-            <div class="news-meta"><span class="news-kind">Korea / Upcoming call</span><time datetime="2026-10-29T10:00:00+09:00">29 Oct / 10:00 KST</time></div>
-            <article>
-              <h3>Samsung’s third-quarter earnings call is scheduled for this morning</h3>
-              <p>Samsung’s investor-relations calendar lists its 3Q26 earnings conference call for 29 October at 10:00 a.m. KST. The call is still ahead of this briefing’s update time; this item is an event notice rather than a summary of the call.</p>
-              <a class="news-source" href="https://www.samsung.com/global/ir/ir-events-presentations/events/" target="_blank" rel="noopener noreferrer">Samsung Electronics / official IR calendar &nearr;</a>
             </article>
           </li>
           <li class="news-item">
