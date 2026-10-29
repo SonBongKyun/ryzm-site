@@ -1739,24 +1739,26 @@ html[lang="ko"] .hero-copy, html[lang="ko"] .section-copy, html[lang="ko"] .card
 <script>
 (() => {
   const key = 'ryzm-language';
-  const buttons = Array.from(document.querySelectorAll('[data-language]'));
+  const buttons = Array.from(document.querySelectorAll('.language-switch button[data-language]'));
   const status = document.querySelector('.language-status');
   const widget = document.getElementById('market-widget');
   const market = {"symbols":[{"proName":"NASDAQ:NDX","title":"NASDAQ 100"},{"proName":"AMEX:QQQ","title":"Nasdaq ETF"},{"proName":"SP:SPX","title":"S&P 500"},{"proName":"AMEX:SPY","title":"S&P ETF"},{"proName":"DJ:DJI","title":"DOW"},{"proName":"AMEX:DIA","title":"Dow ETF"},{"proName":"BINANCE:BTCUSDT","title":"Bitcoin"},{"proName":"BINANCE:ETHUSDT","title":"Ethereum"},{"proName":"KRX:KOSPI","title":"KOSPI"},{"proName":"KRX:KOSDAQ","title":"KOSDAQ"},{"proName":"KRX:005930","title":"Samsung Elec"},{"proName":"KRX:000660","title":"SK Hynix"},{"proName":"NASDAQ:NVDA","title":"NVIDIA"},{"proName":"NASDAQ:TSLA","title":"Tesla"},{"proName":"NASDAQ:AAPL","title":"Apple"}],"showSymbolLogo":true,"isTransparent":true,"displayMode":"regular","colorTheme":"dark","locale":"en"};
   const koreanSymbols = {'NASDAQ 100':'나스닥 100','Nasdaq ETF':'나스닥 ETF','S&P 500':'S&P 500','S&P ETF':'S&P ETF','DOW':'다우','Dow ETF':'다우 ETF','Bitcoin':'비트코인','Ethereum':'이더리움','KOSPI':'코스피','KOSDAQ':'코스닥','Samsung Elec':'삼성전자','SK Hynix':'SK하이닉스','NVIDIA':'엔비디아','Tesla':'테슬라','Apple':'애플'};
   function mountMarket(language) {
-    if (!widget || widget.dataset.language === language) return;
+    if (!widget || widget.dataset.locale === language) return;
     const container = document.createElement('div');
     container.className = 'tradingview-widget-container__widget';
     const script = document.createElement('script');
     script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js';
     script.async = true;
     script.textContent = JSON.stringify({ ...market, locale: language === 'ko' ? 'kr' : 'en', symbols: market.symbols.map(symbol => ({ ...symbol, title: language === 'ko' ? koreanSymbols[symbol.title] || symbol.title : symbol.title })) });
-    widget.dataset.language = language;
+    widget.dataset.locale = language;
     widget.replaceChildren(container, script);
   }
   function applyLanguage(language, persist = false, announce = false) {
     if (language !== 'ko' && language !== 'en') return;
+    const navBottom = document.querySelector('.nav').getBoundingClientRect().bottom;
+    const readingPosition = announce && window.scrollY > 0 ? Array.from(document.querySelectorAll('main [data-en][data-ko]')).filter(element => !element.closest('.nav')).map(element => ({element, top: element.getBoundingClientRect().top})).filter(item => item.top >= navBottom && item.top < window.innerHeight).sort((a,b) => a.top - b.top)[0] : null;
     document.documentElement.lang = language;
     document.querySelectorAll('[data-en][data-ko]').forEach(element => { element.textContent = element.getAttribute('data-' + language); });
     ['aria-label', 'alt'].forEach(attribute => {
@@ -1772,6 +1774,7 @@ html[lang="ko"] .hero-copy, html[lang="ko"] .section-copy, html[lang="ko"] .card
     if (persist) { try { localStorage.setItem(key, language); } catch {} }
     if (announce && status) status.textContent = language === 'ko' ? '한국어로 변경했습니다.' : 'Language changed to English.';
     mountMarket(language);
+    if (readingPosition) window.scrollBy({top: readingPosition.element.getBoundingClientRect().top - readingPosition.top, behavior: 'instant'});
   }
   buttons.forEach(button => { button.addEventListener('click', () => applyLanguage(button.dataset.language, true, true)); });
   window.addEventListener('storage', event => { if (event.key === key) applyLanguage(event.newValue === 'en' ? 'en' : 'ko'); });
