@@ -1758,7 +1758,9 @@ html[lang="ko"] .hero-copy, html[lang="ko"] .section-copy, html[lang="ko"] .card
   function applyLanguage(language, persist = false, announce = false) {
     if (language !== 'ko' && language !== 'en') return;
     const navBottom = document.querySelector('.nav').getBoundingClientRect().bottom;
-    const readingPosition = announce && window.scrollY > 0 ? Array.from(document.querySelectorAll('main [data-en][data-ko]')).filter(element => !element.closest('.nav')).map(element => ({element, top: element.getBoundingClientRect().top})).filter(item => item.top >= navBottom && item.top < window.innerHeight).sort((a,b) => a.top - b.top)[0] : null;
+    const section = document.getElementById(location.hash.slice(1));
+    const sectionTop = section ? section.getBoundingClientRect().top : -1;
+    const readingPosition = !announce || window.scrollY <= 0 ? null : section && sectionTop >= 0 && sectionTop < window.innerHeight ? {element: section, top: sectionTop} : Array.from(document.querySelectorAll('main [data-en][data-ko]')).filter(element => !element.closest('.nav')).map(element => ({element, top: element.getBoundingClientRect().top})).filter(item => item.top >= navBottom && item.top < window.innerHeight).sort((a,b) => a.top - b.top)[0];
     document.documentElement.lang = language;
     document.querySelectorAll('[data-en][data-ko]').forEach(element => { element.textContent = element.getAttribute('data-' + language); });
     ['aria-label', 'alt'].forEach(attribute => {
@@ -1774,7 +1776,7 @@ html[lang="ko"] .hero-copy, html[lang="ko"] .section-copy, html[lang="ko"] .card
     if (persist) { try { localStorage.setItem(key, language); } catch {} }
     if (announce && status) status.textContent = language === 'ko' ? '한국어로 변경했습니다.' : 'Language changed to English.';
     mountMarket(language);
-    if (readingPosition) window.scrollBy({top: readingPosition.element.getBoundingClientRect().top - readingPosition.top, behavior: 'instant'});
+    if (readingPosition) requestAnimationFrame(() => window.scrollBy({top: readingPosition.element.getBoundingClientRect().top - readingPosition.top, behavior: 'instant'}));
   }
   buttons.forEach(button => { button.addEventListener('click', () => applyLanguage(button.dataset.language, true, true)); });
   window.addEventListener('storage', event => { if (event.key === key) applyLanguage(event.newValue === 'en' ? 'en' : 'ko'); });
