@@ -15,13 +15,26 @@
     <lastmod>2026-11-21</lastmod>
   </url>
   <url>
+    <loc>https://ryzm.app/subscribe/</loc>
+    <lastmod>2026-11-21</lastmod>
+  </url>
+  <url>
+    <loc>https://ryzm.app/rss.xml</loc>
+    <lastmod>2026-11-21</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
     <loc>https://ryzm.app/about/</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-11-21</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/notes/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/</loc>
+    <lastmod>2026-11-21</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/</loc>
