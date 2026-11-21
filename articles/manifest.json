@@ -34,5 +34,550 @@
   "fx-hedging-costs-korea",
   "sofr-vs-iorb-dollar-funding",
   "treasury-term-premium-explained"
+ ],
+ "items": [
+  {
+   "slug": "goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026",
+   "path": "/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/",
+   "title": "Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally | November 21, 2026",
+   "date": "2026-11-21T21:22:56+09:00",
+   "type": "Research Summary",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "Rates",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026",
+   "path": "/articles/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/",
+   "title": "Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027 | November 21, 2026",
+   "date": "2026-11-21T13:37:05+09:00",
+   "type": "Research Summary",
+   "category": "Funding",
+   "categories": [
+    "Funding",
+    "Rates",
+    "FX",
+    "Korea"
+   ],
+   "wp_categories": [
+    "FX",
+    "Funding & Liquidity",
+    "Korea Bridge",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-close-november-20-2026",
+   "path": "/articles/us-close-november-20-2026/",
+   "title": "US Close | November 20, 2026",
+   "date": "2026-11-21T06:51:08+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026",
+   "path": "/articles/ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026/",
+   "title": "RYZM Framework Note | How US rates and dollar funding reach Korea | November 20, 2026",
+   "date": "2026-11-20T20:20:02+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Rates",
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "wp_categories": [
+    "FX",
+    "Framework Note",
+    "Funding & Liquidity",
+    "Korea Bridge",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "korea-close-november-20-2026",
+   "path": "/articles/korea-close-november-20-2026/",
+   "title": "Korea Close | November 20, 2026",
+   "date": "2026-11-20T18:45:25+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "kospi-sell-side-sidecars-november-20-2026",
+   "path": "/articles/kospi-sell-side-sidecars-november-20-2026/",
+   "title": "Korea triggers sell-side sidecars as the KOSPI falls more than 5% | November 20, 2026",
+   "date": "2026-11-20T14:30:02+09:00",
+   "type": "Key Issue",
+   "category": "Korea",
+   "categories": [
+    "Korea"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Korea Bridge"
+   ]
+  },
+  {
+   "slug": "anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026",
+   "path": "/articles/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/",
+   "title": "Anthropic prices its IPO at $83.00 a share | November 19, 2026",
+   "date": "2026-11-19T20:24:25+09:00",
+   "type": "Key Issue",
+   "category": "Credit",
+   "categories": [
+    "Credit",
+    "Korea"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Korea Bridge"
+   ]
+  },
+  {
+   "slug": "the-boks-second-job-october-22-2026",
+   "path": "/articles/the-boks-second-job-october-22-2026/",
+   "title": "The BOK’s Second Job | October 22, 2026",
+   "date": "2026-10-22T20:23:40+09:00",
+   "type": "Analysis",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "Rates"
+   ],
+   "wp_categories": [
+    "Korea Bridge",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-19-2026",
+   "path": "/articles/us-market-close-briefing-october-19-2026/",
+   "title": "US Market Close Briefing | October 19, 2026",
+   "date": "2026-10-20T23:00:35+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "korea-close-october-20-2026",
+   "path": "/articles/korea-close-october-20-2026/",
+   "title": "Korea Close | October 20, 2026",
+   "date": "2026-10-20T22:59:48+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "two-policies-one-curve-october-20-2026",
+   "path": "/articles/two-policies-one-curve-october-20-2026/",
+   "title": "Two Policies, One Curve | October 20, 2026",
+   "date": "2026-10-20T22:57:23+09:00",
+   "type": "Analysis",
+   "category": "Rates",
+   "categories": [
+    "Rates",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "korea-close-october-19-2026",
+   "path": "/articles/korea-close-october-19-2026/",
+   "title": "Korea Close | October 19, 2026",
+   "date": "2026-10-19T22:52:39+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "the-borrowed-payout-october-19-2026",
+   "path": "/articles/the-borrowed-payout-october-19-2026/",
+   "title": "The Borrowed Payout | October 19, 2026",
+   "date": "2026-10-19T22:50:21+09:00",
+   "type": "Analysis",
+   "category": "Credit",
+   "categories": [
+    "Credit",
+    "Funding"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity"
+   ]
+  },
+  {
+   "slug": "the-markets-marginal-buyer-is-leveraged-october-18-2026",
+   "path": "/articles/the-markets-marginal-buyer-is-leveraged-october-18-2026/",
+   "title": "The Market’s Marginal Buyer Is Leveraged | October 18, 2026",
+   "date": "2026-10-18T22:48:12+09:00",
+   "type": "Analysis",
+   "category": "Credit",
+   "categories": [
+    "Credit",
+    "Rates",
+    "Funding"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "reserves-not-rates-october-17-2026",
+   "path": "/articles/reserves-not-rates-october-17-2026/",
+   "title": "Reserves, Not Rates | October 17, 2026",
+   "date": "2026-10-17T22:52:46+09:00",
+   "type": "Analysis",
+   "category": "Funding",
+   "categories": [
+    "Funding",
+    "Rates"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-16-2026",
+   "path": "/articles/us-market-close-briefing-october-16-2026/",
+   "title": "US Market Close Briefing | October 16, 2026",
+   "date": "2026-10-17T22:51:11+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "korea-market-close-briefing-october-16-2026",
+   "path": "/articles/korea-market-close-briefing-october-16-2026/",
+   "title": "Korea Market Close Briefing | October 16, 2026",
+   "date": "2026-10-16T22:53:40+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "two-mortgage-machines-one-rate-shock-october-16-2026",
+   "path": "/articles/two-mortgage-machines-one-rate-shock-october-16-2026/",
+   "title": "Two Mortgage Machines, One Rate Shock | October 16, 2026",
+   "date": "2026-10-16T22:50:31+09:00",
+   "type": "Analysis",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-15-2026",
+   "path": "/articles/us-market-close-briefing-october-15-2026/",
+   "title": "US Market Close Briefing | October 15, 2026",
+   "date": "2026-10-16T22:49:44+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "korea-market-close-briefing-october-15-2026",
+   "path": "/articles/korea-market-close-briefing-october-15-2026/",
+   "title": "Korea Market Close Briefing | October 15, 2026",
+   "date": "2026-10-15T22:52:34+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "the-long-ends-new-buyers-october-15-2026",
+   "path": "/articles/the-long-ends-new-buyers-october-15-2026/",
+   "title": "The Long End’s New Buyers | October 15, 2026",
+   "date": "2026-10-15T22:49:26+09:00",
+   "type": "Analysis",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-14-2026",
+   "path": "/articles/us-market-close-briefing-october-14-2026/",
+   "title": "US Market Close Briefing | October 14, 2026",
+   "date": "2026-10-15T22:47:52+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "korea-market-close-briefing-october-14-2026",
+   "path": "/articles/korea-market-close-briefing-october-14-2026/",
+   "title": "Korea Market Close Briefing | October 14, 2026",
+   "date": "2026-10-14T23:39:01+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "the-ai-bid-has-a-price-october-14-2026",
+   "path": "/articles/the-ai-bid-has-a-price-october-14-2026/",
+   "title": "The AI Bid Has a Price | October 14, 2026",
+   "date": "2026-10-14T23:35:45+09:00",
+   "type": "Analysis",
+   "category": "Funding",
+   "categories": [
+    "Funding",
+    "Rates"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-13-2026",
+   "path": "/articles/us-market-close-briefing-october-13-2026/",
+   "title": "US Market Close Briefing | October 13, 2026",
+   "date": "2026-10-14T23:34:09+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Korea Bridge",
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "the-258-billion-bill-bid-october-13-2026",
+   "path": "/articles/the-258-billion-bill-bid-october-13-2026/",
+   "title": "The $258 Billion Bill Bid | October 13, 2026",
+   "date": "2026-10-13T22:54:07+09:00",
+   "type": "Analysis",
+   "category": "Funding",
+   "categories": [
+    "Funding",
+    "Rates"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "korea-market-close-briefing-october-13-2026",
+   "path": "/articles/korea-market-close-briefing-october-13-2026/",
+   "title": "Korea Market Close Briefing | October 13, 2026",
+   "date": "2026-10-13T22:53:19+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "us-market-close-briefing-october-12-2026",
+   "path": "/articles/us-market-close-briefing-october-12-2026/",
+   "title": "US Market Close Briefing | October 12, 2026",
+   "date": "2026-10-13T22:49:46+09:00",
+   "type": "US Close",
+   "category": "Rates",
+   "categories": [
+    "Rates"
+   ],
+   "wp_categories": [
+    "Korea Bridge",
+    "Rates & Bonds",
+    "US Close"
+   ]
+  },
+  {
+   "slug": "korea-close-october-12-2026",
+   "path": "/articles/korea-close-october-12-2026/",
+   "title": "Korea Close | October 12, 2026",
+   "date": "2026-10-13T13:47:30+09:00",
+   "type": "Korea Close",
+   "category": "Korea",
+   "categories": [
+    "Korea",
+    "FX"
+   ],
+   "wp_categories": [
+    "FX",
+    "Korea Bridge",
+    "Korea Close"
+   ]
+  },
+  {
+   "slug": "who-warehouses-the-debt-october-12-2026",
+   "path": "/articles/who-warehouses-the-debt-october-12-2026/",
+   "title": "Who Warehouses the Debt | October 12, 2026",
+   "date": "2026-10-13T13:45:06+09:00",
+   "type": "Analysis",
+   "category": "Credit",
+   "categories": [
+    "Credit",
+    "Rates",
+    "Funding"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "fx-hedging-costs-korea",
+   "path": "/articles/fx-hedging-costs-korea/",
+   "title": "FX Hedging Costs: Why Dollar Funding Matters for Korea",
+   "date": "2026-10-11T18:46:46+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "wp_categories": [
+    "FX",
+    "Framework Note",
+    "Korea Bridge"
+   ]
+  },
+  {
+   "slug": "sofr-vs-iorb-dollar-funding",
+   "path": "/articles/sofr-vs-iorb-dollar-funding/",
+   "title": "SOFR vs IORB: Reading Dollar Funding Pressure",
+   "date": "2026-10-11T18:46:32+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Funding",
+    "FX"
+   ],
+   "wp_categories": [
+    "Framework Note",
+    "Funding & Liquidity"
+   ]
+  },
+  {
+   "slug": "treasury-term-premium-explained",
+   "path": "/articles/treasury-term-premium-explained/",
+   "title": "What Is the Treasury Term Premium? Reading a Bond Selloff",
+   "date": "2026-10-11T18:46:14+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Rates"
+   ],
+   "wp_categories": [
+    "Framework Note",
+    "Rates & Bonds"
+   ]
+  }
  ]
 }

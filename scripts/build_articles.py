@@ -17,6 +17,11 @@ What it does
   4. Rewrites links to those WordPress posts in index.html and llms.txt
      (including the JSON-LD block) so they point to the in-site pages.
   5. Regenerates sitemap.xml and the "## Articles" section of llms.txt.
+  6. Assigns each article a research category (see CATEGORY RULES below), writes
+     data-cat / data-search attributes for the /articles/ search and filter, adds
+     2-3 "Related articles" to every article page, and stores the categories in
+     articles/manifest.json ("items").
+  7. Keeps the home page Breaking cards and Feed cards newest-first (by KST time).
 """
 import html
 import json
@@ -105,6 +110,88 @@ def type_label(p):
     if "Key Issues" in cats:
         return "Key Issue"
     return "Analysis"
+
+
+# ---------------------------------------------------------------- categories
+# CATEGORY RULES (deterministic; same input -> same output)
+# Pills on /articles/: All, Rates, Funding, FX, Korea, Credit, Frameworks.
+# A pill is dropped when no article is in it.
+#
+# An article can sit in several categories (data-cat="Rates Frameworks"); the
+# filter matches any of them. The first one ("primary") is the label shown on
+# the list and drives "Related articles".
+#
+# 1. Membership. An article is in a category when ANY of these match:
+#    Frameworks  WordPress category "Framework Note"
+#    Korea       WordPress category "Korea Close"; or "Korea Bridge" unless the post
+#                is a "US Close"; or a title keyword: Korea, KOSPI, KOSDAQ, BOK, won, KRW, KTB
+#    Funding     WordPress category "Funding & Liquidity"; or title keyword: SOFR, IORB,
+#                repo, reserves, funding, liquidity, bill(s), collateral
+#    FX          WordPress category "FX"; or title keyword: FX, dollar, currency, hedging
+#    Credit      WordPress category "Credit"; or title keyword: credit, spread(s), default,
+#                high yield, private credit, IPO, debt, leverage/leveraged, payout
+#    Rates       WordPress category "Rates & Bonds" or "US Close"; or title keyword:
+#                Treasury, yield(s), curve, term premium, bond(s), long end, rate(s),
+#                Fed, FOMC, mortgage
+# 2. Primary category (the label):
+#    a. "Frameworks" for Framework Notes;
+#    b. else the first category whose TITLE keyword matched, checked in the order
+#       Korea, Funding, Credit, FX, Rates;
+#    c. else, by post type: Korea Close -> Korea, US Close -> Rates;
+#    d. else the first WordPress-category match in the order Funding, FX, Credit, Rates, Korea;
+#    e. else "Rates".
+CATEGORY_ORDER = ["Rates", "Funding", "FX", "Korea", "Credit", "Frameworks"]
+TITLE_KEYWORDS = [
+    ("Korea", r"\b(korea|korean|kospi|kosdaq|bok|won|krw|ktb)\b|\bbok[\u2019']s\b"),
+    ("Funding", r"\b(sofr|iorb|repo|reserves|funding|liquidity|bills?|collateral)\b"),
+    ("Credit", r"\b(credit|spreads?|default|high[- ]yield|ipo|debt|leverag\w*|payout)\b"),
+    ("FX", r"\b(fx|dollar|currency|hedging)\b"),
+    ("Rates", r"\b(treasury|yields?|curve|term premium|bonds?|long end|rates?|fed|fomc|mortgage)\b"),
+]
+WP_CATEGORY_MAP = [("Funding", {"Funding & Liquidity"}), ("FX", {"FX"}), ("Credit", {"Credit"}),
+                   ("Rates", {"Rates & Bonds", "US Close"}), ("Korea", {"Korea Close"})]
+
+
+def categorize(title, wp_cats):
+    """Return (primary, [categories in CATEGORY_ORDER]) for an article. See CATEGORY RULES."""
+    t = title.lower().replace("\u2019", "'")
+    wp = set(wp_cats or ())
+    title_hits = [c for c, rx in TITLE_KEYWORDS if re.search(rx, t)]
+    wp_hits = [c for c, names in WP_CATEGORY_MAP if wp & names]
+    if "Korea Bridge" in wp and "US Close" not in wp:
+        wp_hits.append("Korea")
+    cats = set(title_hits) | set(wp_hits)
+    if "Framework Note" in wp:
+        cats.add("Frameworks")
+        primary = "Frameworks"
+    elif title_hits:
+        primary = title_hits[0]
+    elif "Korea Close" in wp:
+        primary = "Korea"
+    elif "US Close" in wp:
+        primary = "Rates"
+    elif wp_hits:
+        primary = wp_hits[0]
+    else:
+        primary = "Rates"
+    cats.add(primary)
+    ordered = [primary] + [c for c in CATEGORY_ORDER if c in cats and c != primary]
+    return primary, ordered
+
+
+def apply_categories(a):
+    a["category"], a["categories"] = categorize(a["title"], a.get("wp_cats") or [])
+    return a
+
+
+def related_for(a, arts, n=3):
+    """Same primary category first, then most recent; never the article itself."""
+    others = [b for b in arts if b["slug"] != a["slug"]]
+    others.sort(key=lambda b: b["date"], reverse=True)
+    same = [b for b in others if b["category"] == a["category"]]
+    shared = [b for b in others if b not in same and set(b["categories"]) & set(a["categories"])]
+    rest = [b for b in others if b not in same and b not in shared]
+    return (same + shared + rest)[:n]
 
 
 def norm_url(u):
@@ -597,6 +684,58 @@ CSS = """
     .item .meta { flex-direction: row; align-items: center; padding-top: 0; }
     .item h2 { font-size: 20px; }
   }
+
+  /* ---------- library search + filter ---------- */
+  .lib-tools { max-width: 920px; margin: -12px auto 28px; display: flex; flex-direction: column; gap: 14px; }
+  .lib-tools[hidden] { display: none; }
+  .lib-search { position: relative; }
+  .lib-search input {
+    width: 100%; min-height: 46px; padding: 11px 16px 11px 42px; font: inherit; font-size: 16px;
+    color: var(--text); background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 999px; outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .lib-search input::placeholder { color: var(--text-muted); }
+  .lib-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .lib-search svg { position: absolute; left: 16px; top: 50%; width: 16px; height: 16px; margin-top: -8px; color: var(--text-muted); pointer-events: none; }
+  .lib-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 15px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .pill:hover { border-color: var(--border-strong); color: var(--text); }
+  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
+  .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
+  .cat-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .meta a.cat-label:hover { color: var(--accent-ink); }
+
+  /* ---------- related articles ---------- */
+  .related { max-width: 720px; margin: 64px auto 0; }
+  .related .section-title { margin-bottom: 8px; }
+  .rel-item { display: block; padding: 18px 2px; border-bottom: 1px solid var(--border); }
+  .rel-item .meta { font-size: 12px; margin-bottom: 6px; }
+  .rel-item h3 { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--text); transition: color 0.15s; }
+  .rel-item:hover h3 { color: var(--accent-ink); }
+  .related + .origin { margin-top: 40px; }
+
+  /* ---------- touch targets (phones/tablets) ---------- */
+  @media (max-width: 900px) {
+    nav a { display: inline-flex; align-items: center; min-height: 40px; }
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+      mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+    .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
+    .logo, a.logo { min-height: 40px; }
+    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .origin { align-items: center; }
+    .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
+  }
 """
 
 HEADER = """<header>
@@ -672,8 +811,31 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 ORG = {"@type": "Organization", "@id": SITE + "/#org", "name": "RYZM", "url": SITE + "/"}
 
 
+def fix_wp_link_text(body):
+    """In-site links whose visible text is still the old WordPress URL show the ryzm.app URL instead."""
+    return re.sub(r'(<a href="(/[^"]*)">)https?://%s/[^<]*(</a>)' % re.escape(WP_SITE),
+                  lambda m: m.group(1) + SITE + m.group(2) + m.group(3), body)
+
+
+def render_related(rel):
+    if not rel:
+        return ""
+    rows = []
+    for b in rel:
+        rows.append("""    <a class="rel-item" href="{path}">
+      <div class="meta"><span class="cat-label">{cat}</span><span class="dot"></span><time datetime="{iso}">{date}</time></div>
+      <h3>{title}</h3>
+    </a>""".format(path=b["path"], cat=esc(b["category"]), iso=b["date"], date=fmt_date(b["date"]),
+                   title=esc(b["title"])))
+    return """
+  <aside class="related" aria-label="Related articles">
+    <div class="section-title">Related articles</div>
+%s
+  </aside>""" % "\n".join(rows)
+
+
 def render_article(a, back_href="/articles/", back_short="All articles", back_long="Back to Articles",
-                   active="articles"):
+                   active="articles", related=None):
     url = SITE + a["path"]
     ld = jsonld({
         "@context": "https://schema.org",
@@ -700,14 +862,14 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
   <a class="back" href="{back_href}">&larr; {back_short}</a>
   <article>
     <div class="article-head">
-      <div class="meta"><span class="tag">{type}</span><time datetime="{date}">{date_h}</time><span class="dot"></span><span>{mins} min read</span></div>
+      <div class="meta"><span class="tag">{type}</span>{cat}<time datetime="{date}">{date_h}</time><span class="dot"></span><span>{mins} min read</span></div>
       <h1 class="title">{title}</h1>
     </div>
     <div class="prose">
 {content}
     </div>
   </article>
-  </div>
+  </div>{related}
   <div class="origin">
     <a href="{back_href}">&larr; {back_long}</a>
     <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
@@ -715,7 +877,10 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
 </main>""".format(date=a["date"], date_h=fmt_date(a["date"]), type=esc(a["type"]),
                   mins=max(1, round(words / 230)), back_href=back_href, back_short=back_short,
                   back_long=back_long,
-                  title=esc(a["title"]), content=a["html"], wp=esc(a["wp_url"]))
+                  title=esc(a["title"]), content=fix_wp_link_text(a["html"]), wp=esc(a["wp_url"]),
+                  cat=('<a class="cat-label" href="/articles/?cat=%s">%s</a>' % (esc(a["category"]), esc(a["category"]))
+                       if a.get("category") else ""),
+                  related=render_related(related))
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
 
 
@@ -790,6 +955,43 @@ def render_about(pg, url_map):
     return page("%s · RYZM" % title, desc, url, "website", "", ld, body, "")
 
 
+# Client-side search + category filter for /articles/. Vanilla JS, no libraries.
+# Without JS the tools stay hidden and every article is listed.
+LIBRARY_JS = r"""(function(){
+  var tools=document.getElementById('lib-tools'),q=document.getElementById('lib-q');
+  if(!tools||!q||!document.querySelectorAll)return;
+  var list=document.getElementById('lib-list'),empty=document.getElementById('lib-empty'),count=document.getElementById('lib-count');
+  var pills=[].slice.call(tools.querySelectorAll('.pill')),kids=[].slice.call(list.children);
+  var total=list.querySelectorAll('.item').length,cat='All';
+  function norm(v){return (v||'').toLowerCase().replace(/\u2019/g,"'").replace(/\s+/g,' ').trim();}
+  function apply(push){
+    var words=norm(q.value).split(' ').filter(Boolean),shown=0,month=null,monthShown=0;
+    function closeMonth(){if(month)month.hidden=monthShown===0;}
+    kids.forEach(function(el){
+      if(el.classList.contains('month')){closeMonth();month=el;monthShown=0;return;}
+      var cats=(el.getAttribute('data-cat')||'').split(' '),hay=el.getAttribute('data-search')||'';
+      var ok=(cat==='All'||cats.indexOf(cat)!==-1)&&words.every(function(w){return hay.indexOf(w)!==-1;});
+      el.hidden=!ok;if(ok){shown++;monthShown++;}
+    });
+    closeMonth();
+    empty.hidden=shown!==0;
+    count.textContent=(shown===total?total+' articles':shown+' of '+total+' articles');
+    pills.forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-cat')===cat?'true':'false');});
+    if(push&&window.history&&history.replaceState){
+      var ps=[];if(cat!=='All')ps.push('cat='+encodeURIComponent(cat));if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));
+      history.replaceState(null,'',location.pathname+(ps.length?'?'+ps.join('&'):''));
+    }
+  }
+  var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
+  if(params.cat&&pills.some(function(p){return p.getAttribute('data-cat')===params.cat;}))cat=params.cat;
+  if(params.q)q.value=params.q;
+  pills.forEach(function(p){p.addEventListener('click',function(){cat=p.getAttribute('data-cat');apply(true);});});
+  q.addEventListener('input',function(){apply(true);});
+  tools.hidden=false;
+  apply(false);
+})();"""
+
+
 def render_index(arts):
     url = SITE + "/articles/"
     desc = ("RYZM articles: research summaries, framework notes, and Korea and US market closes "
@@ -800,13 +1002,20 @@ def render_index(arts):
         if m != month:
             rows.append('    <div class="month">%s</div>' % m)
             month = m
-        rows.append("""    <a class="item" href="{path}">
-      <div class="meta"><time datetime="{iso}">{date}</time><span class="tag">{type}</span></div>
+        search = " ".join([a["title"], a["desc"], a["type"]] + a["categories"]).lower()
+        search = re.sub(r"\s+", " ", search.replace("\u2019", "'"))
+        rows.append("""    <a class="item" href="{path}" data-cat="{cats}" data-search="{search}">
+      <div class="meta"><time datetime="{iso}">{date}</time><span class="cat-label">{cat}</span><span class="tag">{type}</span></div>
       <h2>{title}</h2>
       <p>{desc}</p>
     </a>""".format(path=a["path"], iso=a["date"], date=fmt_date(a["date"]), type=esc(a["type"]),
+                   cats=esc(" ".join(a["categories"])), search=esc(search), cat=esc(a["category"]),
                    title=esc(a["title"]), desc=esc(a["desc"])))
     items = "\n".join(rows)
+    counts = {c: sum(1 for a in arts if c in a["categories"]) for c in CATEGORY_ORDER}
+    pills = ['<button type="button" class="pill" data-cat="All" aria-pressed="true">All <span class="n">%d</span></button>' % len(arts)]
+    pills += ['<button type="button" class="pill" data-cat="%s" aria-pressed="false">%s <span class="n">%d</span></button>'
+              % (c, c, counts[c]) for c in CATEGORY_ORDER if counts[c]]
     ld = jsonld({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
@@ -830,12 +1039,25 @@ def render_index(arts):
     <div class="section-title">Library</div>
     <h1 class="page-title">Articles</h1>
     <p class="page-lead">Research summaries, framework notes, and market closes. Full text on RYZM.</p>
-    <div class="page-count">%d articles</div>
+    <div class="page-count" id="lib-count" aria-live="polite">%d articles</div>
   </div>
-  <div class="list">
+  <div class="lib-tools" id="lib-tools" hidden>
+    <div class="lib-search" role="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input type="search" id="lib-q" placeholder="Search titles and summaries" aria-label="Search articles" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="lib-pills" role="group" aria-label="Filter by category">
+      %s
+    </div>
+  </div>
+  <div class="list" id="lib-list">
 %s
   </div>
-</main>""" % (len(arts), items)
+  <p class="lib-empty" id="lib-empty" hidden>No articles match. Try another word or category.</p>
+</main>
+<script>
+%s
+</script>""" % (len(arts), "\n      ".join(pills), items, LIBRARY_JS)
     return page("Articles · RYZM", desc, url, "website", "", ld, body)
 
 
@@ -864,6 +1086,53 @@ def patch_links(text, url_map, is_html):
     return re.sub(r"https?://%s/[^\s\"')<>\]]+" % re.escape(WP_SITE), wp_to_site, text)
 
 
+KST_TIME = re.compile(r"([A-Z][a-z]{2}) (\d{1,2}), (\d{1,2}):(\d{2}) KST")
+
+
+def _kst_key(block, now):
+    """Sort key from the first 'Mon D, HH:MM KST' in a card. Year is inferred (cards are recent)."""
+    m = KST_TIME.search(block)
+    if not m:
+        return datetime.min
+    mon = datetime.strptime(m.group(1), "%b").month
+    year = now.year - 1 if mon > now.month + 1 else now.year
+    return datetime(year, mon, int(m.group(2)), int(m.group(3)), int(m.group(4)))
+
+
+def sort_home_cards(path=None):
+    """Keep Breaking cards (<li> in .breaking-list) and Feed cards (<article class="card">)
+    newest-first by their KST time. Stable for equal times. Rewrites index.html only if changed."""
+    path = path or os.path.join(ROOT, "index.html")
+    with open(path, encoding="utf-8") as f:
+        s = f.read()
+    now = datetime.now()
+
+    def sort_block(m, item_rx):
+        head, inner, tail = m.group(1), m.group(2), m.group(3)
+        rx = re.compile(item_rx, re.S)
+        items = rx.findall(inner)
+        if len(items) < 2:
+            return m.group(0)
+        # split with a capturing group gives [lead, item, sep, item, sep, ..., item, trail]
+        seps = rx.split(inner)
+        lead, trail = seps[0], seps[-1]
+        joiners = seps[2:-1:2]
+        joiner = joiners[0] if joiners else "\n"
+        ordered = sorted(items, key=lambda b: _kst_key(b, now), reverse=True)
+        return head + lead + joiner.join(ordered) + trail + tail
+
+    li_rx = r"(<li>.*?</li>)"
+    s2 = re.sub(r'(<ul class="breaking-list">)(.*?)(</ul>)',
+                lambda m: sort_block(m, li_rx), s, count=1, flags=re.S)
+    card_rx = r'(<article class="card"[^>]*>.*?</article>)'
+    s2 = re.sub(r'(<div class="feed">)(.*?)(\n      </div>\n    </div>)',
+                lambda m: sort_block(m, card_rx), s2, count=1, flags=re.S)
+    if s2 != s:
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(s2)
+    return s2 != s
+
+
 def update_index_html(url_map):
     path = os.path.join(ROOT, "index.html")
     with open(path, encoding="utf-8") as f:
@@ -877,6 +1146,7 @@ def update_index_html(url_map):
     if s2 != s:
         with open(path, "w", encoding="utf-8") as f:
             f.write(s2)
+    sort_home_cards(path)
 
 
 def update_llms(arts, url_map):
@@ -963,16 +1233,34 @@ def load_existing(slug, base=OUT):
     }
 
 
+def write_manifest(arts):
+    """articles/manifest.json: "slugs" (kept for older tools) plus per-article "items" with categories."""
+    items = [{"slug": a["slug"], "path": a["path"], "title": a["title"], "date": a["date"],
+              "type": a["type"], "category": a["category"], "categories": a["categories"],
+              "wp_categories": a.get("wp_cats") or []} for a in arts]
+    with open(MANIFEST, "w", encoding="utf-8") as f:
+        json.dump({"source": API, "slugs": [a["slug"] for a in arts], "items": items},
+                  f, indent=1, ensure_ascii=False)
+        f.write("\n")
+
+
 def retemplate():
     """Re-render existing article pages with the current template, without fetching WordPress."""
     with open(MANIFEST, encoding="utf-8") as f:
-        slugs = json.load(f).get("slugs", [])
+        man = json.load(f)
+    slugs = man.get("slugs", [])
+    known = {it["slug"]: it for it in man.get("items", [])}
     arts = [load_existing(sl) for sl in slugs]
     for a in arts:
+        a["wp_cats"] = known.get(a["slug"], {}).get("wp_categories") or []
+        apply_categories(a)
+    for a in arts:
         with open(os.path.join(OUT, a["slug"], "index.html"), "w", encoding="utf-8") as f:
-            f.write(render_article(a))
+            f.write(render_article(a, related=related_for(a, arts)))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
+    write_manifest(arts)
+    sort_home_cards()
     briefs = []
     if os.path.exists(NOTES_MANIFEST):
         with open(NOTES_MANIFEST, encoding="utf-8") as f:
@@ -1002,8 +1290,11 @@ def main():
             "title": plain(p["title"]), "date": p["date"], "modified": p["modified"],
             "wp_url": p["URL"], "type": type_label(p), "desc": description(p),
             "tags": [html.unescape(t) for t in (p.get("tags") or {})],
+            "wp_cats": sorted(cats_of(p)),
             "html": sanitize(p["content"], url_map),
         })
+    for a in arts:
+        apply_categories(a)
 
     os.makedirs(OUT, exist_ok=True)
     old = []
@@ -1019,12 +1310,10 @@ def main():
         d = os.path.join(OUT, a["slug"])
         os.makedirs(d, exist_ok=True)
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-            f.write(render_article(a))
+            f.write(render_article(a, related=related_for(a, arts)))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
-    with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump({"source": API, "slugs": new}, f, indent=1)
-        f.write("\n")
+    write_manifest(arts)
 
     briefs = [{
         "slug": p["slug"], "path": "/notes/%s/" % p["slug"],

@@ -419,6 +419,58 @@
     .item .meta { flex-direction: row; align-items: center; padding-top: 0; }
     .item h2 { font-size: 20px; }
   }
+
+  /* ---------- library search + filter ---------- */
+  .lib-tools { max-width: 920px; margin: -12px auto 28px; display: flex; flex-direction: column; gap: 14px; }
+  .lib-tools[hidden] { display: none; }
+  .lib-search { position: relative; }
+  .lib-search input {
+    width: 100%; min-height: 46px; padding: 11px 16px 11px 42px; font: inherit; font-size: 16px;
+    color: var(--text); background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 999px; outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .lib-search input::placeholder { color: var(--text-muted); }
+  .lib-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .lib-search svg { position: absolute; left: 16px; top: 50%; width: 16px; height: 16px; margin-top: -8px; color: var(--text-muted); pointer-events: none; }
+  .lib-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 15px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .pill:hover { border-color: var(--border-strong); color: var(--text); }
+  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
+  .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
+  .cat-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .meta a.cat-label:hover { color: var(--accent-ink); }
+
+  /* ---------- related articles ---------- */
+  .related { max-width: 720px; margin: 64px auto 0; }
+  .related .section-title { margin-bottom: 8px; }
+  .rel-item { display: block; padding: 18px 2px; border-bottom: 1px solid var(--border); }
+  .rel-item .meta { font-size: 12px; margin-bottom: 6px; }
+  .rel-item h3 { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--text); transition: color 0.15s; }
+  .rel-item:hover h3 { color: var(--accent-ink); }
+  .related + .origin { margin-top: 40px; }
+
+  /* ---------- touch targets (phones/tablets) ---------- */
+  @media (max-width: 900px) {
+    nav a { display: inline-flex; align-items: center; min-height: 40px; }
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+      mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+    .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
+    .logo, a.logo { min-height: 40px; }
+    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .origin { align-items: center; }
+    .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
+  }
 </style>
 </head>
 <body>
@@ -443,7 +495,7 @@
   <a class="back" href="/articles/">&larr; All articles</a>
   <article>
     <div class="article-head">
-      <div class="meta"><span class="tag">Korea Close</span><time datetime="2026-10-20T22:59:48+09:00">Oct 20, 2026</time><span class="dot"></span><span>1 min read</span></div>
+      <div class="meta"><span class="tag">Korea Close</span><a class="cat-label" href="/articles/?cat=Korea">Korea</a><time datetime="2026-10-20T22:59:48+09:00">Oct 20, 2026</time><span class="dot"></span><span>1 min read</span></div>
       <h1 class="title">Korea Close | October 20, 2026</h1>
     </div>
     <div class="prose">
@@ -458,6 +510,21 @@
     </div>
   </article>
   </div>
+  <aside class="related" aria-label="Related articles">
+    <div class="section-title">Related articles</div>
+    <a class="rel-item" href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/">
+      <div class="meta"><span class="cat-label">Korea</span><span class="dot"></span><time datetime="2026-11-21T21:22:56+09:00">Nov 21, 2026</time></div>
+      <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally | November 21, 2026</h3>
+    </a>
+    <a class="rel-item" href="/articles/korea-close-november-20-2026/">
+      <div class="meta"><span class="cat-label">Korea</span><span class="dot"></span><time datetime="2026-11-20T18:45:25+09:00">Nov 20, 2026</time></div>
+      <h3>Korea Close | November 20, 2026</h3>
+    </a>
+    <a class="rel-item" href="/articles/kospi-sell-side-sidecars-november-20-2026/">
+      <div class="meta"><span class="cat-label">Korea</span><span class="dot"></span><time datetime="2026-11-20T14:30:02+09:00">Nov 20, 2026</time></div>
+      <h3>Korea triggers sell-side sidecars as the KOSPI falls more than 5% | November 20, 2026</h3>
+    </a>
+  </aside>
   <div class="origin">
     <a href="/articles/">&larr; Back to Articles</a>
     <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/10/20/korea-close-october-20-2026/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>

@@ -173,6 +173,8 @@
     font-feature-settings: "cv11", "ss01";
     letter-spacing: -0.006em;
   }
+  html { overflow-x: hidden; }
+  @supports (overflow: clip) { body { overflow-x: clip; } }
   a { color: inherit; text-decoration: none; }
   button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
@@ -340,8 +342,16 @@
       scrollbar-width: none;
     }
     nav::-webkit-scrollbar { display: none; }
-    nav a { padding: 6px 12px; }
-    .header-cta { padding: 7px 13px; font-size: 12.5px; }
+    nav a { padding: 6px 12px; display: inline-flex; align-items: center; min-height: 40px; }
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+      mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+    .header-cta { padding: 7px 13px; font-size: 12.5px; display: inline-flex; align-items: center; min-height: 40px; }
+    .logo, a.logo { min-height: 40px; }
+    .footer-links a, .all-link { display: inline-flex; align-items: center; min-height: 40px; }
+    .filter-btn { min-height: 40px; }
+    .card .source a { display: inline-block; padding: 12px 0; margin: -12px 0; }
     footer { padding: 32px 20px; }
   }
   @media (prefers-reduced-motion: reduce) {
@@ -606,13 +616,14 @@
     border-bottom: 1px solid var(--border);
     background: var(--surface-2);
   }
-  .calendar-item { display: grid; grid-template-columns: 64px 1fr 10px; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; color: var(--text-muted); }
+  .calendar-item { display: grid; grid-template-columns: 74px 1fr 10px; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; align-items: center; color: var(--text-muted); }
   .calendar-item:last-child { border-bottom: none; }
   .cal-time { color: var(--text-2); font-variant-numeric: tabular-nums; font-size: 12.5px; font-weight: 600; line-height: 1.3; }
   .cal-event strong { display: block; font-weight: 600; font-size: 14px; margin-bottom: 2px; color: var(--text); }
   .impact { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
   .impact.high { background: var(--red); box-shadow: 0 0 0 3px color-mix(in srgb, var(--red) 18%, transparent); }
   .impact.mid { background: var(--amber); }
+  .cal-note { margin-top: 10px; font-size: 11.5px; color: var(--text-muted); letter-spacing: 0.01em; }
 
   /* articles (home) */
   #articles { margin-top: 80px !important; }
@@ -708,7 +719,7 @@
     .intro-actions { margin-top: 28px; }
     .scroll-hint { margin-top: 36px; }
     main { padding: 0 16px 24px; }
-    .layout { grid-template-columns: 1fr; gap: 56px; }
+    .layout { grid-template-columns: minmax(0, 1fr); gap: 56px; }
     #calendar { position: static; }
     .breaking-list { grid-template-columns: 1fr; gap: 12px; }
     #breaking { margin-bottom: 48px; }
@@ -726,7 +737,7 @@
     #notes .note-item { grid-template-columns: 1fr; grid-template-areas: "meta" "title" "desc"; padding: 18px 2px; }
     #notes .note-item .meta { padding-top: 0; }
     .breaking-list a { font-size: 18px; }
-    .feed-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; }
+    .feed-filters { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-right: -16px; padding-right: 16px; max-width: calc(100% + 16px); }
     .feed-filters::-webkit-scrollbar { display: none; }
     .filter-btn { flex: none; }
   }
@@ -778,9 +789,9 @@
   <div id="breaking" class="tab-section">
     <div class="section-title">Breaking</div>
     <ul class="breaking-list">
-      <li><span class="b-time">Nov 21, 02:18 KST</span><span class="tag high">Rates</span><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Fed's Cook says inflation is well above target and dissented in favor of another hike</a><span class="b-src">Federal Reserve</span></li>
-      <li><span class="b-time">Nov 21, 04:16 KST</span><span class="tag green">Korea</span><a href="https://www.reuters.com/5f374b32b07b/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/" target="_blank" rel="noopener noreferrer">SEC is examining potential accounting issues at Nvidia, Reuters sources say</a><span class="b-src">Reuters</span></li>
       <li><span class="b-time">Nov 21, 06:23 KST</span><span class="tag blue">Funding</span><a href="https://www.oracle.com/news/announcement/oracle-statement-2026-11-20/" target="_blank" rel="noopener noreferrer">Oracle says its OpenAI contract is fully funded and targets more than $30 billion of free cash flow in FY2029</a><span class="b-src">Oracle</span></li>
+      <li><span class="b-time">Nov 21, 04:16 KST</span><span class="tag green">Korea</span><a href="https://www.reuters.com/5f374b32b07b/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/" target="_blank" rel="noopener noreferrer">SEC is examining potential accounting issues at Nvidia, Reuters sources say</a><span class="b-src">Reuters</span></li>
+      <li><span class="b-time">Nov 21, 02:18 KST</span><span class="tag high">Rates</span><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Fed's Cook says inflation is well above target and dissented in favor of another hike</a><span class="b-src">Federal Reserve</span></li>
     </ul>
   </div>
 
@@ -877,31 +888,42 @@
       <div class="calendar-card">
         <div class="cal-header">Upcoming</div>
         <div class="calendar-item">
-          <div class="cal-time">Nov 21<br>Today</div>
-          <div class="cal-event"><strong>Korea Export (prelim)</strong>10-day growth</div>
+          <div class="cal-time">Nov 23<br>09:00 KST</div>
+          <div class="cal-event"><strong>Korea exports, Nov 1&ndash;20</strong>Korea Customs Service, 20-day prelim</div>
           <div class="impact high"></div>
         </div>
         <div class="calendar-item">
-          <div class="cal-time">Nov 22</div>
-          <div class="cal-event"><strong>US PMI Flash</strong>New orders focus</div>
+          <div class="cal-time">Nov 23<br>23:45 KST</div>
+          <div class="cal-event"><strong>US flash PMI, November</strong>S&amp;P Global, manufacturing and services</div>
           <div class="impact mid"></div>
         </div>
         <div class="calendar-item">
-          <div class="cal-time">Nov 26</div>
-          <div class="cal-event"><strong>FOMC Minutes</strong>Real rate path</div>
+          <div class="cal-time">Nov 25<br>22:30 KST</div>
+          <div class="cal-event"><strong>US PCE and Q3 GDP (2nd est.)</strong>BEA, October income and outlays</div>
           <div class="impact high"></div>
         </div>
         <div class="calendar-item">
-          <div class="cal-time">Nov 28</div>
-          <div class="cal-event"><strong>BOJ Summary</strong>YCC tone</div>
-          <div class="impact mid"></div>
+          <div class="cal-time">Nov 26<br>Thu</div>
+          <div class="cal-event"><strong>BOK rate decision</strong>Monetary Policy Board meeting</div>
+          <div class="impact high"></div>
         </div>
         <div class="calendar-item">
-          <div class="cal-time">Dec 2</div>
-          <div class="cal-event"><strong>Korea CPI</strong>Services component</div>
+          <div class="cal-time">Dec 2<br>08:00 KST</div>
+          <div class="cal-event"><strong>Korea CPI, November</strong>Ministry of Data and Statistics</div>
+          <div class="impact high"></div>
+        </div>
+        <div class="calendar-item">
+          <div class="cal-time">Dec 4<br>22:30 KST</div>
+          <div class="cal-event"><strong>US jobs report, November</strong>BLS Employment Situation</div>
+          <div class="impact high"></div>
+        </div>
+        <div class="calendar-item">
+          <div class="cal-time">Dec 10<br>04:00 KST</div>
+          <div class="cal-event"><strong>FOMC decision</strong>Dec 8&ndash;9 meeting, with projections</div>
           <div class="impact high"></div>
         </div>
       </div>
+      <p class="cal-note">Sources: official release calendars &middot; times in KST</p>
     </aside>
   </div>
 
