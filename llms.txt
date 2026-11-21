@@ -1,0 +1,30 @@
+# RYZM
+
+> RYZM is an English-language market framework site. It tracks rates, funding, FX, and credit, with Korea as the bridge between US liquidity and the global semiconductor cycle. RYZM publishes frameworks and sourced notes, not forecasts or trading signals.
+
+- Home: https://ryzm.app/
+- Long-form articles and notes: https://ryzm9.wordpress.com/
+- Updated daily (Feed, Breaking, Articles, Notes). Every number links to its primary source.
+
+## Active frameworks
+
+- **Cash is a position:** Optionality has value. Forced binaries miss the third choice. Sitting is not losing when the risk premium is mispriced.
+- **Liquidity plumbing:** RRP, TGA, QT, and reserves move before narrative. Track the mechanical drain.
+- **Korea as canary:** Energy import dependent. Semiconductor cycle. Export data leads global industrial activity.
+- **Credit leads equities:** Spreads and issuance change before multiples. When credit disagrees with the tape, credit is usually earlier.
+
+## Articles
+
+- [Goldman's Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally](https://ryzm9.wordpress.com/2026/11/21/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/) (Nov 21, 2026): A summary of Goldman Sachs' Korea equity weekly. The KOSPI fell 7.9% this week to close at 4,869.96.
+- [Prices Have Capitulated, Positioning Hasn't: Hartnett's Two Questions for 2027](https://ryzm9.wordpress.com/2026/11/21/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/) (Nov 21, 2026): BofA Flow Show notes that prices have reset while positioning hasn't, and lists the rates, dollar and Korea variables to watch going into 2027.
+- [Korea Close | November 20, 2026](https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/) (Nov 20, 2026): KOSPI reaction and the transmission through rates and the won.
+
+## Reference
+
+- [Treasury term premium explained](https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/): Reference guide to the mechanism. Not a forecast.
+
+## Recent notes
+
+- [Korea triggers sell-side sidecars as KOSPI falls >5%](https://ryzm9.wordpress.com/2026/11/20/kospi-sell-side-sidecars-november-20-2026/) (Nov 20, 2026)
+- [RYZM Daily Brief | US factory prices, claims, Walmart](https://ryzm9.wordpress.com/2026/11/20/ryzm-daily-brief-2026-11-20/) (Nov 20, 2026)
+- [Anthropic prices IPO at $83.00](https://ryzm9.wordpress.com/2026/11/19/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/) (Nov 19, 2026)
