@@ -396,6 +396,18 @@
   }
   .footer-links { display: flex; gap: 18px; }
   .footer-links a:hover { color: var(--text); }
+  #breaking { margin-bottom: 28px; }
+  .breaking-list { list-style: none; display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; }
+  .breaking-list li { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--red); border-radius: 10px; padding: 10px 14px; font-size: 14px; }
+  .breaking-list a { color: var(--text); text-decoration: none; font-weight: 600; flex: 1 1 260px; line-height: 1.4; }
+  .breaking-list a:hover { text-decoration: underline; }
+  .b-time { font-size: 11.5px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--text-muted); }
+  .b-src { font-size: 11.5px; color: var(--text-muted); }
+  .feed-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+  .filter-btn { font: inherit; font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px; border: 1px solid var(--border); background: var(--surface); color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+  .filter-btn:hover { color: var(--text); }
+  .filter-btn.active { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .card.is-hidden { display: none; }
 </style>
 </head>
 <body>
@@ -411,7 +423,7 @@
       <a href="#notes">Notes</a>
       <a href="#calendar">Calendar</a>
     </nav>
-    <button class="header-cta">Get alerts</button>
+    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Get alerts</a>
   </div>
   <div class="ticker-bar">
     <div class="ticker-inner">
@@ -441,11 +453,21 @@
 </section>
 
 <main id="feed">
+  <div id="breaking">
+    <div class="section-title">Breaking</div>
+    <ul class="breaking-list">
+      <li><span class="b-time">Nov 21, 02:18 KST</span><span class="tag high">Rates</span><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Fed's Cook says inflation is well above target and dissented in favor of another hike</a><span class="b-src">Federal Reserve</span></li>
+      <li><span class="b-time">Nov 21, 04:16 KST</span><span class="tag green">Korea</span><a href="https://www.reuters.com/5f374b32b07b/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/" target="_blank" rel="noopener noreferrer">SEC is examining potential accounting issues at Nvidia, Reuters sources say</a><span class="b-src">Reuters</span></li>
+      <li><span class="b-time">Nov 21, 06:23 KST</span><span class="tag blue">Funding</span><a href="https://www.oracle.com/news/announcement/oracle-statement-2026-11-20/" target="_blank" rel="noopener noreferrer">Oracle says its OpenAI contract is fully funded and targets more than $30 billion of free cash flow in FY2029</a><span class="b-src">Oracle</span></li>
+    </ul>
+  </div>
+
   <div class="layout">
     <div id="feed">
       <div class="section-title">Feed</div>
+      <div class="feed-filters"><button type="button" class="filter-btn active" data-cat="All">All</button><button type="button" class="filter-btn" data-cat="Rates">Rates</button><button type="button" class="filter-btn" data-cat="Korea">Korea</button><button type="button" class="filter-btn" data-cat="Funding">Funding</button><button type="button" class="filter-btn" data-cat="Credit">Credit</button><button type="button" class="filter-btn" data-cat="FX">FX</button></div>
       <div class="feed">
-        <article class="card">
+        <article class="card" data-cat="Funding">
           <div class="card-meta">
             <span class="time">Nov 21, 06:23 KST</span>
             <span class="tag blue">Funding</span>
@@ -455,7 +477,7 @@
           <p class="summary">In a Nov. 20 statement, Oracle said a final capital raise earlier this month completed the financing outlined at its Investor Day, including vendor financing. It said further talks with vendors are optional and are not required to deliver the OpenAI contract. The company said it continues to expect positive free cash flow in the second half of fiscal 2028 and is targeting more than $30 billion in fiscal 2029.</p>
           <div class="framework">AI infrastructure spending is a funding question first. Watch how hyperscalers close the gap between capital outlays and free cash flow, not the headline size of the contract.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Credit">
           <div class="card-meta">
             <span class="time">Nov 21, 06:07 KST</span>
             <span class="tag mid">Credit</span>
@@ -465,7 +487,7 @@
           <p class="summary">Bloomberg, citing people familiar with the matter, said the companies are discussing a combination and that a deal is not certain. Zscaler’s market value was $32 billion at Friday’s regular close, Bloomberg reported.</p>
           <div class="framework">A large software combination would be a financing event in equity and credit markets. Watch whether any agreed deal, if one is reached, is funded with cash, stock, or new issuance.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Korea">
           <div class="card-meta">
             <span class="time">Nov 21, 04:49 KST</span>
             <span class="tag green">Korea</span>
@@ -475,7 +497,7 @@
           <p class="summary">Barron's reported that Google has cut planned 2027 shipments of custom chips developed with Broadcom. The paper said Broadcom shares fell more than 10% on Friday.</p>
           <div class="framework">Revisions to custom-accelerator build plans move through the memory and packaging chain. Watch Korea’s export data and HBM order books as those plans are updated.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Korea">
           <div class="card-meta">
             <span class="time">Nov 21, 04:16 KST</span>
             <span class="tag green">Korea</span>
@@ -485,7 +507,7 @@
           <p class="summary">Reuters, citing two people briefed on the matter, said SEC enforcement staff are scrutinizing potential accounting issues at Nvidia. The SEC declined to comment. Reuters said it could not determine when the inquiry began or what issues it is focused on, and noted that investigations are not evidence of wrongdoing.</p>
           <div class="framework">Accounting and export-control scrutiny around AI chips is a disclosure and funding issue. Watch how that review intersects with Korea’s semiconductor export chain and with customer financing arrangements.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Korea">
           <div class="card-meta">
             <span class="time">Nov 21, 03:08 KST</span>
             <span class="tag green">Korea</span>
@@ -495,7 +517,7 @@
           <p class="summary">In a Wall Street Journal interview, Sen. Tom Cotton, who chairs the Senate Intelligence Committee, said Commerce Secretary Howard Lutnick ignored his warnings on China-bound chips. Cotton stopped short of saying Lutnick should resign or be fired, but declined to support him.</p>
           <div class="framework">Enforcement of U.S. AI-chip export rules is a policy variable for Korea’s semiconductor shipments and for foreign flows into Korean assets and the won.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Rates">
           <div class="card-meta">
             <span class="time">Nov 21, 02:18 KST</span>
             <span class="tag high">Rates</span>
@@ -505,7 +527,7 @@
           <p class="summary">In a Nov. 20 speech, Governor Lisa Cook said inflation has been above the Fed’s 2% target for 67 months, with October PCE estimated at 3.8% and core PCE at 3.2%. She dissented from the October decision to hold the federal funds rate at 3.75% to 4%, preferring another quarter-point increase.</p>
           <div class="framework">Watch the policy-rate path and real yields as officials weigh whether current settings are tight enough while inflation remains above target.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="FX">
           <div class="card-meta">
             <span class="time">Nov 21, 00:50 KST</span>
             <span class="tag mid">FX</span>
@@ -515,7 +537,7 @@
           <p class="summary">In a CNBC interview, Treasury Secretary Scott Bessent said President Trump and President Xi agreed that humans should always be involved in military decisions made with AI, and that AI should not operate autonomously in major military actions. Bessent also said U.S. policy on H200 chip sales to China is unchanged and that remote access to computing power has been curtailed.</p>
           <div class="framework">U.S. chip-export and remote-access rules remain a live variable for Korea’s semiconductor shipments and for the dollar-won pair when those rules are restated.</div>
         </article>
-        <article class="card">
+        <article class="card" data-cat="Rates">
           <div class="card-meta">
             <span class="time">Nov 21, 00:03 KST</span>
             <span class="tag high">Rates</span>
@@ -561,92 +583,6 @@
     </aside>
   </div>
 
-  <div id="breaking" style="margin-top: 48px;">
-    <div class="section-title">Breaking</div>
-    <div class="feed">
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 06:23 KST</span>
-          <span class="tag blue">Funding</span>
-          <span class="source"><a href="https://www.oracle.com/news/announcement/oracle-statement-2026-11-20/" target="_blank" rel="noopener noreferrer">Oracle</a></span>
-        </div>
-        <h3>Oracle says its OpenAI contract is fully funded and targets more than $30 billion of free cash flow in FY2029</h3>
-        <p class="summary">In a Nov. 20 statement, Oracle said a final capital raise earlier this month completed the financing outlined at its Investor Day, including vendor financing. It said further talks with vendors are optional and are not required to deliver the OpenAI contract. The company said it continues to expect positive free cash flow in the second half of fiscal 2028 and is targeting more than $30 billion in fiscal 2029.</p>
-        <div class="framework">AI infrastructure spending is a funding question first. Watch how hyperscalers close the gap between capital outlays and free cash flow, not the headline size of the contract.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 06:07 KST</span>
-          <span class="tag mid">Credit</span>
-          <span class="source"><a href="https://news.bloomberglaw.com/mergers-and-acquisitions/crowdstrike-is-said-in-talks-to-buy-cybersecurity-firm-zscaler" target="_blank" rel="noopener noreferrer">Bloomberg</a></span>
-        </div>
-        <h3>CrowdStrike is in talks to acquire Zscaler, people familiar with the matter tell Bloomberg</h3>
-        <p class="summary">Bloomberg, citing people familiar with the matter, said the companies are discussing a combination and that a deal is not certain. Zscaler’s market value was $32 billion at Friday’s regular close, Bloomberg reported.</p>
-        <div class="framework">A large software combination would be a financing event in equity and credit markets. Watch whether any agreed deal, if one is reached, is funded with cash, stock, or new issuance.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 04:49 KST</span>
-          <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.barrons.com/articles/broadcom-stock-google-ai-chips-e75d888d" target="_blank" rel="noopener noreferrer">Barron's</a></span>
-        </div>
-        <h3>Barron's: Google cuts planned 2027 shipments of Broadcom-designed AI chips</h3>
-        <p class="summary">Barron's reported that Google has cut planned 2027 shipments of custom chips developed with Broadcom. The paper said Broadcom shares fell more than 10% on Friday.</p>
-        <div class="framework">Revisions to custom-accelerator build plans move through the memory and packaging chain. Watch Korea’s export data and HBM order books as those plans are updated.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 04:16 KST</span>
-          <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.reuters.com/5f374b32b07b/world/us-secs-nvidia-probe-is-examining-potential-accounting-issues-sources-say-2026-11-20/" target="_blank" rel="noopener noreferrer">Reuters</a></span>
-        </div>
-        <h3>SEC is examining potential accounting issues at Nvidia, Reuters sources say</h3>
-        <p class="summary">Reuters, citing two people briefed on the matter, said SEC enforcement staff are scrutinizing potential accounting issues at Nvidia. The SEC declined to comment. Reuters said it could not determine when the inquiry began or what issues it is focused on, and noted that investigations are not evidence of wrongdoing.</p>
-        <div class="framework">Accounting and export-control scrutiny around AI chips is a disclosure and funding issue. Watch how that review intersects with Korea’s semiconductor export chain and with customer financing arrangements.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 03:08 KST</span>
-          <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.wsj.com/politics/national-security/top-republican-senator-says-lutnick-ignored-his-china-chip-warnings-512f64fd" target="_blank" rel="noopener noreferrer">The Wall Street Journal</a></span>
-        </div>
-        <h3>Sen. Cotton says Commerce Secretary Lutnick ignored his China chip warnings</h3>
-        <p class="summary">In a Wall Street Journal interview, Sen. Tom Cotton, who chairs the Senate Intelligence Committee, said Commerce Secretary Howard Lutnick ignored his warnings on China-bound chips. Cotton stopped short of saying Lutnick should resign or be fired, but declined to support him.</p>
-        <div class="framework">Enforcement of U.S. AI-chip export rules is a policy variable for Korea’s semiconductor shipments and for foreign flows into Korean assets and the won.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 02:18 KST</span>
-          <span class="tag high">Rates</span>
-          <span class="source"><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Federal Reserve</a></span>
-        </div>
-        <h3>Fed's Cook says inflation is well above target and dissented in favor of another hike</h3>
-        <p class="summary">In a Nov. 20 speech, Governor Lisa Cook said inflation has been above the Fed’s 2% target for 67 months, with October PCE estimated at 3.8% and core PCE at 3.2%. She dissented from the October decision to hold the federal funds rate at 3.75% to 4%, preferring another quarter-point increase.</p>
-        <div class="framework">Watch the policy-rate path and real yields as officials weigh whether current settings are tight enough while inflation remains above target.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 00:50 KST</span>
-          <span class="tag mid">FX</span>
-          <span class="source"><a href="https://www.cnbc.com/2026/11/20/cnbc-exclusive-transcript-us-treasury-secretary-scott-bessent-speaks-with-cnbcs-sara-eisen-on-squawk-on-the-street-today.html" target="_blank" rel="noopener noreferrer">CNBC</a></span>
-        </div>
-        <h3>Bessent says Trump and Xi agreed that humans must stay in major military AI decisions</h3>
-        <p class="summary">In a CNBC interview, Treasury Secretary Scott Bessent said President Trump and President Xi agreed that humans should always be involved in military decisions made with AI, and that AI should not operate autonomously in major military actions. Bessent also said U.S. policy on H200 chip sales to China is unchanged and that remote access to computing power has been curtailed.</p>
-        <div class="framework">U.S. chip-export and remote-access rules remain a live variable for Korea’s semiconductor shipments and for the dollar-won pair when those rules are restated.</div>
-      </article>
-      <article class="card">
-        <div class="card-meta">
-          <span class="time">Nov 21, 00:03 KST</span>
-          <span class="tag high">Rates</span>
-          <span class="source"><a href="https://www.sca.isr.umich.edu/" target="_blank" rel="noopener noreferrer">University of Michigan</a></span>
-        </div>
-        <h3>Michigan final sentiment rises to 51.5 as year-ahead inflation expectations fall to 3.7%</h3>
-        <p class="summary">The University of Michigan’s final November Consumer Sentiment Index was 51.5, up 7.3% from 48.0 in October. Median year-ahead inflation expectations fell to 3.7% from 4.7%, and longer-run expectations moved down to 3.3% from 3.5%.</p>
-        <div class="framework">Inflation expectations are an input into the real-rate path. Watch the 3.7% year-ahead reading alongside official PCE as the Fed debates the policy setting.</div>
-      </article>
-    </div>
-  </div>
-
   <div id="articles" style="margin-top: 48px;">
     <div class="section-title">Articles</div>
     <div class="notes-list">
@@ -655,12 +591,12 @@
         <h3>Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027</h3>
         <p>Prices have moved. Positioning has not. Two questions for the year ahead: when do the hikes end, and do they end before a recession.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">November 20, 2026 · Korea Close</div>
         <h3>Korea Close | November 20, 2026</h3>
         <p>KOSPI reaction and the transmission through rates and the won.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">October 11, 2026 · Framework</div>
         <h3>Treasury term premium explained</h3>
         <p>A reference guide to the mechanism behind the notes.</p>
@@ -693,27 +629,27 @@
   <div id="notes">
     <div class="section-title">Notes</div>
     <div class="notes-list">
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">Nov 20, 2026 · Korea Close</div>
         <h3>Korea Close | November 20, 2026</h3>
         <p>KOSPI reaction and the transmission through rates and the won.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/11/20/kospi-sell-side-sidecars-november-20-2026/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">Nov 20, 2026 · Market Note</div>
         <h3>Korea triggers sell-side sidecars as KOSPI falls >5%</h3>
         <p>Circuit breaker interaction with foreign flows and funding conditions.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/11/20/ryzm-daily-brief-2026-11-20/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">Nov 20, 2026 · Daily Brief</div>
         <h3>RYZM Daily Brief | US factory prices, claims, Walmart</h3>
         <p>Sources checked. Link back to Korea’s export and rate path.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/11/19/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">Nov 19, 2026 · Note</div>
         <h3>Anthropic prices IPO at $83.00</h3>
         <p>What the pricing tells us about risk appetite and credit transmission.</p>
       </a>
-      <a href="#" class="note-item">
+      <a href="https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/" class="note-item" target="_blank" rel="noopener">
         <div class="meta">Oct 11, 2026 · Framework</div>
         <h3>Treasury term premium explained</h3>
         <p>Reference guide to the mechanism. Not a forecast.</p>
@@ -726,12 +662,22 @@
   <div class="footer-inner">
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
-      <a href="#">About</a>
-      <a href="#">Alerts</a>
-      <a href="https://x.com/Goeun_6121">X</a>
+      <a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>
+      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
     </div>
   </div>
 </footer>
 
+<script>
+document.querySelectorAll('.filter-btn').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    var cat=btn.getAttribute('data-cat');
+    document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.toggle('active',b===btn);});
+    document.querySelectorAll('#feed .feed .card').forEach(function(c){
+      c.classList.toggle('is-hidden',cat!=='All'&&c.getAttribute('data-cat')!==cat);
+    });
+  });
+});
+</script>
 </body>
 </html>
