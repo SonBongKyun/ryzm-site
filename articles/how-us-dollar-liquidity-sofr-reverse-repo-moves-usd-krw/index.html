@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW? · RYZM</title>
+<meta name="description" content="US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…">
+<link rel="canonical" href="https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="RYZM">
+<meta property="og:title" content="How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW? · RYZM">
+<meta property="og:description" content="US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…">
+<meta property="og:url" content="https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/">
+<meta property="og:image" content="https://ryzm.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://ryzm.app/og-image.png">
+<meta property="article:published_time" content="2026-11-21T23:26:09+09:00">
+<meta property="article:modified_time" content="2026-11-21T23:26:09+09:00">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
+<meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
+<link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "@id": "https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/#article",
+ "headline": "How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?",
+ "description": "US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…",
+ "url": "https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
+ "mainEntityOfPage": "https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
+ "datePublished": "2026-11-21T23:26:09+09:00",
+ "dateModified": "2026-11-21T23:26:09+09:00",
+ "inLanguage": "en-US",
+ "articleSection": "Framework",
+ "keywords": [
+  "BOK",
+  "Current Account",
+  "Fed",
+  "FX Swap & Basis",
+  "SOFR & Repo",
+  "USD/KRW"
+ ],
+ "author": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "isBasedOn": "https://ryzm9.wordpress.com/2026/11/21/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f6f2ec;
+    --surface: #fffdfa;
+    --surface-2: #f2ece4;
+    --border: #e6ddd2;
+    --border-strong: #d4c7b8;
+    --text: #1a1512;
+    --text-2: #463c35;
+    --text-muted: #7b6f65;
+    --accent: #c47b4a;
+    --accent-ink: #9c5729;
+    --accent-soft: rgba(196, 123, 74, 0.12);
+    --ink-band: #1a1512;
+    --ink-band-text: #d9cfc4;
+    --green: #2f7a5c;
+    --red: #b5402f;
+    --amber: #a87708;
+    --blue: #3c6c8c;
+    --purple: #6f5283;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --shadow: 0 1px 2px rgba(26, 21, 18, 0.04), 0 8px 24px -12px rgba(26, 21, 18, 0.10);
+    --radius: 12px;
+    --wrap: 1240px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12100e;
+      --surface: #1a1714;
+      --surface-2: #221e1a;
+      --border: #2f2924;
+      --border-strong: #433a33;
+      --text: #f3ede6;
+      --text-2: #d3c9bf;
+      --text-muted: #9a8e84;
+      --accent: #d38d5c;
+      --accent-ink: #e5a677;
+      --accent-soft: rgba(211, 141, 92, 0.14);
+      --ink-band: #0b0a09;
+      --green: #5fb08e;
+      --red: #e0705e;
+      --amber: #d9a93a;
+      --blue: #7aa8c7;
+      --purple: #a98bbd;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv11", "ss01";
+    letter-spacing: -0.006em;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  ::selection { background: var(--accent-soft); }
+
+  /* ---------- header ---------- */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-top {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 0 28px;
+  }
+  .logo, a.logo {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    font-weight: 800;
+    font-size: 19px;
+    letter-spacing: -0.04em;
+    color: var(--text);
+  }
+  .logo::before {
+    content: "";
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: #1a1512 url("/favicon.svg") center / cover no-repeat;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    flex: none;
+    margin-right: 10px;
+  }
+  .logo span { color: var(--accent); font-weight: 800; }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+  nav a {
+    padding: 6px 14px;
+    border-radius: 999px;
+    transition: color 0.15s, background-color 0.15s;
+    white-space: nowrap;
+  }
+  nav a:hover { color: var(--text); background: var(--surface-2); }
+  nav a.active { color: var(--surface); background: var(--text); font-weight: 600; }
+  .header-cta {
+    background: var(--text);
+    color: var(--surface);
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: background-color 0.15s, transform 0.15s;
+  }
+  .header-cta::before {
+    content: "";
+    display: inline-block;
+    vertical-align: 1px;
+    margin-right: 8px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent);
+  }
+  .header-cta:hover { background: var(--accent-ink); }
+
+  /* ---------- footer ---------- */
+  footer {
+    background: var(--ink-band);
+    color: var(--ink-band-text);
+    padding: 40px 28px;
+    margin-top: 72px;
+  }
+  .footer-inner {
+    max-width: var(--wrap);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 32px;
+    flex-wrap: wrap;
+    font-size: 13px;
+  }
+  .footer-inner > div:first-child { font-family: var(--serif); font-size: 18px; color: #fffdf9; letter-spacing: -0.01em; }
+  .footer-links { display: flex; gap: 24px; }
+  .footer-links a { color: var(--ink-band-text); border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
+  .footer-links a:hover { color: #fffdf9; border-color: var(--accent); }
+
+  /* ---------- section titles ---------- */
+  .section-title {
+    font-size: 11.5px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--accent);
+    flex: none;
+  }
+  .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    padding: 3px 9px 3px 8px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    line-height: 1.3;
+  }
+  .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .tag.high { background: color-mix(in srgb, var(--red) 12%, transparent); color: var(--red); }
+  .tag.mid { background: color-mix(in srgb, var(--amber) 14%, transparent); color: var(--amber); }
+  .tag.green { background: color-mix(in srgb, var(--green) 12%, transparent); color: var(--green); }
+  .tag.blue { background: color-mix(in srgb, var(--blue) 12%, transparent); color: var(--blue); }
+
+  @media (max-width: 900px) {
+    .header-top { flex-wrap: wrap; height: auto; padding: 10px 16px 0; gap: 10px 16px; }
+    nav {
+      order: 3;
+      width: calc(100% + 32px);
+      margin: 0 -16px;
+      border: none;
+      border-top: 1px solid var(--border);
+      border-radius: 0;
+      background: transparent;
+      padding: 8px 12px;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    nav::-webkit-scrollbar { display: none; }
+    nav a { padding: 6px 12px; }
+    .header-cta { padding: 7px 13px; font-size: 12.5px; }
+    footer { padding: 32px 20px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  main { max-width: var(--wrap); margin: 0 auto; padding: 48px 28px 32px; }
+  .back {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 500; color: var(--text-muted);
+    transition: color 0.15s;
+  }
+  .back:hover { color: var(--accent-ink); }
+
+  /* ---------- article page ---------- */
+  .article-wrap { max-width: 720px; margin: 0 auto; }
+  .article-head { padding: 28px 0 32px; margin-bottom: 40px; border-bottom: 1px solid var(--border); }
+  .meta { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .meta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border-strong); }
+  .article-head .meta { margin-bottom: 18px; }
+  h1.title {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5vw, 50px);
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    color: var(--text);
+    text-wrap: balance;
+    font-optical-sizing: auto;
+  }
+  .prose {
+    font-family: var(--serif);
+    font-size: 20px;
+    line-height: 1.7;
+    color: var(--text-2);
+    max-width: 68ch;
+    font-optical-sizing: auto;
+    hanging-punctuation: first;
+  }
+  .prose > * + * { margin-top: 1.1em; }
+  .prose strong, .prose b { font-weight: 600; color: var(--text); }
+  .prose h2 {
+    font-family: var(--serif); font-size: 30px; line-height: 1.2; letter-spacing: -0.02em;
+    font-weight: 500; color: var(--text); margin-top: 2.1em; scroll-margin-top: 96px;
+  }
+  .prose h3 {
+    font-family: var(--sans); font-size: 18px; line-height: 1.4; font-weight: 600;
+    letter-spacing: -0.01em; color: var(--text); margin-top: 1.9em;
+  }
+  .prose h4, .prose h5, .prose h6 {
+    font-family: var(--sans); font-size: 13px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--text-muted); margin-top: 1.8em;
+  }
+  .prose h2 + *, .prose h3 + *, .prose h4 + * { margin-top: 0.6em; }
+  .prose a {
+    color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px;
+    text-decoration-thickness: 1px; text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    overflow-wrap: anywhere; transition: text-decoration-color 0.15s;
+  }
+  .prose a:hover { text-decoration-color: var(--accent); }
+  .prose ul, .prose ol { padding-left: 1.3em; }
+  .prose li { padding-left: 0.2em; }
+  .prose li + li { margin-top: 0.45em; }
+  .prose li::marker { color: var(--accent); }
+  .prose blockquote {
+    position: relative; margin-left: 0; padding: 4px 0 4px 26px;
+    border-left: 2px solid var(--accent); font-style: italic; color: var(--text);
+    font-size: 1.08em; line-height: 1.55;
+  }
+  .prose hr { border: none; height: 1px; background: var(--border); margin: 2.4em 0; }
+  .prose table {
+    width: 100%; border-collapse: collapse; font-family: var(--sans); font-size: 14.5px; line-height: 1.5;
+    display: block; overflow-x: auto; font-variant-numeric: tabular-nums;
+    border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+  }
+  .prose th, .prose td { padding: 10px 14px; text-align: left; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .prose tr:last-child td { border-bottom: none; }
+  .prose th { background: var(--surface-2); font-weight: 600; color: var(--text); font-size: 12.5px; letter-spacing: 0.02em; white-space: nowrap; }
+  .prose td { color: var(--text-2); }
+  .prose tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--surface-2) 45%, transparent); }
+  .prose img { max-width: 100%; height: auto; border-radius: 10px; }
+  .prose figure { margin: 1.6em 0; }
+  .prose figcaption, .prose caption { font-family: var(--sans); font-size: 13px; color: var(--text-muted); margin-top: 8px; }
+  .prose code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: var(--surface-2); padding: 1px 6px; border-radius: 4px; font-size: 0.82em; }
+  .prose pre { background: var(--surface-2); padding: 14px 16px; border-radius: 8px; overflow-x: auto; font-size: 14px; }
+  .prose sup { font-size: 0.7em; }
+
+  .origin {
+    margin: 64px auto 0; max-width: 720px; padding: 20px 0 0; border-top: 1px solid var(--border);
+    font-size: 13px; color: var(--text-muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  }
+  .origin a { color: var(--text-2); }
+  .origin span a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--border-strong); }
+  .origin a:hover { color: var(--accent-ink); }
+
+  /* ---------- articles index ---------- */
+  .page-head { max-width: 920px; margin: 0 auto 40px; padding: 24px 0 32px; border-bottom: 1px solid var(--border); }
+  .page-head .section-title { margin-bottom: 18px; }
+  .page-head .section-title::before { background: var(--blue); }
+  .page-head .section-title::after { display: none; }
+  h1.page-title { font-family: var(--serif); font-size: clamp(40px, 6vw, 64px); font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+  .page-lead { color: var(--text-2); font-size: 17px; margin-top: 16px; max-width: 40em; }
+  .page-count { margin-top: 12px; font-size: 13px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .list { max-width: 920px; margin: 0 auto; }
+  .month {
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted);
+    padding: 36px 0 12px; display: flex; align-items: center; gap: 12px;
+  }
+  .month:first-child { padding-top: 0; }
+  .month::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .item {
+    display: grid; grid-template-columns: 150px minmax(0, 1fr); grid-template-areas: "meta title" "meta desc";
+    column-gap: 32px; row-gap: 6px; padding: 22px 4px; border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s;
+  }
+  .item:hover h2 { color: var(--accent-ink); }
+  .item .meta { grid-area: meta; flex-direction: column; align-items: flex-start; gap: 8px; padding-top: 4px; font-size: 12.5px; }
+  .item h2 { grid-area: title; font-family: var(--serif); font-size: 22px; font-weight: 500; line-height: 1.28; letter-spacing: -0.012em; transition: color 0.15s; color: var(--text); }
+  .item p { grid-area: desc; font-size: 14.5px; color: var(--text-muted); line-height: 1.6; max-width: 68ch; }
+
+  @media (max-width: 700px) {
+    main { padding: 28px 18px 24px; }
+    .article-head { padding: 20px 0 24px; margin-bottom: 28px; }
+    .prose { font-size: 18.5px; line-height: 1.68; }
+    .prose h2 { font-size: 25px; }
+    .prose table { font-size: 13.5px; }
+    .item { grid-template-columns: 1fr; grid-template-areas: "meta" "title" "desc"; padding: 18px 2px; }
+    .item .meta { flex-direction: row; align-items: center; padding-top: 0; }
+    .item h2 { font-size: 20px; }
+  }
+
+  /* ---------- library search + filter ---------- */
+  .lib-tools { max-width: 920px; margin: -12px auto 28px; display: flex; flex-direction: column; gap: 14px; }
+  .lib-tools[hidden] { display: none; }
+  .lib-search { position: relative; }
+  .lib-search input {
+    width: 100%; min-height: 46px; padding: 11px 16px 11px 42px; font: inherit; font-size: 16px;
+    color: var(--text); background: var(--surface); border: 1px solid var(--border-strong);
+    border-radius: 999px; outline: none; -webkit-appearance: none; appearance: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .lib-search input::placeholder { color: var(--text-muted); }
+  .lib-search input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .lib-search svg { position: absolute; left: 16px; top: 50%; width: 16px; height: 16px; margin-top: -8px; color: var(--text-muted); pointer-events: none; }
+  .lib-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 15px;
+    border: 1px solid var(--border); border-radius: 999px; background: var(--surface);
+    font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .pill:hover { border-color: var(--border-strong); color: var(--text); }
+  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
+  .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
+  .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
+  .cat-label {
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted);
+  }
+  .meta a.cat-label:hover { color: var(--accent-ink); }
+
+  /* ---------- related articles ---------- */
+  .related { max-width: 720px; margin: 64px auto 0; }
+  .related .section-title { margin-bottom: 8px; }
+  .rel-item { display: block; padding: 18px 2px; border-bottom: 1px solid var(--border); }
+  .rel-item .meta { font-size: 12px; margin-bottom: 6px; }
+  .rel-item h3 { font-family: var(--serif); font-size: 20px; font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; color: var(--text); transition: color 0.15s; }
+  .rel-item:hover h3 { color: var(--accent-ink); }
+  .related + .origin { margin-top: 40px; }
+
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: 720px; margin: 56px auto 0; }
+  .subscribe-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 28px 32px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 0 22px; border-radius: 999px; background: var(--accent); color: #fffdf9;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+  .subscribe-page .btn-subscribe { margin-top: 28px; }
+
+  /* ---------- touch targets (phones/tablets) ---------- */
+  @media (max-width: 900px) {
+    nav a { display: inline-flex; align-items: center; min-height: 40px; }
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+      mask-image: linear-gradient(90deg, #000 85%, transparent);
+    }
+    .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
+    .logo, a.logo { min-height: 40px; }
+    .footer-links a, .back, .origin a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 23px; }
+    .btn-subscribe { min-height: 44px; }
+    .origin { align-items: center; }
+    .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="logo" href="/">RY<span>ZM</span></a>
+    <nav>
+      <a href="/#feed">Feed</a>
+      <a href="/#breaking">Breaking</a>
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/notes/">Notes</a>
+      <a href="/#calendar">Calendar</a>
+    </nav>
+    <a class="header-cta" href="/subscribe/">Get alerts</a>
+  </div>
+</header>
+
+<main>
+  <div class="article-wrap">
+  <a class="back" href="/articles/">&larr; All articles</a>
+  <article>
+    <div class="article-head">
+      <div class="meta"><span class="tag">Framework</span><a class="cat-label" href="/articles/?cat=Frameworks">Frameworks</a><time datetime="2026-11-21T23:26:09+09:00">Nov 21, 2026</time><span class="dot"></span><span>6 min read</span></div>
+      <h1 class="title">How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h1>
+    </div>
+    <div class="prose">
+<p>US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank reserves and repo rates like SOFR directly, and that cost flows into the FX swaps Korean banks, insurers and investors use to get dollars. Korea’s chip-export surplus works the other way as a source of dollars, so USD/KRW always reflects both channels at once.</p>
+
+<p><em>Data as of November 20, 2026 (KST). Every figure links to the primary release it came from. This is a reading framework, not a forecast or a trade signal.</em></p>
+
+<h2>What do SOFR and the Fed’s reverse repo facility measure?</h2>
+
+<p>SOFR, the Secured Overnight Financing Rate, is the volume-weighted median rate on overnight cash loans backed by Treasury collateral. On November 19, 2026, it printed 3.91% on $3,161 billion of transactions, with the 1st to 99th percentile range running from 3.85% to 3.98% (<a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" rel="noopener">New York Fed</a>).</p>
+
+<p>The Fed sets a corridor around that market. Since October 29, 2026, the federal funds target range has been 3.75% to 4.00%. Interest on reserve balances (IORB) is 3.90%, the overnight reverse repo (ON RRP) offering rate is 3.75% and the standing repo rate is 4.00% (<a href="https://www.federalreserve.gov/newsevents/pressreleases/monetary20261028a1.htm" target="_blank" rel="noopener">Federal Reserve implementation note, October 28, 2026</a>). The ON RRP is the floor, where money funds can park cash at the Fed. The standing repo facility is the ceiling, where dealers can borrow from the Fed.</p>
+
+<p>That puts SOFR at 3.91%, 1 basis point above IORB and 9 basis points below the ceiling. Our <a href="/articles/sofr-vs-iorb-dollar-funding/">SOFR vs IORB guide</a> explains how to read that spread without treating it as an alarm.</p>
+
+<h2>Why does an empty reverse repo facility matter for dollar funding?</h2>
+
+<p>The ON RRP used to work as a shock absorber. When the Treasury pulled cash out of markets by issuing bills or building up its account at the Fed, money funds could move money out of the ON RRP to buy those bills, and bank reserves barely moved.</p>
+
+<p>That buffer is now close to zero. ON RRP take-up was $401 million on November 20, 2026, from two counterparties (<a href="https://www.newyorkfed.org/markets/desk-operations/reverse-repo" target="_blank" rel="noopener">New York Fed</a>). In the Fed’s H.4.1 balance sheet for the week ended November 18, the non-foreign portion of reverse repos averaged $298 million, down about $1.65 billion from a year earlier (<a href="https://www.federalreserve.gov/releases/h41/current/default.htm" target="_blank" rel="noopener">Federal Reserve H.4.1, November 19, 2026</a>).</p>
+
+<p>Without that buffer, Treasury cash moves now pass through to reserves much more directly. The same H.4.1 shows the Treasury General Account averaging $916.6 billion and reserve balances averaging $2.98 trillion, up $91 billion from a year earlier. The Fed’s own Treasury bill holdings averaged $580.7 billion, up $385.2 billion over the year. That fits the bill purchases its directive allows “to maintain an ample level of reserves.”</p>
+
+<p>In practice, a tax date, a large bill auction or quarter-end balance-sheet limits can now push SOFR toward the top of the corridor faster than when the RRP was large. On November 20, the standing repo facility lent just $1 million, so the ceiling was barely tested (<a href="https://www.newyorkfed.org/markets/desk-operations/repo" target="_blank" rel="noopener">New York Fed</a>).</p>
+
+<h2>How does tighter dollar funding reach USD/KRW?</h2>
+
+<p>Korean institutions rarely borrow in the US repo market directly. They get dollars mostly through FX swaps and forwards. They hand over won today, receive dollars, and reverse the trade later. The price of that swap is tied to the interest-rate gap between the two currencies, plus a cross-currency basis that widens when dollars are scarce relative to demand.</p>
+
+<p>That gives US funding conditions two routes into the won.</p>
+
+<ul>
+<li><strong>The rate route.</strong> When US overnight rates are higher than Korean rates, won-based investors pay more to hold hedged dollar assets. The Bank of Korea’s base rate was 3.00% as of November 2026 (<a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener">BOK ECOS, series 722Y001</a>), against a Fed range topping out at 4.00%.</li>
+
+<li><strong>The scarcity route.</strong> When dollar balance sheets get tight at month-end, quarter-end or year-end, the basis can widen even if policy rates don’t move. Banks then charge more to supply swap dollars, and some hedging demand spills into the spot market.</li>
+</ul>
+
+<p>Our <a href="/articles/fx-hedging-costs-korea/">FX hedging reference</a> walks through the hedged-return formula. The key point for this framework is that funding pressure shows up first in forward points and the basis. It reaches the spot USD/KRW rate only later, if at all.</p>
+
+<h2>How do Korea’s chip and HBM exports supply dollars to the won market?</h2>
+
+<p>The other channel runs the opposite way. Exporters earn dollars, and when they convert them, they sell dollars for won.</p>
+
+<p>That supply is at record levels. Korea’s exports were $115.28 billion in October 2026, up 93.7% from a year earlier. Semiconductors made up $56.44 billion of that, up 259.4% and about 49% of the total. The monthly trade surplus was $42.50 billion (<a href="https://www.motir.go.kr/kor/article/ATCL3f49a5a8c/172360/view" target="_blank" rel="noopener">Korea’s trade and industry ministry, November 1, 2026</a>). The ministry credited the chip gain to Big Tech AI spending, which kept both prices and volumes high. Its fixed-price series for DDR5 16Gb memory rose from $40.0 in June to $50.0 in October. In the first ten days of November, chip exports were $16.6 billion, up 331.2% and 49.7% of all exports (<a href="https://www.korea.kr/briefing/pressReleaseView.do?newsId=156788682" target="_blank" rel="noopener">Korea Customs Service, November 11, 2026</a>).</p>
+
+<p>A note on HBM: neither customs nor the trade ministry reports high-bandwidth memory as a separate line. HBM sits inside the semiconductor and memory totals, so any HBM-specific export figure you see is an estimate, not an official count.</p>
+
+<p>Trade flows feed the current account. Korea’s current-account surplus was $61.46 billion in September 2026, compared with $14.22 billion in September 2025, with a goods surplus of $62.75 billion. From January to September 2026, the surplus totaled about $340.7 billion (<a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener">BOK ECOS, series 301Y013</a>).</p>
+
+<h2>Which channel is moving USD/KRW now?</h2>
+
+<p>Put the two together. The Seoul market average rate was ₩1,330.8 per dollar on November 20, 2026, against ₩1,465.0 a year earlier (<a href="https://ecos.bok.or.kr/" target="_blank" rel="noopener">BOK ECOS, series 731Y001</a>). That is about 134 won fewer per dollar.</p>
+
+<p>On the November data, the funding channel shows a corridor with no RRP cushion and SOFR just above IORB, but no visible stress at the ceiling. The trade channel shows record dollar earnings. The data are consistent with a won driven more by trade supply than by US funding stress over the past year. They don’t prove it. A current-account surplus becomes spot supply only when exporters convert, and residents’ overseas investment sends dollars back out.</p>
+
+<p>The framework’s job is to spot which channel moves first when the balance shifts.</p>
+
+<h2>What variables should you watch?</h2>
+
+<ul>
+<li><strong>Daily: SOFR versus IORB and ON RRP take-up</strong> from the <a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" rel="noopener">New York Fed</a>. SOFR sitting above IORB for a sustained stretch, with an empty RRP, points to tighter reserves.</li>
+
+<li><strong>Weekly: reserves, the TGA and Fed bill holdings</strong> in the <a href="https://www.federalreserve.gov/releases/h41/current/default.htm" target="_blank" rel="noopener">H.4.1</a>. The next release is November 27, a day late because of Thanksgiving (<a href="https://www.federalreserve.gov/newsevents/2026-november.htm" target="_blank" rel="noopener">Fed calendar</a>).</li>
+
+<li><strong>Year-end dollar balance sheets.</strong> Watch whether USD/KRW forward points and the swap basis move without any change in policy rates.</li>
+
+<li><strong>November 26: the BOK rate decision</strong>, which resets the won side of the rate gap.</li>
+
+<li><strong>Customs’ November 1 to 20 trade data</strong>, due Monday, November 23, and the trade ministry’s full November data on December 1.</li>
+
+<li><strong>December 8: BOK October balance of payments</strong> (<a href="https://www.bok.or.kr/portal/stats/statsPublictSchdul/listCldr.do?date=2026-12&amp;menuNo=200775" target="_blank" rel="noopener">BOK release calendar</a>), including residents’ overseas portfolio investment, the main route by which export dollars leave again.</li>
+
+<li><strong>December 8 to 9: FOMC</strong> (<a href="https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm" target="_blank" rel="noopener">Fed calendar</a>), including any change to the standing repo or ON RRP settings.</li>
+</ul>
+
+<h2>Sources</h2>
+
+<ul>
+<li>Federal Reserve, implementation note, October 28, 2026</li>
+
+<li>Federal Reserve, H.4.1, week ended November 18, 2026 (released November 19)</li>
+
+<li>New York Fed, SOFR, November 19, 2026; ON RRP and standing repo results, November 20, 2026</li>
+
+<li>Korea’s trade and industry ministry, “October 2026 Exports and Imports,” November 1, 2026</li>
+
+<li>Korea Customs Service, “November 1 to 10, 2026 Exports and Imports (preliminary),” November 11, 2026</li>
+
+<li>Bank of Korea ECOS: base rate (722Y001), USD/KRW market average rate (731Y001), balance of payments (301Y013), retrieved November 21, 2026</li>
+</ul>
+
+<p><em>RYZM Framework. Independent market commentary, not personalized investment advice. No trade signals.</em></p>
+    </div>
+  </article>
+  </div>
+  <aside class="related" aria-label="Related articles">
+    <div class="section-title">Related articles</div>
+    <a class="rel-item" href="/articles/ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026/">
+      <div class="meta"><span class="cat-label">Frameworks</span><span class="dot"></span><time datetime="2026-11-20T20:20:02+09:00">Nov 20, 2026</time></div>
+      <h3>RYZM Framework Note | How US rates and dollar funding reach Korea | November 20, 2026</h3>
+    </a>
+    <a class="rel-item" href="/articles/fx-hedging-costs-korea/">
+      <div class="meta"><span class="cat-label">Frameworks</span><span class="dot"></span><time datetime="2026-10-11T18:46:46+09:00">Oct 11, 2026</time></div>
+      <h3>FX Hedging Costs: Why Dollar Funding Matters for Korea</h3>
+    </a>
+    <a class="rel-item" href="/articles/sofr-vs-iorb-dollar-funding/">
+      <div class="meta"><span class="cat-label">Frameworks</span><span class="dot"></span><time datetime="2026-10-11T18:46:32+09:00">Oct 11, 2026</time></div>
+      <h3>SOFR vs IORB: Reading Dollar Funding Pressure</h3>
+    </a>
+  </aside>
+  <aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+  </div>
+</aside>
+  <div class="origin">
+    <a href="/articles/">&larr; Back to Articles</a>
+    <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/11/21/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>RYZM · frameworks, not forecasts</div>
+    <div class="footer-links">
+      <a href="/about/">About</a>
+      <a href="/subscribe/">Alerts</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
