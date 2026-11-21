@@ -1,6 +1,7 @@
 {
  "source": "https://public-api.wordpress.com/rest/v1.1/sites/ryzm9.wordpress.com/posts/",
  "slugs": [
+  "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
   "goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026",
   "prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026",
   "us-close-november-20-2026",
@@ -36,6 +37,27 @@
   "treasury-term-premium-explained"
  ],
  "items": [
+  {
+   "slug": "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
+   "path": "/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
+   "title": "How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?",
+   "date": "2026-11-21T23:26:09+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Rates",
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "wp_categories": [
+    "FX",
+    "Framework Note",
+    "Funding & Liquidity",
+    "Korea Bridge"
+   ]
+  },
   {
    "slug": "goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026",
    "path": "/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/",
