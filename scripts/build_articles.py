@@ -30,7 +30,8 @@ import re
 import shutil
 import sys
 import urllib.request
-from datetime import datetime
+from datetime import datetime, timezone
+import email.utils
 from html.parser import HTMLParser
 
 SITE = "https://ryzm.app"
@@ -51,7 +52,15 @@ EXCLUDE_CATS = {"Daily Brief", "Market Wire", "Young Trends Daily", "Science & T
                 "Short Reflections", "Tech Idea", "Everyday Explainers"}
 MIN_TEXT_CHARS = 900
 
-FAVICON_LINKS = '<link rel="icon" type="image/svg+xml" href="/favicon.svg">'
+FAVICON_LINKS = """<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">"""
+OG_TAGS = """<meta property="og:image" content="%s/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="%s/og-image.svg">
+""" % (SITE, SITE)
+WP_SUBSCRIBE = "https://ryzm9.wordpress.com/subscribe/"
+
 
 
 # ---------------------------------------------------------------- fetch
@@ -71,8 +80,29 @@ def fetch_posts():
     return [p for p in posts if p.get("status", "publish") == "publish"]
 
 
+FRAMEWORK_NOTE_CAT_ID = 199488472  # WordPress category "Framework Note"
+
+
 def cats_of(p):
-    return {html.unescape(c) for c in (p.get("categories") or {})}
+    """Return WordPress category names, unescaped. Also treat category ID 199488472 as Framework Note."""
+    raw = p.get("categories") or {}
+    names = set()
+    items = raw.items() if isinstance(raw, dict) else [(None, x) for x in (raw or [])]
+    for key, meta in items:
+        if isinstance(meta, dict):
+            name = html.unescape(meta.get("name") or (key or "") or "")
+            cid = meta.get("ID") or meta.get("id")
+        else:
+            name = html.unescape(key if isinstance(key, str) else (meta or ""))
+            cid = None
+        if name:
+            names.add(name)
+        try:
+            if cid is not None and int(cid) == FRAMEWORK_NOTE_CAT_ID:
+                names.add("Framework Note")
+        except (TypeError, ValueError):
+            pass
+    return names
 
 
 def plain(s):
@@ -122,7 +152,7 @@ def type_label(p):
 # the list and drives "Related articles".
 #
 # 1. Membership. An article is in a category when ANY of these match:
-#    Frameworks  WordPress category "Framework Note"
+#    Frameworks  WordPress category "Framework Note" (ID 199488472)
 #    Korea       WordPress category "Korea Close"; or "Korea Bridge" unless the post
 #                is a "US Close"; or a title keyword: Korea, KOSPI, KOSDAQ, BOK, won, KRW, KTB
 #    Funding     WordPress category "Funding & Liquidity"; or title keyword: SOFR, IORB,
@@ -149,7 +179,8 @@ TITLE_KEYWORDS = [
     ("Rates", r"\b(treasury|yields?|curve|term premium|bonds?|long end|rates?|fed|fomc|mortgage)\b"),
 ]
 WP_CATEGORY_MAP = [("Funding", {"Funding & Liquidity"}), ("FX", {"FX"}), ("Credit", {"Credit"}),
-                   ("Rates", {"Rates & Bonds", "US Close"}), ("Korea", {"Korea Close"})]
+                   ("Rates", {"Rates & Bonds", "US Close"}), ("Korea", {"Korea Close"}),
+                   ("Frameworks", {"Framework Note"})]
 
 
 def categorize(title, wp_cats):
@@ -723,6 +754,28 @@ CSS = """
   .rel-item:hover h3 { color: var(--accent-ink); }
   .related + .origin { margin-top: 40px; }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: 720px; margin: 56px auto 0; }
+  .subscribe-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 28px 32px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 0 22px; border-radius: 999px; background: var(--accent); color: #fffdf9;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+  .subscribe-page .btn-subscribe { margin-top: 28px; }
+
   /* ---------- touch targets (phones/tablets) ---------- */
   @media (max-width: 900px) {
     nav a { display: inline-flex; align-items: center; min-height: 40px; }
@@ -732,7 +785,10 @@ CSS = """
     }
     .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .back, .origin a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 23px; }
+    .btn-subscribe { min-height: 44px; }
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
@@ -745,11 +801,11 @@ HEADER = """<header>
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/"{act_articles}>Articles</a>
-      <a href="/#frameworks">Frameworks</a>
-      <a href="/#notes"{act_notes}>Notes</a>
+      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/notes/"{act_notes}>Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Get alerts</a>
   </div>
 </header>"""
 
@@ -758,10 +814,32 @@ FOOTER = """<footer>
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+      <a href="/subscribe/">Alerts</a>
     </div>
   </div>
 </footer>"""
+
+SUBSCRIBE = """<aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+  </div>
+</aside>"""
+
+
+def korea_based(text):
+    """Keep About wording Korea-based until the WordPress source is updated."""
+    return (text or "").replace("Seoul-based", "Korea-based").replace("Seoul based", "Korea-based")
+
+
+def rewrite_subscribe_hrefs(text):
+    """Point in-site copy at /subscribe/; the WordPress URL stays only on /subscribe/ itself."""
+    text = (text or "").replace(WP_SUBSCRIBE, "/subscribe/")
+    text = text.replace('<a href="/subscribe/" target="_blank" rel="noopener">', '<a href="/subscribe/">')
+    return text
 
 
 def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles"):
@@ -779,7 +857,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 <meta property="og:title" content="{title}">
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
-{extra_meta}<meta name="twitter:card" content="summary">
+{og_tags}{extra_meta}<meta name="twitter:card" content="summary_large_image">
 {favicons}
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
@@ -802,7 +880,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 </body>
 </html>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical, og_type=og_type,
-           extra_meta=extra_meta, favicons=FAVICON_LINKS, ld=ld, css=CSS,
+           extra_meta=extra_meta, favicons=FAVICON_LINKS, og_tags=OG_TAGS, ld=ld, css=CSS,
            header=HEADER.format(act_articles=' class="active"' if active == "articles" else "",
                                 act_notes=' class="active"' if active == "notes" else ""),
            body=body, footer=FOOTER)
@@ -870,6 +948,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
     </div>
   </article>
   </div>{related}
+  {subscribe}
   <div class="origin">
     <a href="{back_href}">&larr; {back_long}</a>
     <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
@@ -880,13 +959,19 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
                   title=esc(a["title"]), content=fix_wp_link_text(a["html"]), wp=esc(a["wp_url"]),
                   cat=('<a class="cat-label" href="/articles/?cat=%s">%s</a>' % (esc(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
-                  related=render_related(related))
+                  related=render_related(related), subscribe=SUBSCRIBE)
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
 
 
-def render_brief(a):
+def render_brief(a, related=None):
     return render_article(a, back_href="/notes/", back_short="All daily briefs",
-                          back_long="Back to Daily Briefs", active="notes")
+                          back_long="Back to Daily Briefs", active="notes", related=related)
+
+
+def brief_related(briefs, a, n=3):
+    others = [b for b in briefs if b["slug"] != a["slug"]]
+    return [{"path": b["path"], "category": b.get("type") or "Daily Brief",
+             "date": b["date"], "title": b["title"]} for b in others[:n]]
 
 
 def render_notes_index(briefs):
@@ -928,10 +1013,11 @@ def render_notes_index(briefs):
 
 def render_about(pg, url_map):
     url = SITE + "/about/"
-    title = plain(pg["title"])
-    content = sanitize(pg["content"], url_map)
+    title = korea_based(plain(pg["title"]))
+    content = pg["content"] if pg.get("ready") else sanitize(pg["content"], url_map)
     content = re.sub(r"^\s*<h2>\s*%s\s*</h2>\s*" % re.escape(esc(title)), "", content)
-    desc = description(pg)
+    content = rewrite_subscribe_hrefs(korea_based(content))
+    desc = korea_based(description({"content": content, "excerpt": pg.get("excerpt") or pg.get("desc") or ""}))
     ld = jsonld({
         "@context": "https://schema.org", "@type": "AboutPage", "@id": url, "url": url,
         "name": title, "description": desc, "inLanguage": "en-US",
@@ -951,7 +1037,8 @@ def render_about(pg, url_map):
     </div>
   </article>
   </div>
-</main>""".format(title=esc(title), content=content)
+{subscribe}
+</main>""".format(title=esc(title), content=content, subscribe=SUBSCRIBE)
     return page("%s · RYZM" % title, desc, url, "website", "", ld, body, "")
 
 
@@ -983,7 +1070,7 @@ LIBRARY_JS = r"""(function(){
     }
   }
   var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
-  if(params.cat&&pills.some(function(p){return p.getAttribute('data-cat')===params.cat;}))cat=params.cat;
+  if(params.cat){var want=String(params.cat).toLowerCase();var hit=pills.filter(function(p){return (p.getAttribute('data-cat')||'').toLowerCase()===want;})[0];if(hit)cat=hit.getAttribute('data-cat');}
   if(params.q)q.value=params.q;
   pills.forEach(function(p){p.addEventListener('click',function(){cat=p.getAttribute('data-cat');apply(true);});});
   q.addEventListener('input',function(){apply(true);});
@@ -1172,7 +1259,7 @@ def update_llms(arts, url_map):
         f.write(s.rstrip("\n") + "\n")
 
 
-def write_section(out_dir, manifest, items, render_one, render_list):
+def write_section(out_dir, manifest, items, render_one, render_list, with_related=False):
     """Write <out_dir>/<slug>/index.html for each item plus <out_dir>/index.html; prune removed slugs."""
     os.makedirs(out_dir, exist_ok=True)
     old = []
@@ -1187,8 +1274,9 @@ def write_section(out_dir, manifest, items, render_one, render_list):
     for a in items:
         d = os.path.join(out_dir, a["slug"])
         os.makedirs(d, exist_ok=True)
+        html_out = render_one(a, related=brief_related(items, a)) if with_related else render_one(a)
         with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
-            f.write(render_one(a))
+            f.write(html_out)
     with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_list(items))
     with open(manifest, "w", encoding="utf-8") as f:
@@ -1200,7 +1288,8 @@ def write_sitemap(arts, briefs=(), about_lastmod=None):
     today = datetime.now().astimezone().strftime("%Y-%m-%d")
     newest = max([a["modified"][:10] for a in arts] + [today])
     urls = [(SITE + "/", today, "daily"), (SITE + "/articles/", newest, "daily"),
-            (SITE + "/llms.txt", today, None)]
+            (SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None),
+            (SITE + "/rss.xml", today, "daily")]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
     if briefs:
@@ -1244,6 +1333,158 @@ def write_manifest(arts):
         f.write("\n")
 
 
+
+def featured_articles(arts, n=3):
+    """Newest articles, preferring Frameworks or Korea so the home panel stays on-brand."""
+    arts = sorted(arts, key=lambda a: a["date"], reverse=True)
+    pref, rest = [], []
+    for a in arts:
+        cats = set(a.get("categories") or [])
+        (pref if cats & {"Frameworks", "Korea"} else rest).append(a)
+    return (pref + rest)[:n]
+
+
+def write_rss(arts, briefs):
+    """Write /rss.xml and an identical /feed.xml with the 30 newest articles and briefs."""
+    items = list(arts) + list(briefs)
+    items.sort(key=lambda a: a["date"], reverse=True)
+    items = items[:30]
+
+    def pub(iso):
+        d = datetime.fromisoformat(iso)
+        if d.tzinfo is None:
+            d = d.replace(tzinfo=timezone.utc)
+        return email.utils.format_datetime(d)
+
+    def cdata(text):
+        return "<![CDATA[%s]]>" % (text or "").replace("]]>", "]]]]><![CDATA[>")
+
+    last = max((a["date"] for a in items), default=datetime.now().isoformat())
+    out = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<rss version="2.0">',
+        "<channel>",
+        "<title>RYZM</title>",
+        "<link>%s/</link>" % SITE,
+        "<description>%s</description>" % esc(
+            "RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts."),
+        "<language>en-us</language>",
+        "<lastBuildDate>%s</lastBuildDate>" % pub(last),
+    ]
+    for a in items:
+        link = SITE + a["path"]
+        out += [
+            "<item>",
+            "<title>%s</title>" % esc(a["title"]),
+            "<link>%s</link>" % link,
+            "<guid isPermaLink=\"true\">%s</guid>" % link,
+            "<pubDate>%s</pubDate>" % pub(a["date"]),
+            "<description>%s</description>" % cdata(a.get("desc") or ""),
+            "</item>",
+        ]
+    out += ["</channel>", "</rss>", ""]
+    xml = "\n".join(out)
+    for name in ("rss.xml", "feed.xml"):
+        with open(os.path.join(ROOT, name), "w", encoding="utf-8") as f:
+            f.write(xml)
+
+
+def write_subscribe():
+    """In-site subscribe page; the email form itself stays on WordPress."""
+    url = SITE + "/subscribe/"
+    title = "Subscribe · RYZM"
+    desc = "Get the weekly RYZM brief by email. New frameworks and the week's key changes. Free."
+    ld = jsonld({
+        "@context": "https://schema.org", "@type": "WebPage", "@id": url, "url": url,
+        "name": "Subscribe to RYZM", "description": desc, "inLanguage": "en-US",
+        "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG,
+    })
+    body = """<main>
+  <div class="page-head subscribe-page">
+    <div class="section-title">Subscribe</div>
+    <h1 class="page-title">Get the weekly RYZM brief</h1>
+    <p class="page-lead">New frameworks and the week’s key changes, by email. Free.</p>
+    <p class="page-lead">The sign-up form is hosted on WordPress. RYZM does not collect email addresses on this site.</p>
+    <a class="btn-subscribe" href="{wp}" target="_blank" rel="noopener">Subscribe by email</a>
+  </div>
+</main>""".format(wp=WP_SUBSCRIBE)
+    out_dir = os.path.join(ROOT, "subscribe")
+    os.makedirs(out_dir, exist_ok=True)
+    with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(page(title, desc, url, "website", "", ld, body, ""))
+
+
+def update_home_panels(arts, briefs, path=None):
+    """Refresh Latest Brief and Featured Research on the home page. Safe to run every build."""
+    path = path or os.path.join(ROOT, "index.html")
+    with open(path, encoding="utf-8") as f:
+        s = f.read()
+    if not briefs and not arts:
+        return False
+    if briefs:
+        b = sorted(briefs, key=lambda x: x["date"], reverse=True)[0]
+        brief_html = """    <!-- home-latest-brief -->
+    <article class="home-panel" aria-labelledby="latest-brief-title">
+      <div class="section-title" id="latest-brief-title">Latest Brief</div>
+      <a class="panel-feature" href="{path}">
+        <div class="meta"><time datetime="{iso}">{date}</time></div>
+        <h2>{title}</h2>
+        <p>{desc}</p>
+      </a>
+      <a class="panel-more" href="/notes/">All briefs</a>
+    </article>
+    <!-- /home-latest-brief -->""".format(
+            path=b["path"], iso=b["date"], date=fmt_date(b["date"]),
+            title=esc(b["title"]), desc=esc(b.get("desc") or ""))
+        s2, n = re.subn(r"    <!-- home-latest-brief -->.*?    <!-- /home-latest-brief -->",
+                        brief_html, s, count=1, flags=re.S)
+        if n:
+            s = s2
+    if arts:
+        rows = []
+        for a in featured_articles(arts, 3):
+            rows.append("""      <a class="feat-item" href="{path}">
+        <div class="meta"><time datetime="{iso}">{date}</time><span class="cat-label">{cat}</span></div>
+        <h3>{title}</h3>
+        <p>{desc}</p>
+      </a>""".format(path=a["path"], iso=a["date"], date=fmt_date(a["date"]),
+                     cat=esc(a.get("category") or a.get("type") or ""),
+                     title=esc(a["title"]), desc=esc(a.get("desc") or "")))
+        feat_html = """    <!-- home-featured-research -->
+    <section class="home-panel" aria-labelledby="featured-research-title">
+      <div class="section-title" id="featured-research-title">Featured Research</div>
+%s
+      <a class="panel-more" href="/articles/">All articles</a>
+    </section>
+    <!-- /home-featured-research -->""" % "\n".join(rows)
+        s2, n = re.subn(r"    <!-- home-featured-research -->.*?    <!-- /home-featured-research -->",
+                        feat_html, s, count=1, flags=re.S)
+        if n:
+            s = s2
+    fw = [a for a in arts if "Frameworks" in (a.get("categories") or [])]
+    fw.sort(key=lambda a: a["date"], reverse=True)
+    if fw:
+        a = fw[0]
+        fw_html = """    <!-- home-featured-framework -->
+      <a class="panel-feature" href="{path}">
+        <div class="meta"><time datetime="{iso}">{date}</time><span class="cat-label">Frameworks</span></div>
+        <h2>{title}</h2>
+        <p>{desc}</p>
+      </a>
+    <!-- /home-featured-framework -->""".format(
+            path=a["path"], iso=a["date"], date=fmt_date(a["date"]),
+            title=esc(a["title"]), desc=esc(a.get("desc") or ""))
+        s2, n = re.subn(r"    <!-- home-featured-framework -->.*?    <!-- /home-featured-framework -->",
+                        fw_html, s, count=1, flags=re.S)
+        if n:
+            s = s2
+    if s != open(path, encoding="utf-8").read():
+        with open(path, "w", encoding="utf-8") as f:
+            f.write(s)
+        return True
+    return False
+
+
 def retemplate():
     """Re-render existing article pages with the current template, without fetching WordPress."""
     with open(MANIFEST, encoding="utf-8") as f:
@@ -1268,7 +1509,33 @@ def retemplate():
         briefs = [load_existing(sl, NOTES_OUT) for sl in nslugs]
         for b in briefs:
             b["path"] = "/notes/%s/" % b["slug"]
-        write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index)
+        write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index, with_related=True)
+    about_path = os.path.join(ABOUT_OUT, "index.html")
+    if os.path.exists(about_path):
+        with open(about_path, encoding="utf-8") as f:
+            about_html = f.read()
+        ld_m = re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', about_html, re.S)
+        title_m = re.search(r'<h1 class="title">(.*?)</h1>', about_html, re.S)
+        start = about_html.index('<div class="prose">\n') + len('<div class="prose">\n')
+        end = about_html.index('\n    </div>\n  </article>', start)
+        ld = json.loads(ld_m.group(1)) if ld_m else {}
+        about = {
+            "title": html.unescape(title_m.group(1)) if title_m else "About RYZM",
+            "content": about_html[start:end],
+            "ready": True,
+            "date": ld.get("datePublished", ""),
+            "modified": ld.get("dateModified", ""),
+            "URL": ld.get("isBasedOn") or ld.get("url") or (SITE + "/about/"),
+        }
+        with open(about_path, "w", encoding="utf-8") as f:
+            f.write(render_about(about, {}))
+        about_lastmod = about.get("modified", "")[:10]
+    else:
+        about_lastmod = None
+    write_subscribe()
+    write_rss(arts, briefs)
+    update_home_panels(arts, briefs)
+    write_sitemap(arts, briefs, about_lastmod)
     print("Re-rendered %d articles and %d daily briefs with the current template" % (len(arts), len(briefs)))
 
 
@@ -1322,13 +1589,16 @@ def main():
         "tags": [html.unescape(t) for t in (p.get("tags") or {})],
         "html": sanitize(p["content"], url_map),
     } for p in brief_posts]
-    write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index)
+    write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index, with_related=True)
     if about.get("content"):
         os.makedirs(ABOUT_OUT, exist_ok=True)
         with open(os.path.join(ABOUT_OUT, "index.html"), "w", encoding="utf-8") as f:
             f.write(render_about(about, url_map))
 
     update_index_html(url_map)
+    update_home_panels(arts, briefs)
+    write_subscribe()
+    write_rss(arts, briefs)
     update_llms(arts, url_map)
     write_sitemap(arts, briefs, about.get("modified", "")[:10] if about.get("content") else None)
     print("Built %d articles (from %d posts)" % (len(arts), len(posts)))

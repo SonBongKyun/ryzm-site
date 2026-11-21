@@ -4,16 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About RYZM · RYZM</title>
-<meta name="description" content="RYZM is an independent, Seoul-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.">
+<meta name="description" content="RYZM is an independent, Korea-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.">
 <link rel="canonical" href="https://ryzm.app/about/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RYZM">
 <meta property="og:title" content="About RYZM · RYZM">
-<meta property="og:description" content="RYZM is an independent, Seoul-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.">
+<meta property="og:description" content="RYZM is an independent, Korea-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.">
 <meta property="og:url" content="https://ryzm.app/about/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://ryzm.app/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://ryzm.app/og-image.svg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
 <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
@@ -24,10 +29,10 @@
  "@id": "https://ryzm.app/about/",
  "url": "https://ryzm.app/about/",
  "name": "About RYZM",
- "description": "RYZM is an independent, Seoul-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.",
+ "description": "RYZM is an independent, Korea-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.",
  "inLanguage": "en-US",
  "datePublished": "2026-10-15T10:48:05+09:00",
- "dateModified": "2026-10-15T10:48:05+09:00",
+ "dateModified": "2026-11-21T23:22:50+09:00",
  "isPartOf": {
   "@id": "https://ryzm.app/#website"
  },
@@ -450,6 +455,28 @@
   .rel-item:hover h3 { color: var(--accent-ink); }
   .related + .origin { margin-top: 40px; }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: 720px; margin: 56px auto 0; }
+  .subscribe-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 28px 32px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 0 22px; border-radius: 999px; background: var(--accent); color: #fffdf9;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+  .subscribe-page .btn-subscribe { margin-top: 28px; }
+
   /* ---------- touch targets (phones/tablets) ---------- */
   @media (max-width: 900px) {
     nav a { display: inline-flex; align-items: center; min-height: 40px; }
@@ -459,7 +486,10 @@
     }
     .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .back, .origin a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 23px; }
+    .btn-subscribe { min-height: 44px; }
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
@@ -474,11 +504,11 @@
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/">Articles</a>
-      <a href="/#frameworks">Frameworks</a>
-      <a href="/#notes">Notes</a>
+      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/notes/">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Get alerts</a>
   </div>
 </header>
 
@@ -490,10 +520,19 @@
       <h1 class="title">About RYZM</h1>
     </div>
     <div class="prose">
-<p>RYZM is an independent, Seoul-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.</p><h2>How we work</h2><p>Rates first. Structure first. Our notes distinguish market prices from mechanisms, and expectations from positioning, balance-sheet constraints and financing conditions. We state observation dates and flag uncertainty when evidence is incomplete.</p><h2>Our core coverage</h2><p>US Treasury rates and duration; dollar funding, repo and reserves; foreign exchange and hedging costs; and their impact on Korean bonds, the won and capital flows. Crypto appears when stablecoins, collateral or flows change market plumbing.</p><h2>Editorial standards</h2><p>Analysis is for information and education, not investment advice or personalized trade signals. Data points should be dated and sources linked when available. Views may change as evidence changes.</p><p><a href="https://ryzm9.wordpress.com/research/" target="_blank" rel="noopener">Explore the research archive</a> or <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">subscribe for updates</a>.</p>
+<p>RYZM is an independent, Korea-based macro research publication focused on interest rates, liquidity, market structure and the channels linking global markets to Korea.</p><h2>How we work</h2><p>Rates first. Structure first. Our notes distinguish market prices from mechanisms, and expectations from positioning, balance-sheet constraints and financing conditions. We state observation dates and flag uncertainty when evidence is incomplete.</p><h2>Our core coverage</h2><p>US Treasury rates and duration; dollar funding, repo and reserves; foreign exchange and hedging costs; and their impact on Korean bonds, the won and capital flows. Crypto appears when stablecoins, collateral or flows change market plumbing.</p><h2>Editorial standards</h2><p>Analysis is for information and education, not investment advice or personalized trade signals. Data points should be dated and sources linked when available. Views may change as evidence changes.</p><p><a href="https://ryzm9.wordpress.com/research/" target="_blank" rel="noopener">Explore the research archive</a> or <a href="/subscribe/">subscribe for updates</a>.</p>
     </div>
   </article>
   </div>
+<aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+  </div>
+</aside>
 </main>
 
 <footer>
@@ -501,7 +540,7 @@
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+      <a href="/subscribe/">Alerts</a>
     </div>
   </div>
 </footer>

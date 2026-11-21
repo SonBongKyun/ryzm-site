@@ -3,17 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="RYZM – Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.">
+<meta name="description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
 <title>RYZM · Frameworks for Markets</title>
 <link rel="canonical" href="https://ryzm.app/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RYZM">
 <meta property="og:title" content="RYZM · Frameworks for Markets">
-<meta property="og:description" content="Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.">
+<meta property="og:description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
 <meta property="og:url" content="https://ryzm.app/">
-<meta name="twitter:card" content="summary">
+<meta property="og:image" content="https://ryzm.app/og-image.svg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ryzm.app/og-image.svg">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
 <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
@@ -32,7 +37,7 @@
    "@id": "https://ryzm.app/#website",
    "url": "https://ryzm.app/",
    "name": "RYZM · Frameworks for Markets",
-   "description": "Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.",
+   "description": "RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.",
    "inLanguage": "en-US",
    "publisher": {
     "@id": "https://ryzm.app/#org"
@@ -285,6 +290,47 @@
   .footer-links a { color: var(--ink-band-text); border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
   .footer-links a:hover { color: #fffdf9; border-color: var(--accent); }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: var(--wrap); margin: 64px auto 0; padding: 0 28px; }
+  .subscribe-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 36px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fffdf9;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+
   /* ---------- section titles ---------- */
   .section-title {
     font-size: 11.5px;
@@ -349,10 +395,14 @@
     }
     .header-cta { padding: 7px 13px; font-size: 12.5px; display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .all-link { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .all-link, .panel-more, .fw-mini, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
     .filter-btn { min-height: 40px; }
     .card .source a { display: inline-block; padding: 12px 0; margin: -12px 0; }
     footer { padding: 32px 20px; }
+    .subscribe { padding: 0 16px; margin-top: 48px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 24px; }
+    .btn-subscribe { min-height: 44px; width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -382,21 +432,18 @@
   .ticker-item strong { color: #e8a476; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px; font-size: 11px; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .intro h1, .intro p.lead, .intro-actions, .scroll-hint { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .intro p.lead { animation-delay: 0.08s; }
-  .intro-actions { animation-delay: 0.16s; }
-  .scroll-hint { animation-delay: 0.24s; }
+  .intro h1, .home-panels { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .home-panels { animation-delay: 0.08s; }
 
   /* ---------- intro / hero ---------- */
   .intro {
     position: relative;
     max-width: var(--wrap);
     margin: 0 auto;
-    padding: 88px 28px 80px;
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    column-gap: 72px;
-    align-items: end;
+    padding: 80px 28px 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     isolation: isolate;
   }
   .intro::before {
@@ -416,10 +463,8 @@
   }
   .intro::after {
     content: "Rates \00B7  Funding \00B7  FX \00B7  Korea";
-    grid-column: 1 / -1;
-    grid-row: 1;
-    justify-self: start;
-    margin-bottom: 32px;
+    order: -1;
+    margin-bottom: 28px;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -432,55 +477,75 @@
   }
   .intro h1 {
     font-family: var(--serif);
-    font-size: clamp(44px, 7vw, 88px);
+    font-size: clamp(28px, 3.8vw, 46px);
     font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 0.98;
-    grid-column: 1;
-    grid-row: 2 / span 3;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    max-width: 18.5em;
     color: var(--text);
     font-optical-sizing: auto;
   }
   .intro h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .intro p.lead {
-    grid-column: 2;
-    grid-row: 2;
-    margin-top: 0;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-strong);
-    font-size: clamp(17px, 1.6vw, 20px);
-    color: var(--text-2);
-    max-width: 34em;
-    line-height: 1.55;
+  .home-panels {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.25fr) minmax(0, 0.95fr);
+    gap: 16px;
+    width: 100%;
+    margin-top: 40px;
   }
-  .intro-actions { grid-column: 2; grid-row: 3; margin-top: 28px; display: flex; gap: 12px; }
-  .btn-intro {
+  .home-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px 16px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .home-panel .section-title { margin-bottom: 12px; }
+  .home-panel .section-title::after { display: none; }
+  .panel-feature, .feat-item { display: block; min-width: 0; }
+  .feat-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .feat-item:first-of-type { padding-top: 0; }
+  .feat-item:last-of-type { border-bottom: none; }
+  .home-panel .meta { font-size: 12px; color: var(--text-muted); margin-bottom: 6px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .home-panel h2, .home-panel h3 {
+    font-family: var(--serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+  }
+  .home-panel h2 { font-size: 22px; }
+  .home-panel h3 { font-size: 17px; }
+  .home-panel p { font-size: 14px; color: var(--text-2); line-height: 1.55; margin-top: 8px; }
+  .panel-feature:hover h2, .feat-item:hover h3, .fw-mini:hover { color: var(--accent-ink); }
+  .fw-mini {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 4px 0;
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    transition: color 0.15s;
+  }
+  .fw-mini:last-of-type { border-bottom: none; }
+  .panel-more {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: var(--accent);
-    color: #fffdf9;
-    padding: 14px 22px;
-    border-radius: 999px;
+    min-height: 40px;
+    margin-top: auto;
+    font-size: 13px;
     font-weight: 600;
-    font-size: 15px;
-    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    color: var(--accent-ink);
   }
-  .btn-intro::after { content: "\2192"; transition: transform 0.2s; }
-  .btn-intro:hover { background: var(--accent-ink); transform: translateY(-1px); }
-  .btn-intro:hover::after { transform: translateX(3px); }
-  .scroll-hint {
-    grid-column: 2;
-    grid-row: 4;
-    margin-top: 28px;
-    font-size: 12.5px;
-    color: var(--text-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .scroll-hint::before { content: ""; width: 28px; height: 1px; background: var(--border-strong); }
+  .panel-more:hover { text-decoration: underline; text-underline-offset: 3px; }
 
   /* ---------- main ---------- */
   main { max-width: var(--wrap); margin: 0 auto; padding: 8px 28px 32px; }
@@ -711,13 +776,10 @@
     .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 36px; }
   }
   @media (max-width: 900px) {
-    .intro { padding: 52px 20px 52px; display: flex; flex-direction: column; align-items: flex-start; }
-    .intro::after { order: -1; }
-    .intro p.lead { padding-top: 0; border-top: none; }
+    .intro { padding: 52px 20px 48px; }
     .intro::after { margin-bottom: 20px; font-size: 11px; }
-    .intro p.lead { margin-top: 20px; }
-    .intro-actions { margin-top: 28px; }
-    .scroll-hint { margin-top: 36px; }
+    .home-panels { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+    .home-panel h2 { font-size: 20px; }
     main { padding: 0 16px 24px; }
     .layout { grid-template-columns: minmax(0, 1fr); gap: 56px; }
     #calendar { position: static; }
@@ -752,11 +814,11 @@
       <a href="#feed" data-tab-link="feed">Feed</a>
       <a href="#breaking" data-tab-link="breaking">Breaking</a>
       <a href="/articles/">Articles</a>
-      <a href="#frameworks" data-tab-link="frameworks">Frameworks</a>
-      <a href="#notes" data-tab-link="notes">Notes</a>
+      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/notes/">Notes</a>
       <a href="#calendar" data-tab-link="calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Get alerts</a>
+    <a class="header-cta" href="/subscribe/" style="text-decoration:none;display:inline-block">Get alerts</a>
   </div>
   <div class="ticker-bar">
     <div class="ticker-inner">
@@ -777,12 +839,57 @@
 </header>
 
 <section class="intro">
-  <h1>Frameworks for markets.<br><em>Not forecasts.</em></h1>
-  <p class="lead">What markets are doing, not what they are saying.<br>Rates, funding, FX. Korea as the bridge.</p>
-  <div class="intro-actions">
-    <a href="#feed" class="btn-intro">Enter the feed</a>
+  <h1>RYZM maps how US rates, dollar funding and FX move into Korean markets.<br><em>Frameworks, not forecasts.</em></h1>
+  <div class="home-panels">
+    <!-- home-latest-brief -->
+    <article class="home-panel" aria-labelledby="latest-brief-title">
+      <div class="section-title" id="latest-brief-title">Latest Brief</div>
+      <a class="panel-feature" href="/notes/ryzm-daily-brief-2026-11-21/">
+        <div class="meta"><time datetime="2026-11-21T10:57:06+09:00">Nov 21, 2026</time></div>
+        <h2>RYZM Daily Brief | Fed survey maps reserve sensitivity to funding spreads | November 21, 2026</h2>
+        <p>The Fed’s September survey, released on 20 November, found 44 of 91 responding banks would reduce reserves if SOFR averaged 5 basis points above the interest rate on reserve balances (IORB). At a…</p>
+      </a>
+      <a class="panel-more" href="/notes/">All briefs</a>
+    </article>
+    <!-- /home-latest-brief -->
+    <!-- home-featured-research -->
+    <section class="home-panel" aria-labelledby="featured-research-title">
+      <div class="section-title" id="featured-research-title">Featured Research</div>
+      <a class="feat-item" href="/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/">
+        <div class="meta"><time datetime="2026-11-21T23:26:09+09:00">Nov 21, 2026</time><span class="cat-label">Frameworks</span></div>
+        <h3>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h3>
+        <p>US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…</p>
+      </a>
+      <a class="feat-item" href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/">
+        <div class="meta"><time datetime="2026-11-21T21:22:56+09:00">Nov 21, 2026</time><span class="cat-label">Korea</span></div>
+        <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally | November 21, 2026</h3>
+        <p>The KOSPI fell 7.9% this week to close at 4,869.96. The KOSDAQ lost 7.7% and MSCI Korea dropped 8.8%. Goldman Sachs cut its 12-month KOSPI target to 7,500 from 9,000, citing high volatility and…</p>
+      </a>
+      <a class="feat-item" href="/articles/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/">
+        <div class="meta"><time datetime="2026-11-21T13:37:05+09:00">Nov 21, 2026</time><span class="cat-label">Funding</span></div>
+        <h3>Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027 | November 21, 2026</h3>
+        <p>Bank of America strategist Michael Hartnett sums up the current selloff in one line in his latest Flow Show: prices have capitulated, but positioning has not. He frames 2027 around two questions…</p>
+      </a>
+      <a class="panel-more" href="/articles/">All articles</a>
+    </section>
+    <!-- /home-featured-research -->
+    <section class="home-panel" aria-labelledby="explore-frameworks-title">
+      <div class="section-title" id="explore-frameworks-title">Explore Frameworks</div>
+      <!-- home-featured-framework -->
+      <a class="panel-feature" href="/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/">
+        <div class="meta"><time datetime="2026-11-21T23:26:09+09:00">Nov 21, 2026</time><span class="cat-label">Frameworks</span></div>
+        <h2>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h2>
+        <p>US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…</p>
+      </a>
+    <!-- /home-featured-framework -->
+      <a class="fw-mini" href="/articles/?cat=frameworks">Cash is a position</a>
+      <a class="fw-mini" href="/articles/?cat=frameworks">Liquidity plumbing</a>
+      <a class="fw-mini" href="/articles/?cat=frameworks">Korea as canary</a>
+      <a class="fw-mini" href="/articles/?cat=frameworks">Credit leads equities</a>
+      <!-- Framework notes: WordPress category "Framework Note" (ID 199488472), filtered at /articles/?cat=frameworks. -->
+      <a class="panel-more" href="/articles/?cat=frameworks">All framework notes</a>
+    </section>
   </div>
-  <div class="scroll-hint">Scroll for notes and frameworks</div>
 </section>
 
 <main id="main">
@@ -1000,15 +1107,26 @@
         <p>Reference guide to the mechanism. Not a forecast.</p>
       </a>
     </div>
+    <a class="all-link" href="/notes/">All briefs &rarr;</a>
   </div>
 </main>
+
+<aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+  </div>
+</aside>
 
 <footer>
   <div class="footer-inner">
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+      <a href="/subscribe/">Alerts</a>
     </div>
   </div>
 </footer>
