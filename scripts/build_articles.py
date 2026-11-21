@@ -54,10 +54,10 @@ MIN_TEXT_CHARS = 900
 
 FAVICON_LINKS = """<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">"""
-OG_TAGS = """<meta property="og:image" content="%s/og-image.png">
+OG_TAGS = """<meta property="og:image" content="%s/og-image.svg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="%s/og-image.png">
+<meta name="twitter:image" content="%s/og-image.svg">
 """ % (SITE, SITE)
 WP_SUBSCRIBE = "https://ryzm9.wordpress.com/subscribe/"
 
