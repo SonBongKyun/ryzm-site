@@ -12,12 +12,14 @@
 <meta property="og:title" content="Daily Briefs · RYZM">
 <meta property="og:description" content="RYZM Daily Briefs: dated, sourced morning notes on rates, funding, FX, and Korea.">
 <meta property="og:url" content="https://ryzm.app/notes/">
-<meta property="og:image" content="https://ryzm.app/og-image.svg">
+<meta property="og:image" content="https://ryzm.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="https://ryzm.app/og-image.svg">
+<meta name="twitter:image" content="https://ryzm.app/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
@@ -560,7 +562,10 @@
     font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
   }
   .pill:hover { border-color: var(--border-strong); color: var(--text); }
-  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill[aria-pressed="true"],
+  .pill[aria-current="page"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  a.pill { text-decoration: none; color: inherit; }
+  a.pill:hover { color: var(--text); }
   .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
   .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
   .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
@@ -627,7 +632,7 @@
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/">Articles</a>
-      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/articles/frameworks/">Frameworks</a>
       <a href="/notes/" class="active">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
