@@ -457,6 +457,27 @@
   .rel-item:hover h3 { color: var(--accent-ink); }
   .related + .origin { margin-top: 40px; }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: 720px; margin: 56px auto 0; }
+  .subscribe-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 28px 32px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 0 22px; border-radius: 999px; background: var(--accent); color: #fffdf9;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+
   /* ---------- touch targets (phones/tablets) ---------- */
   @media (max-width: 900px) {
     nav a { display: inline-flex; align-items: center; min-height: 40px; }
@@ -466,7 +487,10 @@
     }
     .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .back, .origin a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 23px; }
+    .btn-subscribe { min-height: 44px; }
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
@@ -522,6 +546,15 @@
     </div>
   </article>
   </div>
+  <aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Subscribe</a>
+  </div>
+</aside>
   <div class="origin">
     <a href="/notes/">&larr; Back to Daily Briefs</a>
     <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/11/19/ryzm-daily-brief-2026-11-19/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
