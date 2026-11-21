@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FX Hedging Costs: Why Dollar Funding Matters for Korea · RYZM</title>
+<meta name="description" content="A dollar asset yielding 5% is not automatically a 5% investment for a won-based investor. The cash flows arrive in one currency and the investor’s spending or liabilities may sit in another. The…">
+<link rel="canonical" href="https://ryzm.app/articles/fx-hedging-costs-korea/">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="RYZM">
+<meta property="og:title" content="FX Hedging Costs: Why Dollar Funding Matters for Korea · RYZM">
+<meta property="og:description" content="A dollar asset yielding 5% is not automatically a 5% investment for a won-based investor. The cash flows arrive in one currency and the investor’s spending or liabilities may sit in another. The…">
+<meta property="og:url" content="https://ryzm.app/articles/fx-hedging-costs-korea/">
+<meta property="article:published_time" content="2026-10-11T18:46:46+09:00">
+<meta property="article:modified_time" content="2026-11-20T20:19:33+09:00">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "@id": "https://ryzm.app/articles/fx-hedging-costs-korea/#article",
+ "headline": "FX Hedging Costs: Why Dollar Funding Matters for Korea",
+ "description": "A dollar asset yielding 5% is not automatically a 5% investment for a won-based investor. The cash flows arrive in one currency and the investor’s spending or liabilities may sit in another. The…",
+ "url": "https://ryzm.app/articles/fx-hedging-costs-korea/",
+ "mainEntityOfPage": "https://ryzm.app/articles/fx-hedging-costs-korea/",
+ "datePublished": "2026-10-11T18:46:46+09:00",
+ "dateModified": "2026-11-20T20:19:33+09:00",
+ "inLanguage": "en-US",
+ "articleSection": "Framework",
+ "keywords": [
+  "FX Swap & Basis",
+  "USD/KRW"
+ ],
+ "author": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "isBasedOn": "https://ryzm9.wordpress.com/2026/10/11/fx-hedging-costs-korea/"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ee; --surface: #fffdf9; --surface-2: #f3eee8; --border: #e5ddd4;
+    --text: #2c2520; --text-muted: #7a7068; --accent: #c47b4a;
+    --accent-soft: rgba(196, 123, 74, 0.12); --blue: #4a7c9b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 90% 60% at 10% 10%, rgba(184, 92, 46, 0.08), transparent),
+      radial-gradient(ellipse 70% 50% at 90% 80%, rgba(58, 106, 136, 0.06), transparent);
+    color: var(--text); line-height: 1.5; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; letter-spacing: -0.011em;
+  }
+  a { color: inherit; text-decoration: none; }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(247, 243, 238, 0.96);
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .header-top { max-width: 1200px; margin: 0 auto; min-height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; gap: 16px; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.045em; color: #1a1512; }
+  .logo span { color: var(--accent); font-weight: 800; }
+  nav { display: flex; gap: 28px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  nav a:hover, nav a.active { color: var(--text); }
+  nav a.active { font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 2px; }
+  .header-cta { background: var(--accent); color: #fffdf9; padding: 7px 14px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; white-space: nowrap; }
+  @media (max-width: 900px) {
+    .header-top { flex-wrap: wrap; padding: 8px 16px; }
+    nav { order: 3; width: 100%; gap: 20px; overflow-x: auto; white-space: nowrap; padding: 4px 0 6px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 72px; }
+  .back { display: inline-block; font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .back:hover { color: var(--text); }
+  .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; width: 18px; height: 3px; background: var(--blue); border-radius: 1.5px; }
+  .meta { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+  .tag { background: var(--accent-soft); color: var(--accent); padding: 2px 7px; border-radius: 4px;
+    font-weight: 600; font-size: 11px; letter-spacing: 0.02em; margin-left: 4px; }
+  h1.title { font-size: 34px; line-height: 1.15; letter-spacing: -0.03em; font-weight: 650; padding-bottom: 22px;
+    border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .prose { font-size: 16.5px; line-height: 1.75; color: var(--text); }
+  .prose > * + * { margin-top: 1.05em; }
+  .prose h2 { font-size: 22px; line-height: 1.3; letter-spacing: -0.02em; font-weight: 650; margin-top: 2em; }
+  .prose h3 { font-size: 18px; line-height: 1.35; font-weight: 650; margin-top: 1.6em; }
+  .prose h4, .prose h5, .prose h6 { font-size: 16px; font-weight: 650; margin-top: 1.4em; }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+  .prose ul, .prose ol { padding-left: 1.4em; }
+  .prose li + li { margin-top: 0.4em; }
+  .prose blockquote { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; color: var(--text-muted); }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 14.5px; display: block; overflow-x: auto; }
+  .prose th, .prose td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+  .prose th { background: var(--surface-2); font-weight: 600; }
+  .prose img { max-width: 100%; height: auto; border-radius: 10px; }
+  .prose figcaption { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+  .prose code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+  .origin { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 13px;
+    color: var(--text-muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .origin a { text-decoration: underline; text-underline-offset: 2px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .item { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 18px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(44, 37, 32, 0.03); }
+  .item:hover { background: var(--surface-2); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44, 37, 32, 0.08); }
+  .item .meta { margin-bottom: 4px; font-size: 11.5px; }
+  .item h2 { font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; }
+  .item p { font-size: 13.5px; color: var(--text-muted); }
+  .page-lead { color: var(--text-muted); font-size: 15px; margin: -4px 0 24px; }
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; margin-top: 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); gap: 16px; flex-wrap: wrap; }
+  .footer-links { display: flex; gap: 18px; }
+  .footer-links a:hover { color: var(--text); }
+  @media (max-width: 600px) { h1.title { font-size: 27px; } .prose { font-size: 16px; } main { padding-top: 28px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="logo" href="/">RY<span>ZM</span></a>
+    <nav>
+      <a href="/#feed">Feed</a>
+      <a href="/#breaking">Breaking</a>
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/#frameworks">Frameworks</a>
+      <a href="/#notes">Notes</a>
+      <a href="/#calendar">Calendar</a>
+    </nav>
+    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+  </div>
+</header>
+
+<main>
+  <a class="back" href="/articles/">&larr; Back to Articles</a>
+  <article>
+    <div class="meta"><time datetime="2026-10-11T18:46:46+09:00">Oct 11, 2026</time> · Framework</div>
+    <h1 class="title">FX Hedging Costs: Why Dollar Funding Matters for Korea</h1>
+    <div class="prose">
+<p>RYZM REFERENCE / FX &amp; KOREA BRIDGE</p>
+
+<p><strong>A dollar asset yielding 5% is not automatically a 5% investment for a won-based investor.</strong> The cash flows arrive in one currency and the investor’s spending or liabilities may sit in another. The hedge belongs in the return calculation, not in a footnote.</p>
+
+<p><strong>In this guide:</strong> Cash flows · Worked example · The basis · Korea evidence · Desk framework · Sources</p>
+
+<h2>Start with the currency cash flows</h2>
+
+<p>An FX swap exchanges two currencies now and reverses the exchange on agreed terms later. Covered interest parity describes the no-arbitrage relationship between spot and forward exchange rates and matched-maturity interest rates, under comparable risks and frictionless access. A cross-currency basis measures a departure from that relationship. <a href="https://www.bis.org/publications/qr-201609/covered-interest-parity-lost-understanding-cross-currency-basis" target="_blank" rel="noopener">Source: BIS explanation of covered interest parity.</a></p>
+
+<p>For a fully hedged, single-payment example, define <strong>S</strong> as today’s spot rate in won per US dollar and <strong>F</strong> as the agreed forward rate in the same units. Let <strong>R<sub>USD</sub></strong> be the dollar return over exactly the hedge period, not a quoted yield from a different horizon.</p>
+
+<p><strong>Hedged won return = (1 + R<sub>USD</sub>) × F / S − 1.</strong></p>
+
+<p>This expression assumes the entire known dollar maturity payment is sold forward for the same maturity. It excludes default, transaction costs and taxes. Coupon payments arriving on other dates require their own cash-flow treatment; a hedge on principal alone is not the same calculation.</p>
+
+<h2>A worked example with every amount visible</h2>
+
+<p><strong>Hypothetical one-year example, not a market quote.</strong> Start with ₩1,000,000. At S = ₩1,000 per dollar, that buys $1,000. A zero-coupon dollar asset pays $1,050 at the end of one year. Assume the investor sells that entire $1,050 payment forward at F = ₩980 per dollar.</p>
+
+<p>The contracted won receipt is $1,050 × ₩980 = ₩1,029,000. The won return is therefore 2.90%, before the excluded costs and risks. Equivalently, 1.05 × 0.98 − 1 = 0.029. Subtracting a rounded 2% hedge cost from 5% would give 3.00%, close but not exact.</p>
+
+<p>For a frictionless comparison with a matched one-year won rate of 3% and a dollar rate of 5%, the parity forward ratio would be 1.03 / 1.05, or approximately 0.980952. Substitution into the same formula gives exactly 3%. The hypothetical ratio of 0.98 sits slightly below that benchmark. Whether a tradable difference survives in reality depends on comparable credit terms, collateral, bid-ask spreads and access.</p>
+
+<h2>Why the cross-currency basis can persist</h2>
+
+<p>BIS research connects persistent deviations from covered interest parity with demand for currency hedges and the cost of using intermediary balance sheets to take the other side. A non-zero basis therefore need not imply a financial crisis or a freely available arbitrage. <a href="https://www.bis.org/publications/qr-201609/covered-interest-parity-lost-understanding-cross-currency-basis" target="_blank" rel="noopener">Source: BIS hedging-demand and arbitrage framework.</a></p>
+
+<p>Before interpreting the sign, identify the quotation convention, the leg carrying the spread and the maturity. Report the implied dollar borrowing cost relative to a named benchmark. That is less ambiguous than assuming that every negative number on every terminal means the same thing.</p>
+
+<h2>The Korea bridge: historical evidence, not a current alarm</h2>
+
+<p>A December 2021 BIS study of emerging Asia describes how long-term foreign assets can be hedged with much shorter instruments. During March 2020, it reports particularly acute pressure in the Korean won’s three-month FX swap basis relative to the longer one-year segment. Dollar demand associated with margin calls at Korean securities firms added to that episode’s funding pressure. <a href="https://www.bis.org/publ/qtrpdf/r_qt2112d.htm" target="_blank" rel="noopener">Source: BIS, Outward portfolio investment and dollar funding in emerging Asia.</a></p>
+
+<p>The lesson is about maturity and cash needs. Hedging exchange-rate exposure does not eliminate the need to replace an expiring contract or fund an interim payment. BIS research on FX swap obligations similarly highlights how short maturities create recurring dollar rollover requirements that are not well captured by standard debt statistics. <a href="https://www.bis.org/publ/qtrpdf/r_qt2212h.htm" target="_blank" rel="noopener">Source: BIS analysis of FX swap payment obligations.</a></p>
+
+<p>In April 2020, BIS researchers also described dollar funding costs as reflecting both demand and supply conditions, with intermediaries’ reduced capacity amplifying pressure. That historical account is evidence for a transmission mechanism, not proof of a shortage in Korea today. <a href="https://www.bis.org/publications/bulletin-1-dollar-funding-costs-during-covid-19-crisis-through-lens-fx-swap-market" target="_blank" rel="noopener">Source: BIS Bulletin 1, April 2020.</a></p>
+
+<h2>RYZM desk framework: identify who needs which dollars</h2>
+
+<p><strong>Our interpretation framework:</strong> begin with the investor’s liability currency, the asset cash flows, the hedge ratio and the dates on which hedges expire. Then compare an all-in hedged return with a same-horizon domestic alternative. Keep currency hedging separate from duration, credit and collateral risks.</p>
+
+<p>For market monitoring, ask whether a move is concentrated in short tenors, whether bid-ask spreads deteriorate, and whether observed flows or cash demands support the proposed explanation. A weaker won alone cannot establish a shortage of dollars in the swap market. An unchanged spot rate cannot establish that replacing a hedge is cheap.</p>
+
+<p>A funding-stress interpretation should be reconsidered when the basis move is temporary, trading conditions remain orderly or evidence of urgent cash demand is absent. The goal is to identify a mechanism and its limits, not attach a crisis label to a currency chart.</p>
+
+<h2>Does a three-month hedge lock a ten-year return?</h2>
+
+<p>No. A three-month contract fixes the exchange terms for the amount and dates specified in that contract. Repeatedly rolling it leaves future hedge prices unknown. A long-term bond held with short-term currency hedges still needs a separate analysis of rollover costs and changes in the bond’s price.</p>
+
+<h2>Sources and scope</h2>
+
+<p>Reference guide. Sources reviewed 11 October 2026. Historical papers are used to explain mechanisms, not to describe current market conditions. Numerical examples are hypothetical; no live market levels are asserted. Institutional publications may express their authors’ views, not the institution’s policy position.</p>
+
+<p><a href="https://www.bis.org/publications/qr-201609/covered-interest-parity-lost-understanding-cross-currency-basis" target="_blank" rel="noopener">BIS: Covered interest parity lost, understanding the cross-currency basis</a> (September 2016).</p>
+
+<p><a href="https://www.bis.org/publ/qtrpdf/r_qt2112d.htm" target="_blank" rel="noopener">BIS: Outward portfolio investment and dollar funding in emerging Asia</a> (December 2021).</p>
+
+<p><a href="https://www.bis.org/publ/qtrpdf/r_qt2212h.htm" target="_blank" rel="noopener">BIS: Dollar debt in FX swaps and forwards, huge, missing and growing</a> (2022-12-05).</p>
+
+<p><a href="https://www.bis.org/publications/bulletin-1-dollar-funding-costs-during-covid-19-crisis-through-lens-fx-swap-market" target="_blank" rel="noopener">BIS Bulletin 1: Dollar funding costs during the Covid-19 crisis</a> (2020-04-01).</p>
+
+<h2>Continue with RYZM</h2>
+
+<p><a href="https://ryzm9.wordpress.com/category/fx/" target="_blank" rel="noopener">Foreign exchange and hedging</a> · <a href="https://ryzm9.wordpress.com/category/korea-bridge/" target="_blank" rel="noopener">Korea bridge</a> · <a href="https://ryzm9.wordpress.com/category/funding-liquidity/" target="_blank" rel="noopener">Dollar funding and liquidity</a></p>
+
+<p><a href="https://ryzm9.wordpress.com/#subscribe" target="_blank" rel="noopener">Subscribe to new WordPress notes</a>. Independent market commentary, not personalized investment advice.</p>
+    </div>
+  </article>
+  <div class="origin">
+    <a href="/articles/">&larr; Back to Articles</a>
+    <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/10/11/fx-hedging-costs-korea/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>RYZM · frameworks, not forecasts</div>
+    <div class="footer-links">
+      <a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>
+      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
