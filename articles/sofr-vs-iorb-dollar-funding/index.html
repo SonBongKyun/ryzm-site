@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOFR vs IORB: Reading Dollar Funding Pressure · RYZM</title>
+<meta name="description" content="The level of SOFR tells you what overnight Treasury financing costs. Its relationship to IORB helps frame why. The spread is useful, but calling every positive reading a dollar shortage turns a…">
+<link rel="canonical" href="https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="RYZM">
+<meta property="og:title" content="SOFR vs IORB: Reading Dollar Funding Pressure · RYZM">
+<meta property="og:description" content="The level of SOFR tells you what overnight Treasury financing costs. Its relationship to IORB helps frame why. The spread is useful, but calling every positive reading a dollar shortage turns a…">
+<meta property="og:url" content="https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/">
+<meta property="article:published_time" content="2026-10-11T18:46:32+09:00">
+<meta property="article:modified_time" content="2026-11-20T20:19:36+09:00">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "@id": "https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/#article",
+ "headline": "SOFR vs IORB: Reading Dollar Funding Pressure",
+ "description": "The level of SOFR tells you what overnight Treasury financing costs. Its relationship to IORB helps frame why. The spread is useful, but calling every positive reading a dollar shortage turns a…",
+ "url": "https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/",
+ "mainEntityOfPage": "https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/",
+ "datePublished": "2026-10-11T18:46:32+09:00",
+ "dateModified": "2026-11-20T20:19:36+09:00",
+ "inLanguage": "en-US",
+ "articleSection": "Framework",
+ "keywords": [
+  "Fed",
+  "SOFR & Repo"
+ ],
+ "author": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "isBasedOn": "https://ryzm9.wordpress.com/2026/10/11/sofr-vs-iorb-dollar-funding/"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ee; --surface: #fffdf9; --surface-2: #f3eee8; --border: #e5ddd4;
+    --text: #2c2520; --text-muted: #7a7068; --accent: #c47b4a;
+    --accent-soft: rgba(196, 123, 74, 0.12); --blue: #4a7c9b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 90% 60% at 10% 10%, rgba(184, 92, 46, 0.08), transparent),
+      radial-gradient(ellipse 70% 50% at 90% 80%, rgba(58, 106, 136, 0.06), transparent);
+    color: var(--text); line-height: 1.5; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; letter-spacing: -0.011em;
+  }
+  a { color: inherit; text-decoration: none; }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(247, 243, 238, 0.96);
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .header-top { max-width: 1200px; margin: 0 auto; min-height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; gap: 16px; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.045em; color: #1a1512; }
+  .logo span { color: var(--accent); font-weight: 800; }
+  nav { display: flex; gap: 28px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  nav a:hover, nav a.active { color: var(--text); }
+  nav a.active { font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 2px; }
+  .header-cta { background: var(--accent); color: #fffdf9; padding: 7px 14px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; white-space: nowrap; }
+  @media (max-width: 900px) {
+    .header-top { flex-wrap: wrap; padding: 8px 16px; }
+    nav { order: 3; width: 100%; gap: 20px; overflow-x: auto; white-space: nowrap; padding: 4px 0 6px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 72px; }
+  .back { display: inline-block; font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .back:hover { color: var(--text); }
+  .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; width: 18px; height: 3px; background: var(--blue); border-radius: 1.5px; }
+  .meta { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+  .tag { background: var(--accent-soft); color: var(--accent); padding: 2px 7px; border-radius: 4px;
+    font-weight: 600; font-size: 11px; letter-spacing: 0.02em; margin-left: 4px; }
+  h1.title { font-size: 34px; line-height: 1.15; letter-spacing: -0.03em; font-weight: 650; padding-bottom: 22px;
+    border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .prose { font-size: 16.5px; line-height: 1.75; color: var(--text); }
+  .prose > * + * { margin-top: 1.05em; }
+  .prose h2 { font-size: 22px; line-height: 1.3; letter-spacing: -0.02em; font-weight: 650; margin-top: 2em; }
+  .prose h3 { font-size: 18px; line-height: 1.35; font-weight: 650; margin-top: 1.6em; }
+  .prose h4, .prose h5, .prose h6 { font-size: 16px; font-weight: 650; margin-top: 1.4em; }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+  .prose ul, .prose ol { padding-left: 1.4em; }
+  .prose li + li { margin-top: 0.4em; }
+  .prose blockquote { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; color: var(--text-muted); }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 14.5px; display: block; overflow-x: auto; }
+  .prose th, .prose td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+  .prose th { background: var(--surface-2); font-weight: 600; }
+  .prose img { max-width: 100%; height: auto; border-radius: 10px; }
+  .prose figcaption { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+  .prose code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+  .origin { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 13px;
+    color: var(--text-muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .origin a { text-decoration: underline; text-underline-offset: 2px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .item { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 18px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(44, 37, 32, 0.03); }
+  .item:hover { background: var(--surface-2); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44, 37, 32, 0.08); }
+  .item .meta { margin-bottom: 4px; font-size: 11.5px; }
+  .item h2 { font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; }
+  .item p { font-size: 13.5px; color: var(--text-muted); }
+  .page-lead { color: var(--text-muted); font-size: 15px; margin: -4px 0 24px; }
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; margin-top: 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); gap: 16px; flex-wrap: wrap; }
+  .footer-links { display: flex; gap: 18px; }
+  .footer-links a:hover { color: var(--text); }
+  @media (max-width: 600px) { h1.title { font-size: 27px; } .prose { font-size: 16px; } main { padding-top: 28px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="logo" href="/">RY<span>ZM</span></a>
+    <nav>
+      <a href="/#feed">Feed</a>
+      <a href="/#breaking">Breaking</a>
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/#frameworks">Frameworks</a>
+      <a href="/#notes">Notes</a>
+      <a href="/#calendar">Calendar</a>
+    </nav>
+    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+  </div>
+</header>
+
+<main>
+  <a class="back" href="/articles/">&larr; Back to Articles</a>
+  <article>
+    <div class="meta"><time datetime="2026-10-11T18:46:32+09:00">Oct 11, 2026</time> · Framework</div>
+    <h1 class="title">SOFR vs IORB: Reading Dollar Funding Pressure</h1>
+    <div class="prose">
+<p>RYZM REFERENCE / FUNDING &amp; LIQUIDITY</p>
+
+<p><strong>The level of SOFR tells you what overnight Treasury financing costs. Its relationship to IORB helps frame why.</strong> The spread is useful, but calling every positive reading a dollar shortage turns a diagnostic into an alarm that never switches off.</p>
+
+<p><strong>In this guide:</strong> Two rates · Calculation · Date alignment · Context · Desk framework · Sources</p>
+
+<h2>SOFR and IORB measure different things</h2>
+
+<p>SOFR, the Secured Overnight Financing Rate, measures the cost of borrowing cash overnight against Treasury collateral. The New York Fed calculates it as a transaction-volume-weighted median across specified repo markets. It is not a quote for every borrower and it is not an unsecured bank credit rate. <a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" rel="noopener">Source: New York Fed SOFR definition.</a></p>
+
+<p>IORB is the interest rate the Federal Reserve pays on reserve balances held by eligible institutions. It is an administered policy rate, determined by the Board, rather than a median of market transactions. The two rates have different counterparties and economic roles. <a href="https://www.federalreserve.gov/monetarypolicy/reserve-balances.htm" target="_blank" rel="noopener">Source: Federal Reserve IORB documentation.</a></p>
+
+<h2>How to calculate SOFR minus IORB</h2>
+
+<p><strong>Spread in basis points = (SOFR in percent minus IORB in percent) × 100.</strong> If inputs are decimals such as 0.04 rather than percentages such as 4.00, multiply their difference by 10,000 instead.</p>
+
+<p><strong>Hypothetical example:</strong> SOFR of 4.02% and IORB of 4.00% produce a spread of +2 basis points. After a policy-rate change, readings of 3.77% and 3.75% also produce +2 basis points. SOFR fell 25 basis points, but this relative funding measure did not change.</p>
+
+<p>The comparison strips out a common level shift in that example. It does not strip out every difference between the markets. A +2 basis point spread is neither +2% nor a measurement of the total dollars available to the financial system.</p>
+
+<h2>Match effective dates, not the time you opened the page</h2>
+
+<p>The daily SOFR is published one business day after its value date. The Federal Reserve’s IORB table can display the rate effective on the next business day. Pairing the two most recently displayed values without checking their effective dates can create a false spread, especially around policy changes and holidays. <a href="https://www.newyorkfed.org/markets/reference-rates/additional-information-about-reference-rates" target="_blank" rel="noopener">Source: New York Fed publication methodology.</a> <a href="https://www.federalreserve.gov/monetarypolicy/reserve-balances.htm" target="_blank" rel="noopener">Source: Federal Reserve update convention.</a></p>
+
+<p>Our data record should therefore contain the observation date, publication date, units, source URL and any revision flag. A Seoul timestamp records when the analysis was prepared; it must not silently replace the US market observation date.</p>
+
+<h2>A positive spread needs context</h2>
+
+<p>Federal Reserve research treats repo rates relative to IORB as one of several indicators of reserve conditions. Its framework also considers effective federal funds pricing, the responsiveness of rates to changes in reserves and money-market volatility. Competition for reserves and the costs of deploying bank balance sheets both enter the analysis. <a href="https://www.federalreserve.gov/econres/notes/feds-notes/market-based-indicators-on-the-road-to-ample-reserves-20250131.html" target="_blank" rel="noopener">Source: Federal Reserve market-indicator framework, January 2025.</a></p>
+
+<p>Quarter-end is a separate test case. In a June 2025 note, Federal Reserve researchers describe how some dealers reduce intermediation around reporting dates, increasing repo intermediation spreads and rates. A move that reverses after a reporting date deserves a different explanation from persistent pressure on ordinary days. That does not make calendar effects irrelevant; their changing size can also be informative. <a href="https://www.federalreserve.gov/econres/notes/feds-notes/what-happens-on-quarter-ends-in-the-repo-market-20250606.html" target="_blank" rel="noopener">Source: Federal Reserve quarter-end analysis.</a></p>
+
+<h2>RYZM desk framework: persistence, breadth and quantities</h2>
+
+<p><strong>Our interpretation framework:</strong> examine whether the spread remains elevated outside settlement or reporting dates, whether adjacent markets move with it, and what happens to volumes. One unusually high observation warrants checking the data before declaring a system-wide condition.</p>
+
+<p>The New York Fed publishes transaction volumes and percentile rates alongside its Treasury repo reference rates. A volume-weighted median can conceal a more expensive tail of transactions, so the distribution is a useful companion to the headline. Compare equivalent percentiles over the same dates rather than treating one tail print as the market’s typical rate. <a href="https://www.newyorkfed.org/markets/reference-rates/additional-information-about-reference-rates" target="_blank" rel="noopener">Source: New York Fed calculation methodology.</a></p>
+
+<p>A broad reserve-scarcity explanation is weaker when the spread normalises immediately, nearby indicators remain stable, or the movement can be explained by a shift in the transactions entering the benchmark. It becomes more credible when multiple indicators show persistent pressure. These are tests to investigate, not fixed trading thresholds.</p>
+
+<h2>What this spread cannot establish</h2>
+
+<p><strong>It cannot identify a bank in trouble.</strong> SOFR summarises secured transactions; it is not a bank solvency test. <strong>It cannot, on its own, diagnose Korean dollar funding.</strong> For that question, specify the borrower, currency, tenor and hedge instrument rather than extending a US overnight statistic to every offshore balance sheet.</p>
+
+<p>The practical rule is to keep the claim no larger than the evidence: which funding market became more expensive, relative to what benchmark, and for how long?</p>
+
+<h2>Sources and scope</h2>
+
+<p>Reference guide. Sources reviewed 11 October 2026. Historical papers are used to explain mechanisms, not to describe current market conditions. Numerical examples are hypothetical; no live market levels are asserted. Institutional publications may express their authors’ views, not the institution’s policy position.</p>
+
+<p><a href="https://www.newyorkfed.org/markets/reference-rates/sofr" target="_blank" rel="noopener">New York Fed: Secured Overnight Financing Rate</a> (Reference-rate methodology).</p>
+
+<p><a href="https://www.federalreserve.gov/monetarypolicy/reserve-balances.htm" target="_blank" rel="noopener">Federal Reserve: Interest on Reserve Balances</a> (Policy-tool documentation).</p>
+
+<p><a href="https://www.newyorkfed.org/markets/reference-rates/additional-information-about-reference-rates" target="_blank" rel="noopener">New York Fed: Additional Information about Reference Rates</a> (Reference-rate methodology).</p>
+
+<p><a href="https://www.federalreserve.gov/econres/notes/feds-notes/market-based-indicators-on-the-road-to-ample-reserves-20250131.html" target="_blank" rel="noopener">Federal Reserve: Market-Based Indicators on the Road to Ample Reserves</a> (2025-01-31).</p>
+
+<p><a href="https://www.federalreserve.gov/econres/notes/feds-notes/what-happens-on-quarter-ends-in-the-repo-market-20250606.html" target="_blank" rel="noopener">Federal Reserve: What Happens on Quarter-Ends in the Repo Market</a> (2025-06-06).</p>
+
+<h2>Continue with RYZM</h2>
+
+<p><a href="https://ryzm9.wordpress.com/category/funding-liquidity/" target="_blank" rel="noopener">Funding and liquidity</a> · <a href="https://ryzm9.wordpress.com/category/fx/" target="_blank" rel="noopener">FX and hedging costs</a> · <a href="https://ryzm9.wordpress.com/category/korea-bridge/" target="_blank" rel="noopener">Korea bridge</a></p>
+
+<p><a href="https://ryzm9.wordpress.com/#subscribe" target="_blank" rel="noopener">Subscribe to new WordPress notes</a>. Independent market commentary, not personalized investment advice.</p>
+    </div>
+  </article>
+  <div class="origin">
+    <a href="/articles/">&larr; Back to Articles</a>
+    <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/10/11/sofr-vs-iorb-dollar-funding/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>RYZM · frameworks, not forecasts</div>
+    <div class="footer-links">
+      <a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>
+      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
