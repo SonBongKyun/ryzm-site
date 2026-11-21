@@ -13,6 +13,7 @@
 <meta property="og:description" content="Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.">
 <meta property="og:url" content="https://ryzm.app/">
 <meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
 <script type="application/ld+json" id="ryzm-jsonld">
 {
@@ -57,7 +58,7 @@
      "item": {
       "@type": "Article",
       "headline": "Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally",
-      "url": "https://ryzm9.wordpress.com/2026/11/21/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/",
+      "url": "https://ryzm.app/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/",
       "datePublished": "2026-11-21",
       "author": {
        "@id": "https://ryzm.app/#org"
@@ -73,7 +74,7 @@
      "item": {
       "@type": "Article",
       "headline": "Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027",
-      "url": "https://ryzm9.wordpress.com/2026/11/21/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/",
+      "url": "https://ryzm.app/articles/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/",
       "datePublished": "2026-11-21",
       "author": {
        "@id": "https://ryzm.app/#org"
@@ -89,7 +90,7 @@
      "item": {
       "@type": "Article",
       "headline": "Korea Close | November 20, 2026",
-      "url": "https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/",
+      "url": "https://ryzm.app/articles/korea-close-november-20-2026/",
       "datePublished": "2026-11-20",
       "author": {
        "@id": "https://ryzm.app/#org"
@@ -507,20 +508,37 @@
   .filter-btn:hover { color: var(--text); }
   .filter-btn.active { background: var(--text); color: var(--surface); border-color: var(--text); }
   .card.is-hidden { display: none; }
+  .all-link { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--accent); }
+  .all-link:hover { text-decoration: underline; }
+  a.logo { display: inline-block; }
+  nav a.active { color: var(--text); font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 2px; }
+  /* Tab views: JS sets body[data-tab]; without JS every section stays visible */
+  body.tab-mode .intro { display: none; }
+  body.tab-mode .layout { display: block; }
+  body.tab-mode .tab-section { display: none; }
+  body.tab-mode .tab-section.tab-active { display: block; margin-top: 0 !important; }
+  body.tab-mode #main { padding-top: 32px; min-height: 60vh; }
+  body.tab-mode #calendar.tab-active { max-width: 560px; }
+  body.tab-mode #frameworks .frameworks-grid, body.tab-mode #notes .notes-list { margin-top: 0; }
+  @media (max-width: 900px) {
+    .header-top { flex-wrap: wrap; height: auto; min-height: 56px; padding: 8px 16px; gap: 8px 16px; }
+    nav { display: flex; order: 3; width: 100%; gap: 20px; overflow-x: auto; white-space: nowrap; padding: 2px 0 6px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-top">
-    <div class="logo">RY<span>ZM</span></div>
+    <a class="logo" href="/" data-tab-link="home">RY<span>ZM</span></a>
     <nav>
-      <a href="#feed">Feed</a>
-      <a href="#breaking">Breaking</a>
-      <a href="#articles">Articles</a>
-      <a href="#frameworks">Frameworks</a>
-      <a href="#notes">Notes</a>
-      <a href="#calendar">Calendar</a>
+      <a href="#feed" data-tab-link="feed">Feed</a>
+      <a href="#breaking" data-tab-link="breaking">Breaking</a>
+      <a href="/articles/">Articles</a>
+      <a href="#frameworks" data-tab-link="frameworks">Frameworks</a>
+      <a href="#notes" data-tab-link="notes">Notes</a>
+      <a href="#calendar" data-tab-link="calendar">Calendar</a>
     </nav>
     <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener" style="text-decoration:none;display:inline-block">Get alerts</a>
   </div>
@@ -551,8 +569,8 @@
   <div class="scroll-hint">Scroll for notes and frameworks</div>
 </section>
 
-<main id="feed">
-  <div id="breaking">
+<main id="main">
+  <div id="breaking" class="tab-section">
     <div class="section-title">Breaking</div>
     <ul class="breaking-list">
       <li><span class="b-time">Nov 21, 02:18 KST</span><span class="tag high">Rates</span><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Fed's Cook says inflation is well above target and dissented in favor of another hike</a><span class="b-src">Federal Reserve</span></li>
@@ -562,7 +580,7 @@
   </div>
 
   <div class="layout">
-    <div id="feed">
+    <div id="feed" class="tab-section">
       <div class="section-title">Feed</div>
       <div class="feed-filters"><button type="button" class="filter-btn active" data-cat="All">All</button><button type="button" class="filter-btn" data-cat="Rates">Rates</button><button type="button" class="filter-btn" data-cat="Korea">Korea</button><button type="button" class="filter-btn" data-cat="Funding">Funding</button><button type="button" class="filter-btn" data-cat="Credit">Credit</button><button type="button" class="filter-btn" data-cat="FX">FX</button></div>
       <div class="feed">
@@ -649,7 +667,7 @@
       </div>
     </div>
 
-    <aside id="calendar">
+    <aside id="calendar" class="tab-section">
       <div class="section-title">Macro calendar</div>
       <div class="calendar-card">
         <div class="cal-header">Upcoming</div>
@@ -682,28 +700,29 @@
     </aside>
   </div>
 
-  <div id="articles" style="margin-top: 48px;">
+  <div id="articles" class="tab-section" style="margin-top: 48px;">
     <div class="section-title">Articles</div>
     <div class="notes-list">
-      <a href="https://ryzm9.wordpress.com/2026/11/21/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/" class="note-item">
         <div class="meta">November 21, 2026 · Article</div>
         <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally</h3>
         <p>A summary of Goldman Sachs’ Korea equity weekly. The KOSPI fell 7.9% this week to close at 4,869.96.</p>
       </a>
-      <a href="https://ryzm9.wordpress.com/2026/11/21/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/" class="note-item" target="_blank">
+      <a href="/articles/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/" class="note-item">
         <div class="meta">November 21, 2026 · Article</div>
         <h3>Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027</h3>
         <p>BofA Flow Show notes that prices have reset while positioning hasn't, and lists the rates, dollar and Korea variables to watch going into 2027.</p>
       </a>
-      <a href="https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/korea-close-november-20-2026/" class="note-item">
         <div class="meta">November 20, 2026 · Korea Close</div>
         <h3>Korea Close | November 20, 2026</h3>
         <p>KOSPI reaction and the transmission through rates and the won.</p>
       </a>
     </div>
+    <a class="all-link" href="/articles/">All articles &rarr;</a>
   </div>
 
-  <div id="frameworks">
+  <div id="frameworks" class="tab-section">
     <div class="section-title">Active frameworks</div>
     <div class="frameworks-grid">
       <div class="fw-card">
@@ -725,15 +744,15 @@
     </div>
   </div>
 
-  <div id="notes">
+  <div id="notes" class="tab-section">
     <div class="section-title">Notes</div>
     <div class="notes-list">
-      <a href="https://ryzm9.wordpress.com/2026/11/20/korea-close-november-20-2026/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/korea-close-november-20-2026/" class="note-item">
         <div class="meta">Nov 20, 2026 · Korea Close</div>
         <h3>Korea Close | November 20, 2026</h3>
         <p>KOSPI reaction and the transmission through rates and the won.</p>
       </a>
-      <a href="https://ryzm9.wordpress.com/2026/11/20/kospi-sell-side-sidecars-november-20-2026/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/kospi-sell-side-sidecars-november-20-2026/" class="note-item">
         <div class="meta">Nov 20, 2026 · Market Note</div>
         <h3>Korea triggers sell-side sidecars as KOSPI falls >5%</h3>
         <p>Circuit breaker interaction with foreign flows and funding conditions.</p>
@@ -743,12 +762,12 @@
         <h3>RYZM Daily Brief | US factory prices, claims, Walmart</h3>
         <p>Sources checked. Link back to Korea’s export and rate path.</p>
       </a>
-      <a href="https://ryzm9.wordpress.com/2026/11/19/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/" class="note-item">
         <div class="meta">Nov 19, 2026 · Note</div>
         <h3>Anthropic prices IPO at $83.00</h3>
         <p>What the pricing tells us about risk appetite and credit transmission.</p>
       </a>
-      <a href="https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/" class="note-item" target="_blank" rel="noopener">
+      <a href="/articles/treasury-term-premium-explained/" class="note-item">
         <div class="meta">Oct 11, 2026 · Framework</div>
         <h3>Treasury term premium explained</h3>
         <p>Reference guide to the mechanism. Not a forecast.</p>
@@ -777,6 +796,33 @@ document.querySelectorAll('.filter-btn').forEach(function(btn){
     });
   });
 });
+</script>
+<script>
+(function(){
+  var tabs=['feed','breaking','calendar','frameworks','notes'];
+  function show(){
+    var h=(location.hash||'').replace('#','');
+    var on=tabs.indexOf(h)!==-1;
+    document.body.classList.toggle('tab-mode',on);
+    document.querySelectorAll('.tab-section').forEach(function(s){s.classList.toggle('tab-active',on&&s.id===h);});
+    document.querySelectorAll('nav a[data-tab-link]').forEach(function(a){a.classList.toggle('active',on&&a.getAttribute('data-tab-link')===h);});
+    if(on){window.scrollTo(0,0);setTimeout(function(){window.scrollTo(0,0);},0);}
+  }
+  document.querySelectorAll('[data-tab-link]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=a.getAttribute('data-tab-link');
+      if(t==='home'){
+        e.preventDefault();
+        if(location.hash){history.pushState(null,'',location.pathname+location.search);}
+        show();window.scrollTo(0,0);
+      }
+    });
+  });
+  window.addEventListener('hashchange',show);
+  window.addEventListener('popstate',show);
+  window.addEventListener('load',function(){if(document.body.classList.contains('tab-mode')){window.scrollTo(0,0);}});
+  show();
+})();
 </script>
 </body>
 </html>
