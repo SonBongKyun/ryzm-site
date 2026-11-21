@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is the Treasury Term Premium? Reading a Bond Selloff · RYZM</title>
+<meta name="description" content="A higher Treasury yield does not, by itself, mean the market expects a more hawkish Federal Reserve. First separate the expected path of short rates from the price investors place on carrying…">
+<link rel="canonical" href="https://ryzm.app/articles/treasury-term-premium-explained/">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="RYZM">
+<meta property="og:title" content="What Is the Treasury Term Premium? Reading a Bond Selloff · RYZM">
+<meta property="og:description" content="A higher Treasury yield does not, by itself, mean the market expects a more hawkish Federal Reserve. First separate the expected path of short rates from the price investors place on carrying…">
+<meta property="og:url" content="https://ryzm.app/articles/treasury-term-premium-explained/">
+<meta property="article:published_time" content="2026-10-11T18:46:14+09:00">
+<meta property="article:modified_time" content="2026-11-20T20:19:36+09:00">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Article",
+ "@id": "https://ryzm.app/articles/treasury-term-premium-explained/#article",
+ "headline": "What Is the Treasury Term Premium? Reading a Bond Selloff",
+ "description": "A higher Treasury yield does not, by itself, mean the market expects a more hawkish Federal Reserve. First separate the expected path of short rates from the price investors place on carrying…",
+ "url": "https://ryzm.app/articles/treasury-term-premium-explained/",
+ "mainEntityOfPage": "https://ryzm.app/articles/treasury-term-premium-explained/",
+ "datePublished": "2026-10-11T18:46:14+09:00",
+ "dateModified": "2026-11-20T20:19:36+09:00",
+ "inLanguage": "en-US",
+ "articleSection": "Framework",
+ "keywords": [
+  "Fed",
+  "Treasuries"
+ ],
+ "author": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "publisher": {
+  "@type": "Organization",
+  "@id": "https://ryzm.app/#org",
+  "name": "RYZM",
+  "url": "https://ryzm.app/"
+ },
+ "isBasedOn": "https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/"
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;650&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f7f3ee; --surface: #fffdf9; --surface-2: #f3eee8; --border: #e5ddd4;
+    --text: #2c2520; --text-muted: #7a7068; --accent: #c47b4a;
+    --accent-soft: rgba(196, 123, 74, 0.12); --blue: #4a7c9b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    background-image: radial-gradient(ellipse 90% 60% at 10% 10%, rgba(184, 92, 46, 0.08), transparent),
+      radial-gradient(ellipse 70% 50% at 90% 80%, rgba(58, 106, 136, 0.06), transparent);
+    color: var(--text); line-height: 1.5; min-height: 100vh;
+    -webkit-font-smoothing: antialiased; letter-spacing: -0.011em;
+  }
+  a { color: inherit; text-decoration: none; }
+  header { position: sticky; top: 0; z-index: 100; background: rgba(247, 243, 238, 0.96);
+    backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+  .header-top { max-width: 1200px; margin: 0 auto; min-height: 56px; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 20px; gap: 16px; }
+  .logo { font-weight: 800; font-size: 20px; letter-spacing: -0.045em; color: #1a1512; }
+  .logo span { color: var(--accent); font-weight: 800; }
+  nav { display: flex; gap: 28px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  nav a:hover, nav a.active { color: var(--text); }
+  nav a.active { font-weight: 600; box-shadow: inset 0 -2px 0 var(--accent); padding-bottom: 2px; }
+  .header-cta { background: var(--accent); color: #fffdf9; padding: 7px 14px; border-radius: 6px;
+    font-size: 13px; font-weight: 600; white-space: nowrap; }
+  @media (max-width: 900px) {
+    .header-top { flex-wrap: wrap; padding: 8px 16px; }
+    nav { order: 3; width: 100%; gap: 20px; overflow-x: auto; white-space: nowrap; padding: 4px 0 6px;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    nav::-webkit-scrollbar { display: none; }
+  }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 20px 72px; }
+  .back { display: inline-block; font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .back:hover { color: var(--text); }
+  .section-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .section-title::before { content: ''; width: 18px; height: 3px; background: var(--blue); border-radius: 1.5px; }
+  .meta { font-size: 12.5px; color: var(--text-muted); margin-bottom: 10px; }
+  .tag { background: var(--accent-soft); color: var(--accent); padding: 2px 7px; border-radius: 4px;
+    font-weight: 600; font-size: 11px; letter-spacing: 0.02em; margin-left: 4px; }
+  h1.title { font-size: 34px; line-height: 1.15; letter-spacing: -0.03em; font-weight: 650; padding-bottom: 22px;
+    border-bottom: 1px solid var(--border); margin-bottom: 28px; }
+  .prose { font-size: 16.5px; line-height: 1.75; color: var(--text); }
+  .prose > * + * { margin-top: 1.05em; }
+  .prose h2 { font-size: 22px; line-height: 1.3; letter-spacing: -0.02em; font-weight: 650; margin-top: 2em; }
+  .prose h3 { font-size: 18px; line-height: 1.35; font-weight: 650; margin-top: 1.6em; }
+  .prose h4, .prose h5, .prose h6 { font-size: 16px; font-weight: 650; margin-top: 1.4em; }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-thickness: 1px; overflow-wrap: anywhere; }
+  .prose ul, .prose ol { padding-left: 1.4em; }
+  .prose li + li { margin-top: 0.4em; }
+  .prose blockquote { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; color: var(--text-muted); }
+  .prose table { width: 100%; border-collapse: collapse; font-size: 14.5px; display: block; overflow-x: auto; }
+  .prose th, .prose td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; }
+  .prose th { background: var(--surface-2); font-weight: 600; }
+  .prose img { max-width: 100%; height: auto; border-radius: 10px; }
+  .prose figcaption { font-size: 13px; color: var(--text-muted); margin-top: 6px; }
+  .prose code { background: var(--surface-2); padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
+  .origin { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 13px;
+    color: var(--text-muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .origin a { text-decoration: underline; text-underline-offset: 2px; }
+  .list { display: flex; flex-direction: column; gap: 8px; }
+  .item { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+    padding: 16px 18px; transition: all 0.2s; box-shadow: 0 2px 6px rgba(44, 37, 32, 0.03); }
+  .item:hover { background: var(--surface-2); transform: translateY(-2px); box-shadow: 0 6px 16px rgba(44, 37, 32, 0.08); }
+  .item .meta { margin-bottom: 4px; font-size: 11.5px; }
+  .item h2 { font-size: 16px; font-weight: 600; line-height: 1.4; margin-bottom: 4px; }
+  .item p { font-size: 13.5px; color: var(--text-muted); }
+  .page-lead { color: var(--text-muted); font-size: 15px; margin: -4px 0 24px; }
+  footer { border-top: 1px solid var(--border); padding: 24px 20px; margin-top: 40px; }
+  .footer-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between;
+    font-size: 12px; color: var(--text-muted); gap: 16px; flex-wrap: wrap; }
+  .footer-links { display: flex; gap: 18px; }
+  .footer-links a:hover { color: var(--text); }
+  @media (max-width: 600px) { h1.title { font-size: 27px; } .prose { font-size: 16px; } main { padding-top: 28px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <a class="logo" href="/">RY<span>ZM</span></a>
+    <nav>
+      <a href="/#feed">Feed</a>
+      <a href="/#breaking">Breaking</a>
+      <a href="/articles/" class="active">Articles</a>
+      <a href="/#frameworks">Frameworks</a>
+      <a href="/#notes">Notes</a>
+      <a href="/#calendar">Calendar</a>
+    </nav>
+    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+  </div>
+</header>
+
+<main>
+  <a class="back" href="/articles/">&larr; Back to Articles</a>
+  <article>
+    <div class="meta"><time datetime="2026-10-11T18:46:14+09:00">Oct 11, 2026</time> · Framework</div>
+    <h1 class="title">What Is the Treasury Term Premium? Reading a Bond Selloff</h1>
+    <div class="prose">
+<p>RYZM REFERENCE / RATES &amp; BONDS</p>
+
+<p><strong>A higher Treasury yield does not, by itself, mean the market expects a more hawkish Federal Reserve.</strong> First separate the expected path of short rates from the price investors place on carrying duration. That distinction changes the questions worth asking after a bond selloff.</p>
+
+<p><strong>In this guide:</strong> Definition · Worked example · Model limits · Desk framework · Sources</p>
+
+<h2>What is the Treasury term premium?</h2>
+
+<p>The term premium is the part of a bond yield associated with compensation for bearing interest-rate risk rather than the expected average short rate over its life. The New York Fed’s ACM framework estimates those components using a five-factor term-structure model and zero-coupon Treasury yields. It is a model decomposition, not a separately traded security. <a href="https://libertystreeteconomics.newyorkfed.org/2014/05/treasury-term-premia-1961-present/" target="_blank" rel="noopener">Source: New York Fed methodology.</a></p>
+
+<p><strong>Fitted yield = expected average short rate + estimated term premium.</strong></p>
+
+<p>The terms must come from a consistent model and maturity. Definitions can differ: the Federal Reserve’s Kim-Wright documentation includes a convexity component within its reported term premium. A fitted zero-coupon yield should not casually be mixed with a quoted coupon-bond yield. <a href="https://www.federalreserve.gov/data/three-factor-nominal-term-structure-model.htm" target="_blank" rel="noopener">Source: Federal Reserve definitions and model caveats.</a></p>
+
+<h2>A worked example: the same selloff, a different explanation</h2>
+
+<p><strong>Hypothetical example, not current market data.</strong> Suppose a model-fitted 10-year yield rises from 4.00% to 4.25%. Over the same interval, its estimated term premium rises from 0.50% to 0.85%.</p>
+
+<p>At the start, the implied expected-average-short-rate component is 4.00% minus 0.50%, or 3.50%. At the end, it is 4.25% minus 0.85%, or 3.40%. The fitted yield rose 25 basis points even though this expectations component fell 10 basis points. The premium rose 35 basis points.</p>
+
+<p>That arithmetic supports a narrow statement: <em>within this model, the premium component more than accounts for the fitted yield increase.</em> It does not establish which event caused the premium to change. It also does not mean the next meeting is pricing exactly 10 basis points of easing; this is an average over ten years.</p>
+
+<h2>The model is not a label for the cause</h2>
+
+<p>A close fit to observed yields does not guarantee precise estimates of unobservable expectations. The Federal Reserve explicitly discusses estimation uncertainty, survey inputs and the sensitivity of results to model specification. Compare like-for-like observations and retain the data vintage used in an analysis. <a href="https://www.federalreserve.gov/data/three-factor-nominal-term-structure-model.htm" target="_blank" rel="noopener">Source: Federal Reserve model Q&amp;A.</a></p>
+
+<p>Nor is the term premium simply a fiscal-risk gauge. Interest-rate uncertainty, the value of bonds as a hedge and shifts in the supply of duration available to investors can matter. Federal Reserve asset purchases are one example of a mechanism that can affect term premiums. These are candidate explanations, not an automatic diagnosis of any particular trading day. <a href="https://www.federalreserve.gov/newsevents/speech/bernanke20130301a.htm" target="_blank" rel="noopener">Source: Federal Reserve discussion of long-term rates, 2013.</a></p>
+
+<p>A negative premium is possible. Investors may accept a lower expected return on a long bond when its hedging benefits are valuable. The word premium therefore does not guarantee a positive number. <a href="https://www.federalreserve.gov/newsevents/speech/clarida20191112a.htm" target="_blank" rel="noopener">Source: Federal Reserve discussion, 2019.</a></p>
+
+<h2>RYZM desk framework: test the explanation</h2>
+
+<p><strong>Our interpretation framework:</strong> record the maturity, yield convention, observation dates and source first. Then compare the fitted-yield change with the model’s expectations and premium changes. Do not splice components from different providers to make the arithmetic fit.</p>
+
+<p>Use near-term policy pricing as a cross-check, not as a substitute for the ten-year average. Even OIS forward rates can contain risk premiums; they are not an unfiltered survey of what investors believe. <a href="https://www.federalreserve.gov/econres/notes/feds-notes/shadow-rate-model-of-intermediate-term-policy-rate-expectations-20171004.html" target="_blank" rel="noopener">Source: Federal Reserve analysis of policy expectations.</a></p>
+
+<p>An explanation becomes less persuasive when the dates do not align, the result depends on one model, or a supposedly premium-led move is accompanied by a large repricing of the expected-rate component. Report those tensions instead of smoothing them away. A decomposition earns its place by narrowing the question, not by removing uncertainty.</p>
+
+<h2>Two common confusions</h2>
+
+<p><strong>Is the 10-year minus 2-year spread the term premium?</strong> No. That spread compares two yields. The premium decomposition compares one maturity’s fitted yield with its own expected short-rate component. The two calculations answer different questions.</p>
+
+<p><strong>Does a higher premium identify a buying opportunity?</strong> Not on its own. It describes a component of a yield estimate, not a forecast of the investor’s holding-period return. Our use of the measure is diagnostic, not a trade signal.</p>
+
+<h2>Sources and scope</h2>
+
+<p>Reference guide. Sources reviewed 11 October 2026. Historical papers are used to explain mechanisms, not to describe current market conditions. Numerical examples are hypothetical; no live market levels are asserted. Institutional publications may express their authors’ views, not the institution’s policy position.</p>
+
+<p><a href="https://libertystreeteconomics.newyorkfed.org/2014/05/treasury-term-premia-1961-present/" target="_blank" rel="noopener">New York Fed: Treasury Term Premia, 1961-Present</a> (2014-05-12).</p>
+
+<p><a href="https://www.federalreserve.gov/data/three-factor-nominal-term-structure-model.htm" target="_blank" rel="noopener">Federal Reserve: Three-Factor Nominal Term Structure Model</a> (Methodology page).</p>
+
+<p><a href="https://www.federalreserve.gov/newsevents/speech/bernanke20130301a.htm" target="_blank" rel="noopener">Federal Reserve: Long-Term Interest Rates</a> (2013-03-01).</p>
+
+<p><a href="https://www.federalreserve.gov/newsevents/speech/clarida20191112a.htm" target="_blank" rel="noopener">Federal Reserve: Monetary Policy, Price Stability, and Equilibrium Bond Yields</a> (2019-11-12).</p>
+
+<p><a href="https://www.federalreserve.gov/econres/notes/feds-notes/shadow-rate-model-of-intermediate-term-policy-rate-expectations-20171004.html" target="_blank" rel="noopener">Federal Reserve: A Shadow Rate Model of Intermediate-Term Policy Rate Expectations</a> (2017-10-04).</p>
+
+<h2>Continue with RYZM</h2>
+
+<p><a href="https://ryzm9.wordpress.com/category/rates-bonds/" target="_blank" rel="noopener">Interest rates and bonds</a> · <a href="https://ryzm9.wordpress.com/category/funding-liquidity/" target="_blank" rel="noopener">Dollar funding and liquidity</a></p>
+
+<p><a href="https://ryzm9.wordpress.com/#subscribe" target="_blank" rel="noopener">Subscribe to new WordPress notes</a>. Independent market commentary, not personalized investment advice.</p>
+    </div>
+  </article>
+  <div class="origin">
+    <a href="/articles/">&larr; Back to Articles</a>
+    <span>Originally published on <a href="https://ryzm9.wordpress.com/2026/10/11/treasury-term-premium-explained/" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>RYZM · frameworks, not forecasts</div>
+    <div class="footer-links">
+      <a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>
+      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
