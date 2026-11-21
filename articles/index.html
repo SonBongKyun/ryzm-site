@@ -12,12 +12,14 @@
 <meta property="og:title" content="Articles · RYZM">
 <meta property="og:description" content="RYZM articles: research summaries, framework notes, and Korea and US market closes on rates, funding, FX, and Korea.">
 <meta property="og:url" content="https://ryzm.app/articles/">
-<meta property="og:image" content="https://ryzm.app/og-image.svg">
+<meta property="og:image" content="https://ryzm.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="https://ryzm.app/og-image.svg">
+<meta name="twitter:image" content="https://ryzm.app/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
@@ -43,6 +45,7 @@
  "dateModified": "2026-11-21T23:26:09+09:00",
  "mainEntity": {
   "@type": "ItemList",
+  "numberOfItems": 34,
   "itemListElement": [
    {
     "@type": "ListItem",
@@ -638,7 +641,10 @@
     font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
   }
   .pill:hover { border-color: var(--border-strong); color: var(--text); }
-  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill[aria-pressed="true"],
+  .pill[aria-current="page"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  a.pill { text-decoration: none; color: inherit; }
+  a.pill:hover { color: var(--text); }
   .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
   .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
   .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
@@ -705,7 +711,7 @@
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/" class="active">Articles</a>
-      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/articles/frameworks/">Frameworks</a>
       <a href="/notes/">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
@@ -726,13 +732,13 @@
       <input type="search" id="lib-q" placeholder="Search titles and summaries" aria-label="Search articles" autocomplete="off" spellcheck="false">
     </div>
     <div class="lib-pills" role="group" aria-label="Filter by category">
-      <button type="button" class="pill" data-cat="All" aria-pressed="true">All <span class="n">34</span></button>
-      <button type="button" class="pill" data-cat="Rates" aria-pressed="false">Rates <span class="n">21</span></button>
-      <button type="button" class="pill" data-cat="Funding" aria-pressed="false">Funding <span class="n">11</span></button>
-      <button type="button" class="pill" data-cat="FX" aria-pressed="false">FX <span class="n">14</span></button>
-      <button type="button" class="pill" data-cat="Korea" aria-pressed="false">Korea <span class="n">16</span></button>
-      <button type="button" class="pill" data-cat="Credit" aria-pressed="false">Credit <span class="n">4</span></button>
-      <button type="button" class="pill" data-cat="Frameworks" aria-pressed="false">Frameworks <span class="n">5</span></button>
+      <a class="pill" href="/articles/" data-cat="All" aria-pressed="true" aria-current="page">All <span class="n">34</span></a>
+      <a class="pill" href="/articles/rates/" data-cat="Rates" aria-pressed="false">Rates <span class="n">21</span></a>
+      <a class="pill" href="/articles/funding/" data-cat="Funding" aria-pressed="false">Funding <span class="n">11</span></a>
+      <a class="pill" href="/articles/fx/" data-cat="FX" aria-pressed="false">FX <span class="n">14</span></a>
+      <a class="pill" href="/articles/korea/" data-cat="Korea" aria-pressed="false">Korea <span class="n">16</span></a>
+      <a class="pill" href="/articles/credit/" data-cat="Credit" aria-pressed="false">Credit <span class="n">4</span></a>
+      <a class="pill" href="/articles/frameworks/" data-cat="Frameworks" aria-pressed="false">Frameworks <span class="n">5</span></a>
     </div>
   </div>
   <div class="list" id="lib-list">
@@ -916,31 +922,34 @@
   var tools=document.getElementById('lib-tools'),q=document.getElementById('lib-q');
   if(!tools||!q||!document.querySelectorAll)return;
   var list=document.getElementById('lib-list'),empty=document.getElementById('lib-empty'),count=document.getElementById('lib-count');
-  var pills=[].slice.call(tools.querySelectorAll('.pill')),kids=[].slice.call(list.children);
-  var total=list.querySelectorAll('.item').length,cat='All';
+  var kids=[].slice.call(list.children);
+  var total=list.querySelectorAll('.item').length;
+  var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
+  if(params.cat){
+    var want=String(params.cat).toLowerCase();
+    var dest=(want==='all'||!want)?'/articles/':'/articles/'+want+'/';
+    var here=location.pathname.replace(/\/?$/,'/');
+    if(here!==dest){location.replace(dest+(params.q?('?q='+encodeURIComponent(params.q)):''));return;}
+  }
   function norm(v){return (v||'').toLowerCase().replace(/\u2019/g,"'").replace(/\s+/g,' ').trim();}
   function apply(push){
     var words=norm(q.value).split(' ').filter(Boolean),shown=0,month=null,monthShown=0;
     function closeMonth(){if(month)month.hidden=monthShown===0;}
     kids.forEach(function(el){
       if(el.classList.contains('month')){closeMonth();month=el;monthShown=0;return;}
-      var cats=(el.getAttribute('data-cat')||'').split(' '),hay=el.getAttribute('data-search')||'';
-      var ok=(cat==='All'||cats.indexOf(cat)!==-1)&&words.every(function(w){return hay.indexOf(w)!==-1;});
+      var hay=el.getAttribute('data-search')||'';
+      var ok=words.every(function(w){return hay.indexOf(w)!==-1;});
       el.hidden=!ok;if(ok){shown++;monthShown++;}
     });
     closeMonth();
     empty.hidden=shown!==0;
     count.textContent=(shown===total?total+' articles':shown+' of '+total+' articles');
-    pills.forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-cat')===cat?'true':'false');});
     if(push&&window.history&&history.replaceState){
-      var ps=[];if(cat!=='All')ps.push('cat='+encodeURIComponent(cat));if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));
+      var ps=[];if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));
       history.replaceState(null,'',location.pathname+(ps.length?'?'+ps.join('&'):''));
     }
   }
-  var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
-  if(params.cat){var want=String(params.cat).toLowerCase();var hit=pills.filter(function(p){return (p.getAttribute('data-cat')||'').toLowerCase()===want;})[0];if(hit)cat=hit.getAttribute('data-cat');}
   if(params.q)q.value=params.q;
-  pills.forEach(function(p){p.addEventListener('click',function(){cat=p.getAttribute('data-cat');apply(true);});});
   q.addEventListener('input',function(){apply(true);});
   tools.hidden=false;
   apply(false);
