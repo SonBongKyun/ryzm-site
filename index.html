@@ -4,12 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
-<title>RYZM · Frameworks for Markets</title>
+<title>RYZM · Frameworks for markets</title>
 <link rel="canonical" href="https://ryzm.app/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RYZM">
-<meta property="og:title" content="RYZM · Frameworks for Markets">
+<meta property="og:title" content="RYZM · Frameworks for markets">
 <meta property="og:description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
 <meta property="og:url" content="https://ryzm.app/">
 <meta property="og:image" content="https://ryzm.app/og-image.png">
@@ -17,6 +17,7 @@
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://ryzm.app/og-image.png">
+<meta name="twitter:title" content="RYZM · Frameworks for markets">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -38,7 +39,7 @@
    "@type": "WebSite",
    "@id": "https://ryzm.app/#website",
    "url": "https://ryzm.app/",
-   "name": "RYZM · Frameworks for Markets",
+   "name": "RYZM · Frameworks for markets",
    "description": "RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.",
    "inLanguage": "en-US",
    "publisher": {
@@ -49,7 +50,7 @@
    "@type": "WebPage",
    "@id": "https://ryzm.app/#webpage",
    "url": "https://ryzm.app/",
-   "name": "RYZM · Frameworks for Markets",
+   "name": "RYZM · Frameworks for markets",
    "isPartOf": {
     "@id": "https://ryzm.app/#website"
    },
@@ -479,15 +480,22 @@
   }
   .intro h1 {
     font-family: var(--serif);
-    font-size: clamp(28px, 3.8vw, 46px);
+    font-size: clamp(36px, 5.2vw, 64px);
     font-weight: 500;
     letter-spacing: -0.03em;
-    line-height: 1.18;
-    max-width: 18.5em;
+    line-height: 1.12;
+    max-width: 12em;
     color: var(--text);
     font-optical-sizing: auto;
   }
   .intro h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
+  .intro-lead {
+    margin: 18px 0 0;
+    max-width: 36em;
+    font-size: clamp(16px, 1.7vw, 19px);
+    line-height: 1.5;
+    color: var(--text-2);
+  }
   .home-panels {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1.25fr) minmax(0, 0.95fr);
@@ -841,7 +849,8 @@
 </header>
 
 <section class="intro">
-  <h1>RYZM maps how US rates, dollar funding and FX move into Korean markets.<br><em>Frameworks, not forecasts.</em></h1>
+  <h1>Frameworks for markets<br><em>Not forecasts</em></h1>
+  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.</p>
   <div class="home-panels">
     <!-- home-latest-brief -->
     <article class="home-panel" aria-labelledby="latest-brief-title">

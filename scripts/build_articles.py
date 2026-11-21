@@ -907,6 +907,18 @@ def update_home_chrome(path=None):
                         FAVICON_LINKS + '\n<link rel="alternate" type="text/markdown"', 1)
     s2 = rewrite_cat_query_hrefs(s2)
     s2 = s2.replace("/articles/?cat=frameworks", "/articles/frameworks/")
+    s2 = s2.replace("RYZM · Frameworks for Markets", "RYZM · Frameworks for markets")
+    if 'name="twitter:title"' not in s2:
+        s2 = s2.replace(
+            '<meta name="twitter:image" content="https://ryzm.app/og-image.png">',
+            '<meta name="twitter:image" content="https://ryzm.app/og-image.png">\n'
+            '<meta name="twitter:title" content="RYZM · Frameworks for markets">',
+            1)
+    old_h1 = ('  <h1>RYZM maps how US rates, dollar funding and FX move into Korean markets.'
+              '<br><em>Frameworks, not forecasts.</em></h1>')
+    new_h1 = ('  <h1>Frameworks for markets<br><em>Not forecasts</em></h1>\n'
+              '  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.</p>')
+    s2 = s2.replace(old_h1, new_h1)
     if s2 != s:
         with open(path, encoding="utf-8") as f_now:
             if f_now.read() == s:
@@ -932,6 +944,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
 {og_tags}{extra_meta}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
 {favicons}
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">

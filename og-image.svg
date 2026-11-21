@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="RYZM. Frameworks, not forecasts.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-label="RYZM. Frameworks, not forecasts">
   <rect width="1200" height="630" fill="#1a1512"/>
   <defs>
     <pattern id="grid" width="56" height="56" patternUnits="userSpaceOnUse">
@@ -16,5 +16,5 @@
     <tspan fill="#fffdf9">RY</tspan><tspan fill="#c47b4a">ZM</tspan>
   </text>
   <rect x="568" y="380" width="64" height="2" fill="#c47b4a"/>
-  <text x="600" y="450" text-anchor="middle" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-size="42" font-style="italic" fill="#c47b4a">Frameworks, not forecasts.</text>
+  <text x="600" y="450" text-anchor="middle" font-family="Newsreader, Georgia, 'Times New Roman', serif" font-size="42" font-style="italic" fill="#c47b4a">Frameworks, not forecasts</text>
 </svg>
