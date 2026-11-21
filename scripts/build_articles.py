@@ -12,6 +12,8 @@ What it does
      Korea/US close, key issues, rates/FX/funding analysis). Skips Daily Briefs,
      Market Wire news notes, off-topic series, and very short posts.
   3. Writes /articles/<slug>/index.html for each article and /articles/index.html.
+     Daily Briefs get their own pages at /notes/<slug>/ plus /notes/index.html
+     (kept out of the Articles list). The WordPress About page is rendered at /about/.
   4. Rewrites links to those WordPress posts in index.html and llms.txt
      (including the JSON-LD block) so they point to the in-site pages.
   5. Regenerates sitemap.xml and the "## Articles" section of llms.txt.
@@ -32,6 +34,11 @@ API = "https://public-api.wordpress.com/rest/v1.1/sites/%s/posts/" % WP_SITE
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "articles")
 MANIFEST = os.path.join(OUT, "manifest.json")
+NOTES_OUT = os.path.join(ROOT, "notes")
+NOTES_MANIFEST = os.path.join(NOTES_OUT, "manifest.json")
+ABOUT_OUT = os.path.join(ROOT, "about")
+ABOUT_SLUG = "about-2"
+BRIEF_CAT = "Daily Brief"
 
 INCLUDE_CATS = {"Key Issues", "Framework Note", "Korea Close", "US Close",
                 "Rates & Bonds", "FX", "Funding & Liquidity", "Korea Bridge", "Credit"}
@@ -72,6 +79,17 @@ def is_article(p):
     if cats & EXCLUDE_CATS or not cats & INCLUDE_CATS:
         return False
     return len(plain(p.get("content"))) >= MIN_TEXT_CHARS
+
+
+def is_brief(p):
+    return BRIEF_CAT in cats_of(p) and len(plain(p.get("content"))) >= 200
+
+
+def fetch_page(slug):
+    url = "%sslug:%s?type=page&fields=ID,title,date,modified,URL,slug,content" % (API, slug)
+    req = urllib.request.Request(url, headers={"User-Agent": "ryzm-site-build/1.0"})
+    with urllib.request.urlopen(req, timeout=60) as r:
+        return json.load(r)
 
 
 def type_label(p):
@@ -587,9 +605,9 @@ HEADER = """<header>
     <nav>
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
-      <a href="/articles/" class="active">Articles</a>
+      <a href="/articles/"{act_articles}>Articles</a>
       <a href="/#frameworks">Frameworks</a>
-      <a href="/#notes">Notes</a>
+      <a href="/#notes"{act_notes}>Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
     <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
@@ -600,14 +618,14 @@ FOOTER = """<footer>
   <div class="footer-inner">
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
-      <a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>
+      <a href="/about/">About</a>
       <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
     </div>
   </div>
 </footer>"""
 
 
-def page(title, desc, canonical, og_type, extra_meta, ld, body):
+def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles"):
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -646,13 +664,16 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body):
 </html>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical, og_type=og_type,
            extra_meta=extra_meta, favicons=FAVICON_LINKS, ld=ld, css=CSS,
-           header=HEADER, body=body, footer=FOOTER)
+           header=HEADER.format(act_articles=' class="active"' if active == "articles" else "",
+                                act_notes=' class="active"' if active == "notes" else ""),
+           body=body, footer=FOOTER)
 
 
 ORG = {"@type": "Organization", "@id": SITE + "/#org", "name": "RYZM", "url": SITE + "/"}
 
 
-def render_article(a):
+def render_article(a, back_href="/articles/", back_short="All articles", back_long="Back to Articles",
+                   active="articles"):
     url = SITE + a["path"]
     ld = jsonld({
         "@context": "https://schema.org",
@@ -676,7 +697,7 @@ def render_article(a):
     words = len(plain(a["html"]).split())
     body = """<main>
   <div class="article-wrap">
-  <a class="back" href="/articles/">&larr; All articles</a>
+  <a class="back" href="{back_href}">&larr; {back_short}</a>
   <article>
     <div class="article-head">
       <div class="meta"><span class="tag">{type}</span><time datetime="{date}">{date_h}</time><span class="dot"></span><span>{mins} min read</span></div>
@@ -688,13 +709,85 @@ def render_article(a):
   </article>
   </div>
   <div class="origin">
-    <a href="/articles/">&larr; Back to Articles</a>
+    <a href="{back_href}">&larr; {back_long}</a>
     <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
   </div>
 </main>""".format(date=a["date"], date_h=fmt_date(a["date"]), type=esc(a["type"]),
-                  mins=max(1, round(words / 230)),
+                  mins=max(1, round(words / 230)), back_href=back_href, back_short=back_short,
+                  back_long=back_long,
                   title=esc(a["title"]), content=a["html"], wp=esc(a["wp_url"]))
-    return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body)
+    return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
+
+
+def render_brief(a):
+    return render_article(a, back_href="/notes/", back_short="All daily briefs",
+                          back_long="Back to Daily Briefs", active="notes")
+
+
+def render_notes_index(briefs):
+    url = SITE + "/notes/"
+    desc = "RYZM Daily Briefs: dated, sourced morning notes on rates, funding, FX, and Korea."
+    rows, month = [], None
+    for a in briefs:
+        m = datetime.fromisoformat(a["date"]).strftime("%B %Y")
+        if m != month:
+            rows.append('    <div class="month">%s</div>' % m)
+            month = m
+        rows.append("""    <a class="item" href="{path}">
+      <div class="meta"><time datetime="{iso}">{date}</time><span class="tag">{type}</span></div>
+      <h2>{title}</h2>
+      <p>{desc}</p>
+    </a>""".format(path=a["path"], iso=a["date"], date=fmt_date(a["date"]), type=esc(a["type"]),
+                   title=esc(a["title"]), desc=esc(a["desc"])))
+    ld = jsonld({
+        "@context": "https://schema.org", "@type": "CollectionPage", "@id": url, "url": url,
+        "name": "RYZM Daily Briefs", "description": desc, "inLanguage": "en-US",
+        "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG,
+        "dateModified": max(a["modified"] for a in briefs) if briefs else None,
+        "mainEntity": {"@type": "ItemList", "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "url": SITE + a["path"], "name": a["title"]}
+            for i, a in enumerate(briefs)]},
+    })
+    body = """<main>
+  <div class="page-head">
+    <div class="section-title">Notes</div>
+    <h1 class="page-title">Daily Briefs</h1>
+    <div class="page-count">%d briefs</div>
+  </div>
+  <div class="list">
+%s
+  </div>
+</main>""" % (len(briefs), "\n".join(rows))
+    return page("Daily Briefs · RYZM", desc, url, "website", "", ld, body, "notes")
+
+
+def render_about(pg, url_map):
+    url = SITE + "/about/"
+    title = plain(pg["title"])
+    content = sanitize(pg["content"], url_map)
+    content = re.sub(r"^\s*<h2>\s*%s\s*</h2>\s*" % re.escape(esc(title)), "", content)
+    desc = description(pg)
+    ld = jsonld({
+        "@context": "https://schema.org", "@type": "AboutPage", "@id": url, "url": url,
+        "name": title, "description": desc, "inLanguage": "en-US",
+        "datePublished": pg["date"], "dateModified": pg["modified"],
+        "isPartOf": {"@id": SITE + "/#website"}, "about": ORG, "publisher": ORG,
+        "isBasedOn": pg["URL"],
+    })
+    body = """<main>
+  <div class="article-wrap">
+  <article>
+    <div class="article-head">
+      <div class="meta"><span class="tag">About</span></div>
+      <h1 class="title">{title}</h1>
+    </div>
+    <div class="prose">
+{content}
+    </div>
+  </article>
+  </div>
+</main>""".format(title=esc(title), content=content)
+    return page("%s · RYZM" % title, desc, url, "website", "", ld, body, "")
 
 
 def render_index(arts):
@@ -776,6 +869,8 @@ def update_index_html(url_map):
     with open(path, encoding="utf-8") as f:
         s = f.read()
     s2 = patch_links(s, url_map, True)
+    s2 = s2.replace('<a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>',
+                    '<a href="/about/">About</a>')
     if 'href="/favicon.svg"' not in s2:
         s2 = s2.replace('<link rel="alternate" type="text/markdown"',
                         FAVICON_LINKS + '\n<link rel="alternate" type="text/markdown"', 1)
@@ -789,6 +884,10 @@ def update_llms(arts, url_map):
     with open(path, encoding="utf-8") as f:
         s = f.read()
     s = patch_links(s, url_map, False)
+    for line, after in (("- About: %s/about/" % SITE, "- Articles (full text on this site): "),
+                        ("- Daily briefs (full text on this site): %s/notes/" % SITE, "- About: ")):
+        if line not in s:
+            s = re.sub(r"^(%s.*)$" % re.escape(after), lambda m: m.group(1) + "\n" + line, s, count=1, flags=re.M)
     lines = ["## Articles", "",
              "Full text on ryzm.app. Index: %s/articles/" % SITE, ""]
     for a in arts:
@@ -803,12 +902,41 @@ def update_llms(arts, url_map):
         f.write(s.rstrip("\n") + "\n")
 
 
-def write_sitemap(arts):
+def write_section(out_dir, manifest, items, render_one, render_list):
+    """Write <out_dir>/<slug>/index.html for each item plus <out_dir>/index.html; prune removed slugs."""
+    os.makedirs(out_dir, exist_ok=True)
+    old = []
+    if os.path.exists(manifest):
+        with open(manifest, encoding="utf-8") as f:
+            old = json.load(f).get("slugs", [])
+    new = [a["slug"] for a in items]
+    for slug in set(old) - set(new):
+        d = os.path.join(out_dir, slug)
+        if os.path.isdir(d):
+            shutil.rmtree(d)
+    for a in items:
+        d = os.path.join(out_dir, a["slug"])
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+            f.write(render_one(a))
+    with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
+        f.write(render_list(items))
+    with open(manifest, "w", encoding="utf-8") as f:
+        json.dump({"source": API, "slugs": new}, f, indent=1)
+        f.write("\n")
+
+
+def write_sitemap(arts, briefs=(), about_lastmod=None):
     today = datetime.now().astimezone().strftime("%Y-%m-%d")
     newest = max([a["modified"][:10] for a in arts] + [today])
     urls = [(SITE + "/", today, "daily"), (SITE + "/articles/", newest, "daily"),
             (SITE + "/llms.txt", today, None)]
+    if about_lastmod:
+        urls.append((SITE + "/about/", about_lastmod, None))
+    if briefs:
+        urls.append((SITE + "/notes/", max(b["modified"][:10] for b in briefs), "daily"))
     urls += [(SITE + a["path"], a["modified"][:10], None) for a in arts]
+    urls += [(SITE + b["path"], b["modified"][:10], None) for b in briefs]
     out = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
     for loc, lm, cf in urls:
@@ -819,9 +947,9 @@ def write_sitemap(arts):
         f.write("\n".join(out) + "\n")
 
 
-def load_existing(slug):
+def load_existing(slug, base=OUT):
     """Read the data back out of an already-built article page (for --retemplate)."""
-    with open(os.path.join(OUT, slug, "index.html"), encoding="utf-8") as f:
+    with open(os.path.join(base, slug, "index.html"), encoding="utf-8") as f:
         s = f.read()
     ld = json.loads(re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', s, re.S).group(1))
     title = html.unescape(re.search(r'<h1 class="title">(.*?)</h1>', s, re.S).group(1))
@@ -845,7 +973,15 @@ def retemplate():
             f.write(render_article(a))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
-    print("Re-rendered %d articles with the current template" % len(arts))
+    briefs = []
+    if os.path.exists(NOTES_MANIFEST):
+        with open(NOTES_MANIFEST, encoding="utf-8") as f:
+            nslugs = json.load(f).get("slugs", [])
+        briefs = [load_existing(sl, NOTES_OUT) for sl in nslugs]
+        for b in briefs:
+            b["path"] = "/notes/%s/" % b["slug"]
+        write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index)
+    print("Re-rendered %d articles and %d daily briefs with the current template" % (len(arts), len(briefs)))
 
 
 def main():
@@ -853,7 +989,12 @@ def main():
         return retemplate()
     posts = fetch_posts()
     chosen = sorted([p for p in posts if is_article(p)], key=lambda p: p["date"], reverse=True)
+    brief_posts = sorted([p for p in posts if is_brief(p)], key=lambda p: p["date"], reverse=True)
     url_map = {norm_url(p["URL"]): "/articles/%s/" % p["slug"] for p in chosen}
+    url_map.update({norm_url(p["URL"]): "/notes/%s/" % p["slug"] for p in brief_posts})
+    about = fetch_page(ABOUT_SLUG)
+    if about.get("URL"):
+        url_map[norm_url(about["URL"])] = "/about/"
     arts = []
     for p in chosen:
         arts.append({
@@ -885,9 +1026,22 @@ def main():
         json.dump({"source": API, "slugs": new}, f, indent=1)
         f.write("\n")
 
+    briefs = [{
+        "slug": p["slug"], "path": "/notes/%s/" % p["slug"],
+        "title": plain(p["title"]), "date": p["date"], "modified": p["modified"],
+        "wp_url": p["URL"], "type": "Daily Brief", "desc": description(p),
+        "tags": [html.unescape(t) for t in (p.get("tags") or {})],
+        "html": sanitize(p["content"], url_map),
+    } for p in brief_posts]
+    write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index)
+    if about.get("content"):
+        os.makedirs(ABOUT_OUT, exist_ok=True)
+        with open(os.path.join(ABOUT_OUT, "index.html"), "w", encoding="utf-8") as f:
+            f.write(render_about(about, url_map))
+
     update_index_html(url_map)
     update_llms(arts, url_map)
-    write_sitemap(arts)
+    write_sitemap(arts, briefs, about.get("modified", "")[:10] if about.get("content") else None)
     print("Built %d articles (from %d posts)" % (len(arts), len(posts)))
     for a in arts:
         print("  %s  %-16s %s" % (a["date"][:10], a["type"], a["path"]))
