@@ -12,10 +12,15 @@
 <meta property="og:title" content="RYZM Weekend Brief | Samara oil hub and the week ahead | November 15, 2026 · RYZM">
 <meta property="og:description" content="Ukraine’s security service said on 14 November that its drones struck an oil dispatch station near Prosvet, in Russia’s Samara region, on 13 November. It reported preliminary damage to storage…">
 <meta property="og:url" content="https://ryzm.app/notes/ryzm-daily-brief-2026-11-15/">
+<meta property="og:image" content="https://ryzm.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:image" content="https://ryzm.app/og-image.png">
 <meta property="article:published_time" content="2026-11-15T09:14:55+09:00">
 <meta property="article:modified_time" content="2026-11-20T20:17:50+09:00">
-<meta name="twitter:card" content="summary">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
 <link rel="alternate" type="text/markdown" title="llms.txt" href="/llms.txt">
@@ -477,6 +482,7 @@
     transition: background-color 0.2s, transform 0.2s;
   }
   .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+  .subscribe-page .btn-subscribe { margin-top: 28px; }
 
   /* ---------- touch targets (phones/tablets) ---------- */
   @media (max-width: 900px) {
@@ -505,11 +511,11 @@
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/">Articles</a>
-      <a href="/#frameworks">Frameworks</a>
-      <a href="/#notes" class="active">Notes</a>
+      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/notes/" class="active">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Get alerts</a>
   </div>
 </header>
 
@@ -550,13 +556,28 @@
     </div>
   </article>
   </div>
+  <aside class="related" aria-label="Related articles">
+    <div class="section-title">Related articles</div>
+    <a class="rel-item" href="/notes/ryzm-daily-brief-2026-11-21/">
+      <div class="meta"><span class="cat-label">Daily Brief</span><span class="dot"></span><time datetime="2026-11-21T10:57:06+09:00">Nov 21, 2026</time></div>
+      <h3>RYZM Daily Brief | Fed survey maps reserve sensitivity to funding spreads | November 21, 2026</h3>
+    </a>
+    <a class="rel-item" href="/notes/ryzm-daily-brief-2026-11-20/">
+      <div class="meta"><span class="cat-label">Daily Brief</span><span class="dot"></span><time datetime="2026-11-20T10:59:35+09:00">Nov 20, 2026</time></div>
+      <h3>RYZM Daily Brief | US factory prices, jobless claims and Walmart | November 20, 2026</h3>
+    </a>
+    <a class="rel-item" href="/notes/ryzm-daily-brief-2026-11-19/">
+      <div class="meta"><span class="cat-label">Daily Brief</span><span class="dot"></span><time datetime="2026-11-19T09:10:25+09:00">Nov 19, 2026</time></div>
+      <h3>RYZM Daily Brief | Fed minutes and Korea’s exam-day trading hours | November 19, 2026</h3>
+    </a>
+  </aside>
   <aside class="subscribe" aria-label="Email subscription">
   <div class="subscribe-inner">
     <div>
       <h2>Get the weekly RYZM brief</h2>
       <p>New frameworks and the week’s key changes, by email. Free.</p>
     </div>
-    <a class="btn-subscribe" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Subscribe</a>
+    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
   </div>
 </aside>
   <div class="origin">
@@ -570,7 +591,7 @@
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Alerts</a>
+      <a href="/subscribe/">Alerts</a>
     </div>
   </div>
 </footer>
