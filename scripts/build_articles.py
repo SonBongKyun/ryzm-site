@@ -11,7 +11,9 @@ What it does
   2. Keeps long-form market articles (research summaries, framework notes,
      Korea/US close, key issues, rates/FX/funding analysis). Skips Daily Briefs,
      Market Wire news notes, off-topic series, and very short posts.
-  3. Writes /articles/<slug>/index.html for each article and /articles/index.html.
+  3. Writes /articles/<slug>/index.html for each article, /articles/index.html,
+     and /articles/<category>/ for each category that has articles
+     (frameworks, rates, funding, fx, korea, credit).
      Daily Briefs get their own pages at /notes/<slug>/ plus /notes/index.html
      (kept out of the Articles list). The WordPress About page is rendered at /about/.
   4. Rewrites links to those WordPress posts in index.html and llms.txt
@@ -53,11 +55,13 @@ EXCLUDE_CATS = {"Daily Brief", "Market Wire", "Young Trends Daily", "Science & T
 MIN_TEXT_CHARS = 900
 
 FAVICON_LINKS = """<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="RYZM RSS" href="/rss.xml">"""
-OG_TAGS = """<meta property="og:image" content="%s/og-image.svg">
+OG_TAGS = """<meta property="og:image" content="%s/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta name="twitter:image" content="%s/og-image.svg">
+<meta name="twitter:image" content="%s/og-image.png">
 """ % (SITE, SITE)
 WP_SUBSCRIBE = "https://ryzm9.wordpress.com/subscribe/"
 
@@ -171,6 +175,30 @@ def type_label(p):
 #    d. else the first WordPress-category match in the order Funding, FX, Credit, Rates, Korea;
 #    e. else "Rates".
 CATEGORY_ORDER = ["Rates", "Funding", "FX", "Korea", "Credit", "Frameworks"]
+CATEGORY_DESCRIPTIONS = {
+    "Frameworks": "RYZM Frameworks: reading frameworks on how US rates, dollar funding, and FX move into Korean markets. Not forecasts.",
+    "Rates": "RYZM articles on US rates, Treasuries, and the yield curve, and how they reach Korean markets.",
+    "Funding": "RYZM articles on dollar funding, SOFR, reserves, and liquidity plumbing.",
+    "FX": "RYZM articles on the dollar, the won, and FX hedging.",
+    "Korea": "RYZM articles on Korean markets, the won, and how US rates and funding reach Korea.",
+    "Credit": "RYZM articles on credit, spreads, and related market structure.",
+}
+
+
+def cat_slug(name):
+    """Stable URL slug for a library category (Frameworks -> frameworks)."""
+    return (name or "").strip().lower()
+
+
+CATEGORY_SLUGS = {cat_slug(c): c for c in CATEGORY_ORDER}
+
+
+def cat_href(name):
+    """In-site library URL: All -> /articles/, Frameworks -> /articles/frameworks/."""
+    if not name or name == "All":
+        return "/articles/"
+    return "/articles/%s/" % cat_slug(name)
+
 TITLE_KEYWORDS = [
     ("Korea", r"\b(korea|korean|kospi|kosdaq|bok|won|krw|ktb)\b|\bbok[\u2019']s\b"),
     ("Funding", r"\b(sofr|iorb|repo|reserves|funding|liquidity|bills?|collateral)\b"),
@@ -736,7 +764,10 @@ CSS = """
     font-size: 13px; font-weight: 600; color: var(--text-2); transition: background-color 0.15s, color 0.15s, border-color 0.15s;
   }
   .pill:hover { border-color: var(--border-strong); color: var(--text); }
-  .pill[aria-pressed="true"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  .pill[aria-pressed="true"],
+  .pill[aria-current="page"] { background: var(--text); color: var(--surface); border-color: var(--text); }
+  a.pill { text-decoration: none; color: inherit; }
+  a.pill:hover { color: var(--text); }
   .pill .n { font-weight: 500; font-size: 11.5px; opacity: 0.65; font-variant-numeric: tabular-nums; }
   .lib-empty { max-width: 920px; margin: 8px auto 0; padding: 28px 4px; color: var(--text-muted); font-size: 15px; border-bottom: 1px solid var(--border); }
   .item[hidden], .month[hidden], .lib-empty[hidden] { display: none !important; }
@@ -801,7 +832,7 @@ HEADER = """<header>
       <a href="/#feed">Feed</a>
       <a href="/#breaking">Breaking</a>
       <a href="/articles/"{act_articles}>Articles</a>
-      <a href="/articles/?cat=frameworks">Frameworks</a>
+      <a href="/articles/frameworks/">Frameworks</a>
       <a href="/notes/"{act_notes}>Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
@@ -842,6 +873,61 @@ def rewrite_subscribe_hrefs(text):
     return text
 
 
+def rewrite_cat_query_hrefs(text):
+    """Point leftover /articles/?cat=Name links at the static /articles/<slug>/ pages."""
+    def repl(m):
+        slug = cat_slug(html.unescape(m.group(1)))
+        if not slug or slug == "all":
+            return 'href="/articles/"'
+        return 'href="%s"' % cat_href(slug)
+    return re.sub(r'href="/articles/\?cat=([^"&#]+)"', repl, text or "")
+
+
+def update_home_chrome(path=None):
+    """Keep the hand-written home page in sync: PNG share card, icons, and category URLs."""
+    path = path or os.path.join(ROOT, "index.html")
+    with open(path, encoding="utf-8") as f:
+        s = f.read()
+    s2 = s
+    s2 = re.sub(
+        r'(property="og:image" content="https://ryzm\.app)/og-image\.svg"',
+        r'\1/og-image.png"', s2)
+    s2 = re.sub(
+        r'(name="twitter:image" content="https://ryzm\.app)/og-image\.svg"',
+        r'\1/og-image.png"', s2)
+    if 'href="/favicon-32.png"' not in s2 and 'href="/favicon.svg"' in s2:
+        s2 = s2.replace(
+            '<link rel="icon" type="image/svg+xml" href="/favicon.svg">',
+            '<link rel="icon" type="image/svg+xml" href="/favicon.svg">\n'
+            '<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">\n'
+            '<link rel="apple-touch-icon" href="/apple-touch-icon.png">',
+            1)
+    elif 'href="/favicon.svg"' not in s2:
+        s2 = s2.replace('<link rel="alternate" type="text/markdown"',
+                        FAVICON_LINKS + '\n<link rel="alternate" type="text/markdown"', 1)
+    s2 = rewrite_cat_query_hrefs(s2)
+    s2 = s2.replace("/articles/?cat=frameworks", "/articles/frameworks/")
+    s2 = s2.replace("RYZM · Frameworks for Markets", "RYZM · Frameworks for markets")
+    if 'name="twitter:title"' not in s2:
+        s2 = s2.replace(
+            '<meta name="twitter:image" content="https://ryzm.app/og-image.png">',
+            '<meta name="twitter:image" content="https://ryzm.app/og-image.png">\n'
+            '<meta name="twitter:title" content="RYZM · Frameworks for markets">',
+            1)
+    old_h1 = ('  <h1>RYZM maps how US rates, dollar funding and FX move into Korean markets.'
+              '<br><em>Frameworks, not forecasts.</em></h1>')
+    new_h1 = ('  <h1>Frameworks for markets<br><em>Not forecasts</em></h1>\n'
+              '  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.</p>')
+    s2 = s2.replace(old_h1, new_h1)
+    if s2 != s:
+        with open(path, encoding="utf-8") as f_now:
+            if f_now.read() == s:
+                with open(path, "w", encoding="utf-8") as f:
+                    f.write(s2)
+                return True
+    return False
+
+
 def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles"):
     return """<!DOCTYPE html>
 <html lang="en">
@@ -858,6 +944,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 <meta property="og:description" content="{desc}">
 <meta property="og:url" content="{canonical}">
 {og_tags}{extra_meta}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{title}">
 {favicons}
 <meta name="theme-color" content="#f6f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#12100e" media="(prefers-color-scheme: dark)">
@@ -957,7 +1044,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
                   mins=max(1, round(words / 230)), back_href=back_href, back_short=back_short,
                   back_long=back_long,
                   title=esc(a["title"]), content=fix_wp_link_text(a["html"]), wp=esc(a["wp_url"]),
-                  cat=('<a class="cat-label" href="/articles/?cat=%s">%s</a>' % (esc(a["category"]), esc(a["category"]))
+                  cat=('<a class="cat-label" href="%s">%s</a>' % (cat_href(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
                   related=render_related(related), subscribe=SUBSCRIBE)
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
@@ -1048,43 +1135,85 @@ LIBRARY_JS = r"""(function(){
   var tools=document.getElementById('lib-tools'),q=document.getElementById('lib-q');
   if(!tools||!q||!document.querySelectorAll)return;
   var list=document.getElementById('lib-list'),empty=document.getElementById('lib-empty'),count=document.getElementById('lib-count');
-  var pills=[].slice.call(tools.querySelectorAll('.pill')),kids=[].slice.call(list.children);
-  var total=list.querySelectorAll('.item').length,cat='All';
+  var kids=[].slice.call(list.children);
+  var total=list.querySelectorAll('.item').length;
+  var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
+  if(params.cat){
+    var want=String(params.cat).toLowerCase();
+    var dest=(want==='all'||!want)?'/articles/':'/articles/'+want+'/';
+    var here=location.pathname.replace(/\/?$/,'/');
+    if(here!==dest){location.replace(dest+(params.q?('?q='+encodeURIComponent(params.q)):''));return;}
+  }
   function norm(v){return (v||'').toLowerCase().replace(/\u2019/g,"'").replace(/\s+/g,' ').trim();}
   function apply(push){
     var words=norm(q.value).split(' ').filter(Boolean),shown=0,month=null,monthShown=0;
     function closeMonth(){if(month)month.hidden=monthShown===0;}
     kids.forEach(function(el){
       if(el.classList.contains('month')){closeMonth();month=el;monthShown=0;return;}
-      var cats=(el.getAttribute('data-cat')||'').split(' '),hay=el.getAttribute('data-search')||'';
-      var ok=(cat==='All'||cats.indexOf(cat)!==-1)&&words.every(function(w){return hay.indexOf(w)!==-1;});
+      var hay=el.getAttribute('data-search')||'';
+      var ok=words.every(function(w){return hay.indexOf(w)!==-1;});
       el.hidden=!ok;if(ok){shown++;monthShown++;}
     });
     closeMonth();
     empty.hidden=shown!==0;
     count.textContent=(shown===total?total+' articles':shown+' of '+total+' articles');
-    pills.forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-cat')===cat?'true':'false');});
     if(push&&window.history&&history.replaceState){
-      var ps=[];if(cat!=='All')ps.push('cat='+encodeURIComponent(cat));if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));
+      var ps=[];if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));
       history.replaceState(null,'',location.pathname+(ps.length?'?'+ps.join('&'):''));
     }
   }
-  var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
-  if(params.cat){var want=String(params.cat).toLowerCase();var hit=pills.filter(function(p){return (p.getAttribute('data-cat')||'').toLowerCase()===want;})[0];if(hit)cat=hit.getAttribute('data-cat');}
   if(params.q)q.value=params.q;
-  pills.forEach(function(p){p.addEventListener('click',function(){cat=p.getAttribute('data-cat');apply(true);});});
   q.addEventListener('input',function(){apply(true);});
   tools.hidden=false;
   apply(false);
 })();"""
 
 
-def render_index(arts):
-    url = SITE + "/articles/"
-    desc = ("RYZM articles: research summaries, framework notes, and Korea and US market closes "
-            "on rates, funding, FX, and Korea.")
+def render_pills(all_arts, current="All"):
+    """Category pills as real links. Counts come from the full library."""
+    counts = {c: sum(1 for a in all_arts if c in a["categories"]) for c in CATEGORY_ORDER}
+
+    def pill(label, href, n, active):
+        pressed = "true" if active else "false"
+        current_attr = ' aria-current="page"' if active else ""
+        return ('<a class="pill" href="%s" data-cat="%s" aria-pressed="%s"%s>%s <span class="n">%d</span></a>'
+                % (href, esc(label), pressed, current_attr, esc(label), n))
+
+    pills = [pill("All", "/articles/", len(all_arts), current == "All")]
+    pills += [pill(c, cat_href(c), counts[c], current == c)
+              for c in CATEGORY_ORDER if counts[c]]
+    return pills
+
+
+def render_index(arts, category=None, all_arts=None):
+    """Library index, or a static /articles/<category>/ page listing only that category."""
+    all_arts = all_arts if all_arts is not None else arts
+    listed = [a for a in arts if (not category or category in a.get("categories", []))]
+    if category:
+        url = SITE + cat_href(category)
+        name = "%s · RYZM" % category
+        desc = CATEGORY_DESCRIPTIONS.get(
+            category, "RYZM articles in %s." % category)
+        title_h = category
+        lead = {
+            "Frameworks": "Reading frameworks, not forecasts. Full text on RYZM.",
+            "Rates": "US rates, Treasuries, and the curve. Full text on RYZM.",
+            "Funding": "Dollar funding, SOFR, reserves, and liquidity plumbing. Full text on RYZM.",
+            "FX": "The dollar, the won, and FX hedging. Full text on RYZM.",
+            "Korea": "Korean markets and the path from US rates and funding. Full text on RYZM.",
+            "Credit": "Credit, spreads, and related market structure. Full text on RYZM.",
+        }.get(category, "Research summaries, framework notes, and market closes. Full text on RYZM.")
+        ld_name = "RYZM %s" % category
+    else:
+        url = SITE + "/articles/"
+        name = "Articles · RYZM"
+        desc = ("RYZM articles: research summaries, framework notes, and Korea and US market closes "
+                "on rates, funding, FX, and Korea.")
+        title_h = "Articles"
+        lead = "Research summaries, framework notes, and market closes. Full text on RYZM."
+        ld_name = "RYZM Articles"
     rows, month = [], None
-    for a in arts:
+    for a in listed:
         m = datetime.fromisoformat(a["date"]).strftime("%B %Y")
         if m != month:
             rows.append('    <div class="month">%s</div>' % m)
@@ -1099,33 +1228,31 @@ def render_index(arts):
                    cats=esc(" ".join(a["categories"])), search=esc(search), cat=esc(a["category"]),
                    title=esc(a["title"]), desc=esc(a["desc"])))
     items = "\n".join(rows)
-    counts = {c: sum(1 for a in arts if c in a["categories"]) for c in CATEGORY_ORDER}
-    pills = ['<button type="button" class="pill" data-cat="All" aria-pressed="true">All <span class="n">%d</span></button>' % len(arts)]
-    pills += ['<button type="button" class="pill" data-cat="%s" aria-pressed="false">%s <span class="n">%d</span></button>'
-              % (c, c, counts[c]) for c in CATEGORY_ORDER if counts[c]]
+    pills = render_pills(all_arts, current=category or "All")
     ld = jsonld({
         "@context": "https://schema.org",
         "@type": "CollectionPage",
         "@id": url,
         "url": url,
-        "name": "RYZM Articles",
+        "name": ld_name,
         "description": desc,
         "inLanguage": "en-US",
         "isPartOf": {"@id": SITE + "/#website"},
         "publisher": ORG,
-        "dateModified": max(a["modified"] for a in arts) if arts else None,
+        "dateModified": max(a["modified"] for a in listed) if listed else None,
         "mainEntity": {
             "@type": "ItemList",
+            "numberOfItems": len(listed),
             "itemListElement": [
                 {"@type": "ListItem", "position": i + 1, "url": SITE + a["path"], "name": a["title"]}
-                for i, a in enumerate(arts)],
+                for i, a in enumerate(listed)],
         },
     })
     body = """<main>
   <div class="page-head">
     <div class="section-title">Library</div>
-    <h1 class="page-title">Articles</h1>
-    <p class="page-lead">Research summaries, framework notes, and market closes. Full text on RYZM.</p>
+    <h1 class="page-title">%s</h1>
+    <p class="page-lead">%s</p>
     <div class="page-count" id="lib-count" aria-live="polite">%d articles</div>
   </div>
   <div class="lib-tools" id="lib-tools" hidden>
@@ -1144,8 +1271,8 @@ def render_index(arts):
 </main>
 <script>
 %s
-</script>""" % (len(arts), "\n      ".join(pills), items, LIBRARY_JS)
-    return page("Articles · RYZM", desc, url, "website", "", ld, body)
+</script>""" % (esc(title_h), esc(lead), len(listed), "\n      ".join(pills), items, LIBRARY_JS)
+    return page(name, desc, url, "website", "", ld, body)
 
 
 # ---------------------------------------------------------------- site files
@@ -1227,12 +1354,11 @@ def update_index_html(url_map):
     s2 = patch_links(s, url_map, True)
     s2 = s2.replace('<a href="https://ryzm9.wordpress.com/about-2/" target="_blank" rel="noopener">About</a>',
                     '<a href="/about/">About</a>')
-    if 'href="/favicon.svg"' not in s2:
-        s2 = s2.replace('<link rel="alternate" type="text/markdown"',
-                        FAVICON_LINKS + '\n<link rel="alternate" type="text/markdown"', 1)
+    s2 = rewrite_cat_query_hrefs(s2)
     if s2 != s:
         with open(path, "w", encoding="utf-8") as f:
             f.write(s2)
+    update_home_chrome(path)
     sort_home_cards(path)
 
 
@@ -1287,9 +1413,13 @@ def write_section(out_dir, manifest, items, render_one, render_list, with_relate
 def write_sitemap(arts, briefs=(), about_lastmod=None):
     today = datetime.now().astimezone().strftime("%Y-%m-%d")
     newest = max([a["modified"][:10] for a in arts] + [today])
-    urls = [(SITE + "/", today, "daily"), (SITE + "/articles/", newest, "daily"),
-            (SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None),
-            (SITE + "/rss.xml", today, "daily")]
+    urls = [(SITE + "/", today, "daily"), (SITE + "/articles/", newest, "daily")]
+    for c in CATEGORY_ORDER:
+        if any(c in a.get("categories", []) for a in arts):
+            cat_mod = max(a["modified"][:10] for a in arts if c in a.get("categories", []))
+            urls.append((SITE + cat_href(c), cat_mod, "weekly"))
+    urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None),
+             (SITE + "/rss.xml", today, "daily")]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
     if briefs:
@@ -1320,6 +1450,24 @@ def load_existing(slug, base=OUT):
         "type": ld["articleSection"], "desc": ld["description"], "tags": ld.get("keywords") or [],
         "html": s[start:end],
     }
+
+
+def write_category_pages(arts):
+    """Write /articles/<cat>/index.html for each category with articles; prune empty ones."""
+    article_slugs = {a["slug"] for a in arts}
+    collisions = sorted(article_slugs & set(CATEGORY_SLUGS))
+    if collisions:
+        raise SystemExit("Category slug collides with an article slug: %s" % ", ".join(collisions))
+    for slug, name in CATEGORY_SLUGS.items():
+        items = [a for a in arts if name in a.get("categories", [])]
+        d = os.path.join(OUT, slug)
+        if not items:
+            if os.path.isdir(d):
+                shutil.rmtree(d)
+            continue
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+            f.write(render_index(items, category=name, all_arts=arts))
 
 
 def write_manifest(arts):
@@ -1500,7 +1648,9 @@ def retemplate():
             f.write(render_article(a, related=related_for(a, arts)))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
+    write_category_pages(arts)
     write_manifest(arts)
+    update_home_chrome()
     sort_home_cards()
     briefs = []
     if os.path.exists(NOTES_MANIFEST):
@@ -1569,7 +1719,12 @@ def main():
         with open(MANIFEST, encoding="utf-8") as f:
             old = json.load(f).get("slugs", [])
     new = [a["slug"] for a in arts]
+    collisions = sorted(set(new) & set(CATEGORY_SLUGS))
+    if collisions:
+        raise SystemExit("Category slug collides with an article slug: %s" % ", ".join(collisions))
     for slug in set(old) - set(new):
+        if slug in CATEGORY_SLUGS:
+            continue
         d = os.path.join(OUT, slug)
         if os.path.isdir(d):
             shutil.rmtree(d)
@@ -1580,6 +1735,7 @@ def main():
             f.write(render_article(a, related=related_for(a, arts)))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
+    write_category_pages(arts)
     write_manifest(arts)
 
     briefs = [{
