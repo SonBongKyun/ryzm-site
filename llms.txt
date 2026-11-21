@@ -4,6 +4,8 @@
 
 - Home: https://ryzm.app/
 - Articles (full text on this site): https://ryzm.app/articles/
+- About: https://ryzm.app/about/
+- Daily briefs (full text on this site): https://ryzm.app/notes/
 - Blog with daily briefs and news notes: https://ryzm9.wordpress.com/
 - Updated daily (Feed, Breaking, Articles, Notes). Every number links to its primary source.
 
@@ -59,5 +61,5 @@ Full text on ryzm.app. Index: https://ryzm.app/articles/
 ## Recent notes
 
 - [Korea triggers sell-side sidecars as KOSPI falls >5%](https://ryzm.app/articles/kospi-sell-side-sidecars-november-20-2026/) (Nov 20, 2026)
-- [RYZM Daily Brief | US factory prices, claims, Walmart](https://ryzm9.wordpress.com/2026/11/20/ryzm-daily-brief-2026-11-20/) (Nov 20, 2026)
+- [RYZM Daily Brief | US factory prices, claims, Walmart](https://ryzm.app/notes/ryzm-daily-brief-2026-11-20/) (Nov 20, 2026)
 - [Anthropic prices IPO at $83.00](https://ryzm.app/articles/anthropic-prices-its-ipo-at-83-00-a-share-november-19-2026/) (Nov 19, 2026)
