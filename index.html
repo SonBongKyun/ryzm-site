@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="RYZM – Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.">
+<meta name="description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
 <title>RYZM · Frameworks for Markets</title>
 <link rel="canonical" href="https://ryzm.app/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RYZM">
 <meta property="og:title" content="RYZM · Frameworks for Markets">
-<meta property="og:description" content="Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.">
+<meta property="og:description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
 <meta property="og:url" content="https://ryzm.app/">
 <meta name="twitter:card" content="summary">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -32,7 +32,7 @@
    "@id": "https://ryzm.app/#website",
    "url": "https://ryzm.app/",
    "name": "RYZM · Frameworks for Markets",
-   "description": "Frameworks for markets. Rates, funding, FX, and Korea as the bridge. Not forecasts.",
+   "description": "RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.",
    "inLanguage": "en-US",
    "publisher": {
     "@id": "https://ryzm.app/#org"
@@ -285,6 +285,47 @@
   .footer-links a { color: var(--ink-band-text); border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
   .footer-links a:hover { color: #fffdf9; border-color: var(--accent); }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: var(--wrap); margin: 64px auto 0; padding: 0 28px; }
+  .subscribe-inner {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px 36px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0 22px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fffdf9;
+    font-weight: 600;
+    font-size: 15px;
+    white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+
   /* ---------- section titles ---------- */
   .section-title {
     font-size: 11.5px;
@@ -349,10 +390,14 @@
     }
     .header-cta { padding: 7px 13px; font-size: 12.5px; display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .all-link { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .all-link, .intro-links a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
     .filter-btn { min-height: 40px; }
     .card .source a { display: inline-block; padding: 12px 0; margin: -12px 0; }
     footer { padding: 32px 20px; }
+    .subscribe { padding: 0 16px; margin-top: 48px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 24px; }
+    .btn-subscribe { min-height: 44px; width: 100%; }
   }
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -382,21 +427,18 @@
   .ticker-item strong { color: #e8a476; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px; font-size: 11px; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-  .intro h1, .intro p.lead, .intro-actions, .scroll-hint { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-  .intro p.lead { animation-delay: 0.08s; }
-  .intro-actions { animation-delay: 0.16s; }
-  .scroll-hint { animation-delay: 0.24s; }
+  .intro h1, .intro-links { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .intro-links { animation-delay: 0.08s; }
 
   /* ---------- intro / hero ---------- */
   .intro {
     position: relative;
     max-width: var(--wrap);
     margin: 0 auto;
-    padding: 88px 28px 80px;
-    display: grid;
-    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-    column-gap: 72px;
-    align-items: end;
+    padding: 80px 28px 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     isolation: isolate;
   }
   .intro::before {
@@ -416,10 +458,8 @@
   }
   .intro::after {
     content: "Rates \00B7  Funding \00B7  FX \00B7  Korea";
-    grid-column: 1 / -1;
-    grid-row: 1;
-    justify-self: start;
-    margin-bottom: 32px;
+    order: -1;
+    margin-bottom: 28px;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.16em;
@@ -432,55 +472,35 @@
   }
   .intro h1 {
     font-family: var(--serif);
-    font-size: clamp(44px, 7vw, 88px);
+    font-size: clamp(28px, 3.8vw, 46px);
     font-weight: 500;
-    letter-spacing: -0.035em;
-    line-height: 0.98;
-    grid-column: 1;
-    grid-row: 2 / span 3;
+    letter-spacing: -0.03em;
+    line-height: 1.18;
+    max-width: 18.5em;
     color: var(--text);
     font-optical-sizing: auto;
   }
   .intro h1 em { font-style: italic; color: var(--accent); font-weight: 400; }
-  .intro p.lead {
-    grid-column: 2;
-    grid-row: 2;
-    margin-top: 0;
-    padding-top: 20px;
-    border-top: 1px solid var(--border-strong);
-    font-size: clamp(17px, 1.6vw, 20px);
-    color: var(--text-2);
-    max-width: 34em;
-    line-height: 1.55;
+  .intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    margin-top: 32px;
   }
-  .intro-actions { grid-column: 2; grid-row: 3; margin-top: 28px; display: flex; gap: 12px; }
-  .btn-intro {
+  .intro-links a {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: var(--accent);
-    color: #fffdf9;
-    padding: 14px 22px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid var(--border-strong);
     border-radius: 999px;
+    background: var(--surface);
+    font-size: 14px;
     font-weight: 600;
-    font-size: 15px;
-    transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    color: var(--text);
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s;
   }
-  .btn-intro::after { content: "\2192"; transition: transform 0.2s; }
-  .btn-intro:hover { background: var(--accent-ink); transform: translateY(-1px); }
-  .btn-intro:hover::after { transform: translateX(3px); }
-  .scroll-hint {
-    grid-column: 2;
-    grid-row: 4;
-    margin-top: 28px;
-    font-size: 12.5px;
-    color: var(--text-muted);
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-  }
-  .scroll-hint::before { content: ""; width: 28px; height: 1px; background: var(--border-strong); }
+  .intro-links a:hover { color: var(--accent-ink); border-color: var(--accent); }
 
   /* ---------- main ---------- */
   main { max-width: var(--wrap); margin: 0 auto; padding: 8px 28px 32px; }
@@ -711,13 +731,9 @@
     .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 36px; }
   }
   @media (max-width: 900px) {
-    .intro { padding: 52px 20px 52px; display: flex; flex-direction: column; align-items: flex-start; }
-    .intro::after { order: -1; }
-    .intro p.lead { padding-top: 0; border-top: none; }
+    .intro { padding: 52px 20px 48px; }
     .intro::after { margin-bottom: 20px; font-size: 11px; }
-    .intro p.lead { margin-top: 20px; }
-    .intro-actions { margin-top: 28px; }
-    .scroll-hint { margin-top: 36px; }
+    .intro-links { margin-top: 24px; }
     main { padding: 0 16px 24px; }
     .layout { grid-template-columns: minmax(0, 1fr); gap: 56px; }
     #calendar { position: static; }
@@ -777,12 +793,13 @@
 </header>
 
 <section class="intro">
-  <h1>Frameworks for markets.<br><em>Not forecasts.</em></h1>
-  <p class="lead">What markets are doing, not what they are saying.<br>Rates, funding, FX. Korea as the bridge.</p>
-  <div class="intro-actions">
-    <a href="#feed" class="btn-intro">Enter the feed</a>
-  </div>
-  <div class="scroll-hint">Scroll for notes and frameworks</div>
+  <h1>RYZM maps how US rates, dollar funding and FX move into Korean markets.<br><em>Frameworks, not forecasts.</em></h1>
+  <nav class="intro-links" aria-label="Start here">
+    <a href="#breaking">Breaking</a>
+    <a href="/articles/">Articles</a>
+    <!-- Frameworks will later point to a Framework Notes category page. -->
+    <a href="/articles/?cat=frameworks">Frameworks</a>
+  </nav>
 </section>
 
 <main id="main">
@@ -1002,6 +1019,16 @@
     </div>
   </div>
 </main>
+
+<aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Subscribe</a>
+  </div>
+</aside>
 
 <footer>
   <div class="footer-inner">

@@ -723,6 +723,27 @@ CSS = """
   .rel-item:hover h3 { color: var(--accent-ink); }
   .related + .origin { margin-top: 40px; }
 
+  /* ---------- subscribe ---------- */
+  .subscribe { max-width: 720px; margin: 56px auto 0; }
+  .subscribe-inner {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 28px 32px; display: flex; flex-wrap: wrap;
+    align-items: center; justify-content: space-between; gap: 18px 28px;
+  }
+  .subscribe h2 {
+    font-family: var(--serif); font-size: 26px; font-weight: 500;
+    letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 8px; color: var(--text);
+  }
+  .subscribe p { color: var(--text-2); font-size: 15.5px; max-width: 36em; line-height: 1.5; }
+  .btn-subscribe {
+    display: inline-flex; align-items: center; justify-content: center; min-height: 44px;
+    padding: 0 22px; border-radius: 999px; background: var(--accent); color: #fffdf9;
+    font-weight: 600; font-size: 15px; white-space: nowrap;
+    box-shadow: 0 6px 20px -8px rgba(156, 87, 41, 0.6);
+    transition: background-color 0.2s, transform 0.2s;
+  }
+  .btn-subscribe:hover { background: var(--accent-ink); transform: translateY(-1px); }
+
   /* ---------- touch targets (phones/tablets) ---------- */
   @media (max-width: 900px) {
     nav a { display: inline-flex; align-items: center; min-height: 40px; }
@@ -732,7 +753,10 @@ CSS = """
     }
     .header-cta { display: inline-flex; align-items: center; min-height: 40px; }
     .logo, a.logo { min-height: 40px; }
-    .footer-links a, .back, .origin a { display: inline-flex; align-items: center; min-height: 40px; }
+    .footer-links a, .back, .origin a, .btn-subscribe { display: inline-flex; align-items: center; min-height: 40px; }
+    .subscribe-inner { padding: 24px 20px; }
+    .subscribe h2 { font-size: 23px; }
+    .btn-subscribe { min-height: 44px; }
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
@@ -762,6 +786,16 @@ FOOTER = """<footer>
     </div>
   </div>
 </footer>"""
+
+SUBSCRIBE = """<aside class="subscribe" aria-label="Email subscription">
+  <div class="subscribe-inner">
+    <div>
+      <h2>Get the weekly RYZM brief</h2>
+      <p>New frameworks and the week’s key changes, by email. Free.</p>
+    </div>
+    <a class="btn-subscribe" href="https://ryzm9.wordpress.com/subscribe/" target="_blank" rel="noopener">Subscribe</a>
+  </div>
+</aside>"""
 
 
 def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles"):
@@ -870,6 +904,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
     </div>
   </article>
   </div>{related}
+  {subscribe}
   <div class="origin">
     <a href="{back_href}">&larr; {back_long}</a>
     <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
@@ -880,7 +915,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
                   title=esc(a["title"]), content=fix_wp_link_text(a["html"]), wp=esc(a["wp_url"]),
                   cat=('<a class="cat-label" href="/articles/?cat=%s">%s</a>' % (esc(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
-                  related=render_related(related))
+                  related=render_related(related), subscribe=SUBSCRIBE)
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
 
 
@@ -929,7 +964,7 @@ def render_notes_index(briefs):
 def render_about(pg, url_map):
     url = SITE + "/about/"
     title = plain(pg["title"])
-    content = sanitize(pg["content"], url_map)
+    content = pg["content"] if pg.get("ready") else sanitize(pg["content"], url_map)
     content = re.sub(r"^\s*<h2>\s*%s\s*</h2>\s*" % re.escape(esc(title)), "", content)
     desc = description(pg)
     ld = jsonld({
@@ -951,7 +986,8 @@ def render_about(pg, url_map):
     </div>
   </article>
   </div>
-</main>""".format(title=esc(title), content=content)
+{subscribe}
+</main>""".format(title=esc(title), content=content, subscribe=SUBSCRIBE)
     return page("%s · RYZM" % title, desc, url, "website", "", ld, body, "")
 
 
@@ -983,7 +1019,7 @@ LIBRARY_JS = r"""(function(){
     }
   }
   var params={};(location.search||'').replace(/^\?/,'').split('&').forEach(function(kv){if(!kv)return;var i=kv.indexOf('=');var k=i<0?kv:kv.slice(0,i);try{params[k]=decodeURIComponent((i<0?'':kv.slice(i+1)).replace(/\+/g,' '));}catch(e){}});
-  if(params.cat&&pills.some(function(p){return p.getAttribute('data-cat')===params.cat;}))cat=params.cat;
+  if(params.cat){var want=String(params.cat).toLowerCase();var hit=pills.filter(function(p){return (p.getAttribute('data-cat')||'').toLowerCase()===want;})[0];if(hit)cat=hit.getAttribute('data-cat');}
   if(params.q)q.value=params.q;
   pills.forEach(function(p){p.addEventListener('click',function(){cat=p.getAttribute('data-cat');apply(true);});});
   q.addEventListener('input',function(){apply(true);});
@@ -1269,6 +1305,25 @@ def retemplate():
         for b in briefs:
             b["path"] = "/notes/%s/" % b["slug"]
         write_section(NOTES_OUT, NOTES_MANIFEST, briefs, render_brief, render_notes_index)
+    about_path = os.path.join(ABOUT_OUT, "index.html")
+    if os.path.exists(about_path):
+        with open(about_path, encoding="utf-8") as f:
+            about_html = f.read()
+        ld_m = re.search(r'<script type="application/ld\+json">\n(.*?)\n</script>', about_html, re.S)
+        title_m = re.search(r'<h1 class="title">(.*?)</h1>', about_html, re.S)
+        start = about_html.index('<div class="prose">\n') + len('<div class="prose">\n')
+        end = about_html.index('\n    </div>\n  </article>', start)
+        ld = json.loads(ld_m.group(1)) if ld_m else {}
+        about = {
+            "title": html.unescape(title_m.group(1)) if title_m else "About RYZM",
+            "content": about_html[start:end],
+            "ready": True,
+            "date": ld.get("datePublished", ""),
+            "modified": ld.get("dateModified", ""),
+            "URL": ld.get("isBasedOn") or ld.get("url") or (SITE + "/about/"),
+        }
+        with open(about_path, "w", encoding="utf-8") as f:
+            f.write(render_about(about, {}))
     print("Re-rendered %d articles and %d daily briefs with the current template" % (len(arts), len(briefs)))
 
 
