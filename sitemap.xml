@@ -2,12 +2,12 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ryzm.app/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://ryzm.app/articles/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -17,7 +17,7 @@
   </url>
   <url>
     <loc>https://ryzm.app/articles/funding/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
@@ -42,15 +42,15 @@
   </url>
   <url>
     <loc>https://ryzm.app/llms.txt</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/subscribe/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/rss.xml</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
@@ -61,6 +61,10 @@
     <loc>https://ryzm.app/notes/</loc>
     <lastmod>2026-11-21</lastmod>
     <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://ryzm.app/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/</loc>
+    <lastmod>2026-11-22</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/</loc>
