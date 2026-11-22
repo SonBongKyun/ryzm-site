@@ -1,6 +1,7 @@
 {
  "source": "https://public-api.wordpress.com/rest/v1.1/sites/ryzm9.wordpress.com/posts/",
  "slugs": [
+  "goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026",
   "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
   "goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026",
   "prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026",
@@ -37,6 +38,20 @@
   "treasury-term-premium-explained"
  ],
  "items": [
+  {
+   "slug": "goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026",
+   "path": "/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/",
+   "title": "Goldman’s Global Reflections: The Q4 2018 Playbook Goes Mainstream | November 20, 2026",
+   "date": "2026-11-22T09:34:56+09:00",
+   "type": "Research Summary",
+   "category": "Funding",
+   "categories": [
+    "Funding"
+   ],
+   "wp_categories": [
+    "Funding & Liquidity"
+   ]
+  },
   {
    "slug": "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
    "path": "/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
