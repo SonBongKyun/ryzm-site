@@ -110,7 +110,8 @@ def cats_of(p):
 
 
 def plain(s):
-    return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s or ""))).strip()
+    t = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", s or ""))).strip()
+    return re.sub(r"\s+([.,;:!?)])", r"\1", t)
 
 
 def is_article(p):
