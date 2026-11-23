@@ -1,10 +1,26 @@
 #!/usr/bin/env python3
-"""Build in-site article pages for ryzm.app from the RYZM WordPress.com blog.
+"""Build in-site article pages for ryzm.app from WordPress and local Close folders.
 
-Usage (from the repo root):  python3 scripts/build_articles.py
-                             python3 scripts/build_articles.py --retemplate
-                             (re-render existing pages with the current template; no fetch)
+Usage (from the repo root):
+  python3 scripts/build_articles.py
+  python3 scripts/build_articles.py --retemplate
+      Re-render existing pages with the current template; no WordPress fetch.
+  python3 scripts/build_articles.py --local-close /path/to/korea-close-YYYYMMDD --retemplate
+      Ingest one Close folder (repeat --local-close as needed), persist it under
+      sources/closes/, and rebuild. Prefer --retemplate so a Close publish does
+      not depend on a live WordPress fetch.
+  python3 scripts/build_articles.py --local-closes-dir /path/to/closes --retemplate
+      Ingest every korea-close-YYYYMMDD and us-close-YYYYMMDD folder in a directory.
+
 Python 3 standard library only. Idempotent: safe to run every day.
+
+Local Close posts are written to sources/closes/<slug>.json and
+assets/articles/<slug>.png.b64. Later WordPress-driven runs merge those files
+back in and will not delete or overwrite them.
+
+This script never edits ul.breaking-list or div.feed in index.html. Those
+sections are committed by Gemini via Apps Script. Before pushing index.html,
+re-fetch main and rebase so those live sections are the latest version.
 
 What it does
   1. Fetches every post from the WordPress.com public API (ryzm9.wordpress.com).
@@ -25,14 +41,17 @@ What it does
      articles/manifest.json ("items").
   7. Keeps the home page Breaking cards and Feed cards newest-first (by KST time).
 """
+import base64
 import html
 import json
 import os
 import re
 import shutil
+import struct
 import sys
+import textwrap
 import urllib.request
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import email.utils
 from html.parser import HTMLParser
 
@@ -47,6 +66,9 @@ NOTES_MANIFEST = os.path.join(NOTES_OUT, "manifest.json")
 ABOUT_OUT = os.path.join(ROOT, "about")
 ABOUT_SLUG = "about-2"
 BRIEF_CAT = "Daily Brief"
+SOURCES = os.path.join(ROOT, "sources", "closes")
+ASSET_ARTICLES = os.path.join(ROOT, "assets", "articles")
+KST = timezone(timedelta(hours=9))
 
 INCLUDE_CATS = {"Key Issues", "Framework Note", "Korea Close", "US Close",
                 "Rates & Bonds", "FX", "Funding & Liquidity", "Korea Bridge", "Credit"}
@@ -923,13 +945,21 @@ def update_home_chrome(path=None):
     if s2 != s:
         with open(path, encoding="utf-8") as f_now:
             if f_now.read() == s:
-                with open(path, "w", encoding="utf-8") as f:
-                    f.write(s2)
-                return True
+                return write_index_html(path, s2)
     return False
 
 
-def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles"):
+def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles",
+         og_image=None):
+    if og_image:
+        og_tags = (
+            '<meta property="og:image" content="%s">\n'
+            '<meta property="og:image:width" content="1200">\n'
+            '<meta property="og:image:height" content="630">\n'
+            '<meta name="twitter:image" content="%s">\n' % (og_image, og_image)
+        )
+    else:
+        og_tags = OG_TAGS
     return """<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -968,7 +998,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 </body>
 </html>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical, og_type=og_type,
-           extra_meta=extra_meta, favicons=FAVICON_LINKS, og_tags=OG_TAGS, ld=ld, css=CSS,
+           extra_meta=extra_meta, favicons=FAVICON_LINKS, og_tags=og_tags, ld=ld, css=CSS,
            header=HEADER.format(act_articles=' class="active"' if active == "articles" else "",
                                 act_notes=' class="active"' if active == "notes" else ""),
            body=body, footer=FOOTER)
@@ -1003,7 +1033,9 @@ def render_related(rel):
 def render_article(a, back_href="/articles/", back_short="All articles", back_long="Back to Articles",
                    active="articles", related=None):
     url = SITE + a["path"]
-    ld = jsonld({
+    wp_url = a.get("wp_url") or ""
+    from_wp = bool(wp_url) and WP_SITE in wp_url
+    ld_obj = {
         "@context": "https://schema.org",
         "@type": "Article",
         "@id": url + "#article",
@@ -1018,11 +1050,24 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
         "keywords": a["tags"],
         "author": ORG,
         "publisher": ORG,
-        "isBasedOn": a["wp_url"],
-    })
+    }
+    if from_wp:
+        ld_obj["isBasedOn"] = wp_url
+    og_image = None
+    if a.get("image"):
+        img = a["image"]
+        og_image = img if img.startswith("http") else (SITE + img)
+        ld_obj["image"] = og_image
+    ld = jsonld(ld_obj)
     extra = ('<meta property="article:published_time" content="%s">\n'
              '<meta property="article:modified_time" content="%s">\n' % (a["date"], a["modified"]))
     words = len(plain(a["html"]).split())
+    origin_span = ""
+    if from_wp:
+        origin_span = (
+            '\n    <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">'
+            "ryzm9.wordpress.com</a></span>".format(wp=esc(wp_url))
+        )
     body = """<main>
   <div class="article-wrap">
   <a class="back" href="{back_href}">&larr; {back_short}</a>
@@ -1038,17 +1083,17 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
   </div>{related}
   {subscribe}
   <div class="origin">
-    <a href="{back_href}">&larr; {back_long}</a>
-    <span>Originally published on <a href="{wp}" rel="noopener" target="_blank">ryzm9.wordpress.com</a></span>
+    <a href="{back_href}">&larr; {back_long}</a>{origin_span}
   </div>
 </main>""".format(date=a["date"], date_h=fmt_date(a["date"]), type=esc(a["type"]),
                   mins=max(1, round(words / 230)), back_href=back_href, back_short=back_short,
-                  back_long=back_long,
-                  title=esc(a["title"]), content=fix_wp_link_text(a["html"]), wp=esc(a["wp_url"]),
+                  back_long=back_long, origin_span=origin_span,
+                  title=esc(a["title"]), content=fix_wp_link_text(a["html"]),
                   cat=('<a class="cat-label" href="%s">%s</a>' % (cat_href(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
                   related=render_related(related), subscribe=SUBSCRIBE)
-    return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active)
+    return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active,
+                og_image=og_image)
 
 
 def render_brief(a, related=None):
@@ -1314,38 +1359,49 @@ def _kst_key(block, now):
     return datetime(year, mon, int(m.group(2)), int(m.group(3)), int(m.group(4)))
 
 
-def sort_home_cards(path=None):
-    """Keep Breaking cards (<li> in .breaking-list) and Feed cards (<article class="card">)
-    newest-first by their KST time. Stable for equal times. Rewrites index.html only if changed."""
-    path = path or os.path.join(ROOT, "index.html")
+# Gemini / Apps Script owns these two live regions of the home page.
+# This generator must never rewrite them.
+BREAKING_LIST_RE = re.compile(r'<ul class="breaking-list">.*?</ul>', re.S)
+FEED_DIV_RE = re.compile(r'<div class="feed">.*?\n      </div>', re.S)
+
+
+def snapshot_live_index_sections(html_text):
+    """Return the exact ul.breaking-list and div.feed strings, or None if absent."""
+    br = BREAKING_LIST_RE.search(html_text or "")
+    fe = FEED_DIV_RE.search(html_text or "")
+    return (br.group(0) if br else None, fe.group(0) if fe else None)
+
+
+def restore_live_index_sections(html_text, snap):
+    """Put saved Breaking and Feed blocks back, leaving every other byte as in html_text."""
+    breaking, feed = snap
+    if breaking is not None:
+        html_text, n = BREAKING_LIST_RE.subn(lambda _m: breaking, html_text, count=1)
+        if n != 1:
+            raise SystemExit("index.html is missing ul.breaking-list; refusing to write")
+    if feed is not None:
+        html_text, n = FEED_DIV_RE.subn(lambda _m: feed, html_text, count=1)
+        if n != 1:
+            raise SystemExit("index.html is missing div.feed; refusing to write")
+    return html_text
+
+
+def write_index_html(path, new_html):
+    """Write index.html but keep ul.breaking-list and div.feed byte-for-byte from disk."""
     with open(path, encoding="utf-8") as f:
-        s = f.read()
-    now = datetime.now()
-
-    def sort_block(m, item_rx):
-        head, inner, tail = m.group(1), m.group(2), m.group(3)
-        rx = re.compile(item_rx, re.S)
-        items = rx.findall(inner)
-        if len(items) < 2:
-            return m.group(0)
-        # split with a capturing group gives [lead, item, sep, item, sep, ..., item, trail]
-        seps = rx.split(inner)
-        lead, trail = seps[0], seps[-1]
-        joiners = seps[2:-1:2]
-        joiner = joiners[0] if joiners else "\n"
-        ordered = sorted(items, key=lambda b: _kst_key(b, now), reverse=True)
-        return head + lead + joiner.join(ordered) + trail + tail
-
-    li_rx = r"(<li>.*?</li>)"
-    s2 = re.sub(r'(<ul class="breaking-list">)(.*?)(</ul>)',
-                lambda m: sort_block(m, li_rx), s, count=1, flags=re.S)
-    card_rx = r'(<article class="card"[^>]*>.*?</article>)'
-    s2 = re.sub(r'(<div class="feed">)(.*?)(\n      </div>\n    </div>)',
-                lambda m: sort_block(m, card_rx), s2, count=1, flags=re.S)
-    if s2 != s:
+        current = f.read()
+    new_html = restore_live_index_sections(new_html, snapshot_live_index_sections(current))
+    if new_html != current:
         with open(path, "w", encoding="utf-8") as f:
-            f.write(s2)
-    return s2 != s
+            f.write(new_html)
+        return True
+    return False
+
+
+def sort_home_cards(path=None):
+    """No-op. Breaking (ul.breaking-list) and Feed (div.feed) are committed by
+    Gemini via Apps Script. This generator must not edit those sections."""
+    return False
 
 
 def update_index_html(url_map):
@@ -1357,10 +1413,8 @@ def update_index_html(url_map):
                     '<a href="/about/">About</a>')
     s2 = rewrite_cat_query_hrefs(s2)
     if s2 != s:
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(s2)
+        write_index_html(path, s2)
     update_home_chrome(path)
-    sort_home_cards(path)
 
 
 def update_llms(arts, url_map):
@@ -1445,12 +1499,22 @@ def load_existing(slug, base=OUT):
     title = html.unescape(re.search(r'<h1 class="title">(.*?)</h1>', s, re.S).group(1))
     start = s.index('<div class="prose">\n') + len('<div class="prose">\n')
     end = s.index('\n    </div>\n  </article>', start)
-    return {
+    image = None
+    img_m = re.search(r'<meta property="og:image" content="([^"]+)"', s)
+    if img_m:
+        img_url = img_m.group(1)
+        if img_url.rstrip("/") != SITE + "/og-image.png":
+            image = img_url[len(SITE):] if img_url.startswith(SITE) else img_url
+    out = {
         "slug": slug, "path": "/articles/%s/" % slug, "title": title,
-        "date": ld["datePublished"], "modified": ld["dateModified"], "wp_url": ld["isBasedOn"],
+        "date": ld["datePublished"], "modified": ld["dateModified"],
+        "wp_url": ld.get("isBasedOn") or "",
         "type": ld["articleSection"], "desc": ld["description"], "tags": ld.get("keywords") or [],
         "html": s[start:end],
     }
+    if image:
+        out["image"] = image
+    return out
 
 
 def write_category_pages(arts):
@@ -1473,9 +1537,14 @@ def write_category_pages(arts):
 
 def write_manifest(arts):
     """articles/manifest.json: "slugs" (kept for older tools) plus per-article "items" with categories."""
-    items = [{"slug": a["slug"], "path": a["path"], "title": a["title"], "date": a["date"],
-              "type": a["type"], "category": a["category"], "categories": a["categories"],
-              "wp_categories": a.get("wp_cats") or []} for a in arts]
+    items = []
+    for a in arts:
+        item = {"slug": a["slug"], "path": a["path"], "title": a["title"], "date": a["date"],
+                "type": a["type"], "category": a["category"], "categories": a["categories"],
+                "wp_categories": a.get("wp_cats") or []}
+        if a.get("source") == "local":
+            item["source"] = "local"
+        items.append(item)
     with open(MANIFEST, "w", encoding="utf-8") as f:
         json.dump({"source": API, "slugs": [a["slug"] for a in arts], "items": items},
                   f, indent=1, ensure_ascii=False)
@@ -1628,10 +1697,438 @@ def update_home_panels(arts, briefs, path=None):
         if n:
             s = s2
     if s != open(path, encoding="utf-8").read():
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(s)
-        return True
+        return write_index_html(path, s)
     return False
+
+
+# ---------------------------------------------------------------- local closes
+# Daily Korea/US Close posts are written on the box by X Ryzm, not WordPress.
+# Ingest a folder with --local-close / --local-closes-dir; persist under
+# sources/closes/ so later WordPress-driven runs keep the pages.
+
+FOLDER_RE = re.compile(r"^(korea|us)-close-(\d{8})$")
+META_LINE_RE = re.compile(
+    r"^\*\*(Meta description|Suggested categories|Suggested tags):\*\*", re.I)
+FORBIDDEN_LABEL = re.compile(r"SavePick|세이브픽|@Goeun_6121", re.I)
+META_ALIASES = {
+    "title": "title",
+    "slug": "slug",
+    "description": "description",
+    "meta description": "description",
+    "meta_description": "description",
+    "metadescription": "description",
+    "tags": "tags",
+    "date": "date",
+    "time": "time",
+    "modified": "modified",
+    "kind": "kind",
+    "type": "type",
+}
+
+
+def parse_cli(argv):
+    retemplate = False
+    folders, scan_dirs = [], []
+    i = 0
+    while i < len(argv):
+        a = argv[i]
+        if a == "--retemplate":
+            retemplate = True
+            i += 1
+        elif a == "--local-close":
+            if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+                raise SystemExit("Usage: --local-close <folder>")
+            folders.append(argv[i + 1])
+            i += 2
+        elif a == "--local-closes-dir":
+            if i + 1 >= len(argv) or argv[i + 1].startswith("--"):
+                raise SystemExit("Usage: --local-closes-dir <dir>")
+            scan_dirs.append(argv[i + 1])
+            i += 2
+        else:
+            raise SystemExit("Unknown argument: %s" % a)
+    for d in scan_dirs:
+        folders.extend(find_close_folders(d))
+    return retemplate, folders
+
+
+def find_close_folders(root):
+    if not os.path.isdir(root):
+        raise SystemExit("Not a directory: %s" % root)
+    found = []
+    for name in sorted(os.listdir(root)):
+        p = os.path.join(root, name)
+        if os.path.isdir(p) and FOLDER_RE.match(name) and os.path.isfile(os.path.join(p, "post.md")):
+            found.append(p)
+    return found
+
+
+def parse_meta_txt(text):
+    """Parse key: value lines. Keys are case-insensitive; aliases are accepted."""
+    out = {}
+    for raw in (text or "").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or ":" not in line:
+            continue
+        k, v = line.split(":", 1)
+        key = META_ALIASES.get(k.strip().lower())
+        if key:
+            out[key] = v.strip()
+    return out
+
+
+def default_close_slug(kind, session):
+    prefix = "korea-close" if kind == "korea-close" else "us-close"
+    return "%s-%s-%d" % (prefix, session.strftime("%B").lower(), session.year)
+
+
+def parse_close_datetime(meta, session):
+    """Return a timezone-aware KST datetime. Does not invent a clock time.
+
+    Prefer meta 'date' as ISO-8601 (with offset, or a bare YYYY-MM-DD plus
+    optional 'time' in HH:MM or HH:MM:SS, always KST). If no date is given,
+    use the folder session date at 00:00 KST.
+    """
+    raw = (meta or {}).get("date") or ""
+    raw = raw.strip()
+    if raw:
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", raw):
+            d = datetime.fromisoformat(raw).date()
+            t = ((meta or {}).get("time") or "00:00:00").replace("KST", "").strip()
+            parts = [int(x) for x in t.split(":")]
+            while len(parts) < 3:
+                parts.append(0)
+            return datetime(d.year, d.month, d.day, parts[0], parts[1], parts[2], tzinfo=KST)
+        if raw.endswith("Z"):
+            raw = raw[:-1] + "+00:00"
+        dt = datetime.fromisoformat(raw)
+        if dt.tzinfo is None:
+            dt = dt.replace(tzinfo=KST)
+        return dt
+    return datetime(session.year, session.month, session.day, 0, 0, tzinfo=KST)
+
+
+def close_body_markdown(text):
+    """Drop the leading H1 and **Meta description** / tags lines from post.md."""
+    lines = (text or "").replace("\r\n", "\n").split("\n")
+    i = 0
+    while i < len(lines):
+        s = lines[i].strip()
+        if not s or s.startswith("# ") or META_LINE_RE.match(s):
+            i += 1
+            continue
+        break
+    return "\n".join(lines[i:]).strip("\n")
+
+
+def safe_href(url):
+    url = (url or "").strip()
+    if not url or url.startswith("#") or url.lower().startswith("javascript:"):
+        return None
+    low = url.lower()
+    if "x.com/" in low or "twitter.com/" in low or "goeun_6121" in low:
+        return None
+    return url
+
+
+def inline_md(s):
+    s = html.escape(s, quote=True)
+
+    def link_sub(m):
+        href = safe_href(html.unescape(m.group(2)))
+        text = m.group(1)
+        if not href:
+            return text
+        return '<a href="%s">%s</a>' % (html.escape(href, quote=True), text)
+
+    s = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", link_sub, s)
+    s = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", s)
+    s = re.sub(r"(?<!\*)\*(?!\*)(.+?)(?<!\*)\*(?!\*)", r"<em>\1</em>", s)
+    s = re.sub(r"`([^`]+)`", r"<code>\1</code>", s)
+    return s
+
+
+def md_to_html(md):
+    """Small Markdown subset: headings, paragraphs, lists, links, bold, italic."""
+    md = close_body_markdown(md)
+    blocks, para, list_items, list_type = [], [], [], None
+
+    def flush_para():
+        if para:
+            blocks.append("<p>%s</p>" % inline_md(" ".join(para)))
+            para.clear()
+
+    def flush_list():
+        nonlocal list_type
+        if list_items:
+            blocks.append("<%s>\n%s\n</%s>" % (
+                list_type,
+                "\n".join("  <li>%s</li>" % inline_md(x) for x in list_items),
+                list_type))
+            list_items.clear()
+            list_type = None
+
+    ul_re = re.compile(r"^[-*+] (.+)$")
+    ol_re = re.compile(r"^\d+\. (.+)$")
+    for line in md.split("\n"):
+        s = line.strip()
+        if not s:
+            flush_para()
+            flush_list()
+            continue
+        if s.startswith("## "):
+            flush_para()
+            flush_list()
+            blocks.append("<h2>%s</h2>" % inline_md(s[3:].strip()))
+            continue
+        if s.startswith("### "):
+            flush_para()
+            flush_list()
+            blocks.append("<h3>%s</h3>" % inline_md(s[4:].strip()))
+            continue
+        if s.startswith("# "):
+            flush_para()
+            flush_list()
+            continue
+        m = ul_re.match(s)
+        if m:
+            flush_para()
+            if list_type not in (None, "ul"):
+                flush_list()
+            list_type = "ul"
+            list_items.append(m.group(1))
+            continue
+        m = ol_re.match(s)
+        if m:
+            flush_para()
+            if list_type not in (None, "ol"):
+                flush_list()
+            list_type = "ol"
+            list_items.append(m.group(1))
+            continue
+        flush_list()
+        para.append(s)
+    flush_para()
+    flush_list()
+    return "\n\n".join(blocks)
+
+
+def assert_clean_html(html_body, slug):
+    if FORBIDDEN_LABEL.search(html_body or ""):
+        raise SystemExit("Refusing to publish %s: forbidden label (SavePick / @Goeun_6121)" % slug)
+    for href in re.findall(r'href="([^"]*)"', html_body or ""):
+        if href == "#" or href.startswith("#"):
+            raise SystemExit("Refusing to publish %s: href=\"#\"" % slug)
+        if re.search(r"(^|//)(x\.com|twitter\.com)/", href, re.I):
+            raise SystemExit("Refusing to publish %s: x.com or twitter.com link" % slug)
+
+
+def encode_featured_png(png_path, slug):
+    data = open(png_path, "rb").read()
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise SystemExit("%s: featured.png is not a PNG" % png_path)
+    w, h = struct.unpack(">II", data[16:24])
+    if (w, h) != (1200, 630):
+        print("warning: %s is %dx%d (expected 1200x630)" % (png_path, w, h))
+    os.makedirs(ASSET_ARTICLES, exist_ok=True)
+    rel = "assets/articles/%s.png.b64" % slug
+    dest = os.path.join(ROOT, rel)
+    wrapped = "\n".join(textwrap.wrap(base64.b64encode(data).decode("ascii"), 76)) + "\n"
+    with open(dest, "w", encoding="ascii") as f:
+        f.write(wrapped)
+    return rel, "/assets/articles/%s.png" % slug
+
+
+def write_local_record(article, markdown=None):
+    os.makedirs(SOURCES, exist_ok=True)
+    rec = {
+        "slug": article["slug"],
+        "title": article["title"],
+        "date": article["date"],
+        "modified": article["modified"],
+        "type": article["type"],
+        "desc": article["desc"],
+        "tags": article["tags"],
+        "wp_cats": article["wp_cats"],
+        "kind": article.get("kind"),
+        "source": "local",
+        "image": article.get("image"),
+        "image_b64": article.get("image_b64"),
+        "html": article["html"],
+    }
+    if markdown is not None:
+        rec["markdown"] = markdown
+    path = os.path.join(SOURCES, article["slug"] + ".json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(rec, f, indent=1, ensure_ascii=False)
+        f.write("\n")
+    return path
+
+
+def article_from_local_record(raw):
+    a = {
+        "slug": raw["slug"],
+        "path": "/articles/%s/" % raw["slug"],
+        "title": raw["title"],
+        "date": raw["date"],
+        "modified": raw.get("modified") or raw["date"],
+        "wp_url": "",
+        "type": raw.get("type") or "Market Close",
+        "desc": raw.get("desc") or "",
+        "tags": raw.get("tags") or [],
+        "wp_cats": raw.get("wp_cats") or [],
+        "html": raw["html"],
+        "source": "local",
+    }
+    if raw.get("image"):
+        a["image"] = raw["image"]
+    if raw.get("kind"):
+        a["kind"] = raw["kind"]
+    apply_categories(a)
+    return a
+
+
+def load_local_closes():
+    arts = []
+    if not os.path.isdir(SOURCES):
+        return arts
+    for name in sorted(os.listdir(SOURCES)):
+        if not name.endswith(".json"):
+            continue
+        with open(os.path.join(SOURCES, name), encoding="utf-8") as f:
+            arts.append(article_from_local_record(json.load(f)))
+    return arts
+
+
+def merge_articles(wp_arts, local_arts):
+    """Local Close posts win on slug collision; WordPress runs cannot drop them."""
+    local_by = {a["slug"]: a for a in local_arts}
+    out, seen = [], set()
+    for a in wp_arts:
+        if a["slug"] in local_by:
+            print("note: local close %s overrides the WordPress post with the same slug" % a["slug"])
+            continue
+        out.append(a)
+        seen.add(a["slug"])
+    for a in local_arts:
+        if a["slug"] not in seen:
+            out.append(a)
+            seen.add(a["slug"])
+    out.sort(key=lambda a: a["date"], reverse=True)
+    return out
+
+
+def url_map_from_existing():
+    """Map known WordPress and in-site URLs so Close bodies can reuse existing pages."""
+    m = {}
+
+    def add_from_manifest(manifest, fallback):
+        if not os.path.exists(manifest):
+            return
+        with open(manifest, encoding="utf-8") as f:
+            man = json.load(f)
+        for it in man.get("items") or []:
+            path = it.get("path") or (fallback % it["slug"])
+            m[norm_url(SITE + path)] = path
+        base = OUT if fallback.startswith("/articles/") else NOTES_OUT
+        for sl in man.get("slugs") or []:
+            try:
+                ex = load_existing(sl, base)
+            except (OSError, KeyError, ValueError, AttributeError, json.JSONDecodeError):
+                continue
+            if ex.get("wp_url"):
+                m[norm_url(ex["wp_url"])] = ex["path"]
+            m[norm_url(SITE + ex["path"])] = ex["path"]
+
+    add_from_manifest(MANIFEST, "/articles/%s/")
+    add_from_manifest(NOTES_MANIFEST, "/notes/%s/")
+    return m
+
+
+def ingest_close_folder(folder):
+    """Read one X Ryzm Close folder, persist source + b64 image, return an article dict."""
+    folder = os.path.abspath(folder)
+    name = os.path.basename(folder.rstrip(os.sep))
+    m = FOLDER_RE.match(name)
+    if not m:
+        raise SystemExit(
+            "Close folder must be named korea-close-YYYYMMDD or us-close-YYYYMMDD: %s" % name)
+    kind = "%s-close" % m.group(1)
+    session = datetime.strptime(m.group(2), "%Y%m%d").date()
+    post_md = os.path.join(folder, "post.md")
+    featured = os.path.join(folder, "featured.png")
+    if not os.path.isfile(post_md):
+        raise SystemExit("Missing post.md in %s" % folder)
+    if not os.path.isfile(featured):
+        raise SystemExit("Missing featured.png in %s" % folder)
+    markdown = open(post_md, encoding="utf-8").read()
+    meta = {}
+    meta_path = os.path.join(folder, "meta.txt")
+    if os.path.isfile(meta_path):
+        meta = parse_meta_txt(open(meta_path, encoding="utf-8").read())
+    if not meta.get("title"):
+        hm = re.search(r"^#\s+(.+)$", markdown, re.M)
+        if hm:
+            meta["title"] = hm.group(1).strip()
+        else:
+            meta["title"] = "%s Close | %s" % (
+                "Korea" if kind == "korea-close" else "US",
+                session.strftime("%B %-d, %Y"))
+            print("warning: no title in meta.txt or post.md; using %s" % meta["title"])
+    if not meta.get("description"):
+        dm = re.search(r"^\*\*Meta description:\*\*\s*(.+)$", markdown, re.M | re.I)
+        if dm:
+            meta["description"] = dm.group(1).strip()
+    if not meta.get("tags"):
+        tm = re.search(r"^\*\*Suggested tags:\*\*\s*(.+)$", markdown, re.M | re.I)
+        if tm:
+            meta["tags"] = tm.group(1).strip()
+    title = meta["title"]
+    slug = meta.get("slug") or default_close_slug(kind, session)
+    if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
+        raise SystemExit("Invalid slug %r" % slug)
+    if slug in CATEGORY_SLUGS:
+        raise SystemExit("Slug collides with a category: %s" % slug)
+    desc = meta.get("description") or ""
+    if len(desc) > 200:
+        desc = desc[:197].rsplit(" ", 1)[0].rstrip(",;:.") + "…"
+    tags = meta.get("tags") or ""
+    if isinstance(tags, str):
+        tags = [t.strip() for t in tags.split(",") if t.strip()]
+    dt = parse_close_datetime(meta, session)
+    date_iso = dt.isoformat()
+    modified = date_iso
+    if meta.get("modified"):
+        modified = parse_close_datetime({"date": meta["modified"]}, session).isoformat()
+    html_body = md_to_html(markdown)
+    if not desc:
+        desc = description({"content": html_body, "excerpt": ""})
+    html_body = sanitize(html_body, url_map_from_existing())
+    assert_clean_html(html_body, slug)
+    b64_rel, image_path = encode_featured_png(featured, slug)
+    article = {
+        "slug": slug,
+        "path": "/articles/%s/" % slug,
+        "title": title,
+        "date": date_iso,
+        "modified": modified,
+        "wp_url": "",
+        "type": "Market Close",
+        "desc": desc,
+        "tags": tags,
+        "wp_cats": ["Korea Close"] if kind == "korea-close" else ["US Close"],
+        "kind": kind,
+        "html": html_body,
+        "source": "local",
+        "image_b64": b64_rel,
+        "image": image_path,
+    }
+    apply_categories(article)
+    write_local_record(article, markdown=close_body_markdown(markdown))
+    ko = os.path.join(folder, "post_ko.md")
+    if os.path.isfile(ko):
+        shutil.copy2(ko, os.path.join(SOURCES, slug + ".ko.md"))
+    return article
 
 
 def retemplate():
@@ -1640,19 +2137,31 @@ def retemplate():
         man = json.load(f)
     slugs = man.get("slugs", [])
     known = {it["slug"]: it for it in man.get("items", [])}
-    arts = [load_existing(sl) for sl in slugs]
-    for a in arts:
+    local_arts = load_local_closes()
+    local_slugs = {a["slug"] for a in local_arts}
+    arts = []
+    for sl in slugs:
+        if sl in local_slugs:
+            continue
+        page_path = os.path.join(OUT, sl, "index.html")
+        if not os.path.isfile(page_path):
+            print("warning: skipping missing article page %s" % sl)
+            continue
+        a = load_existing(sl)
         a["wp_cats"] = known.get(a["slug"], {}).get("wp_categories") or []
         apply_categories(a)
+        arts.append(a)
+    arts = merge_articles(arts, local_arts)
     for a in arts:
-        with open(os.path.join(OUT, a["slug"], "index.html"), "w", encoding="utf-8") as f:
+        d = os.path.join(OUT, a["slug"])
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
             f.write(render_article(a, related=related_for(a, arts)))
     with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
         f.write(render_index(arts))
     write_category_pages(arts)
     write_manifest(arts)
     update_home_chrome()
-    sort_home_cards()
     briefs = []
     if os.path.exists(NOTES_MANIFEST):
         with open(NOTES_MANIFEST, encoding="utf-8") as f:
@@ -1685,13 +2194,19 @@ def retemplate():
         about_lastmod = None
     write_subscribe()
     write_rss(arts, briefs)
+    update_llms(arts, url_map_from_existing())
     update_home_panels(arts, briefs)
     write_sitemap(arts, briefs, about_lastmod)
     print("Re-rendered %d articles and %d daily briefs with the current template" % (len(arts), len(briefs)))
 
 
 def main():
-    if "--retemplate" in sys.argv[1:]:
+    retemplate_flag, close_folders = parse_cli(sys.argv[1:])
+    for folder in close_folders:
+        a = ingest_close_folder(folder)
+        print("Ingested local close %s -> %s (%s / %s)" % (
+            folder, a["path"], a["type"], a["category"]))
+    if retemplate_flag:
         return retemplate()
     posts = fetch_posts()
     chosen = sorted([p for p in posts if is_article(p)], key=lambda p: p["date"], reverse=True)
@@ -1713,6 +2228,7 @@ def main():
         })
     for a in arts:
         apply_categories(a)
+    arts = merge_articles(arts, load_local_closes())
 
     os.makedirs(OUT, exist_ok=True)
     old = []
@@ -1723,8 +2239,9 @@ def main():
     collisions = sorted(set(new) & set(CATEGORY_SLUGS))
     if collisions:
         raise SystemExit("Category slug collides with an article slug: %s" % ", ".join(collisions))
+    local_slugs = {a["slug"] for a in arts if a.get("source") == "local"}
     for slug in set(old) - set(new):
-        if slug in CATEGORY_SLUGS:
+        if slug in CATEGORY_SLUGS or slug in local_slugs:
             continue
         d = os.path.join(OUT, slug)
         if os.path.isdir(d):
