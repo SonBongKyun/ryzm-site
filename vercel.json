@@ -2,6 +2,6 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": null,
   "installCommand": "",
-  "buildCommand": "base64 -d assets/og-image.png.b64 > og-image.png && base64 -d assets/favicon-32.png.b64 > favicon-32.png && base64 -d assets/apple-touch-icon.png.b64 > apple-touch-icon.png",
+  "buildCommand": "base64 -d assets/og-image.png.b64 > og-image.png && base64 -d assets/favicon-32.png.b64 > favicon-32.png && base64 -d assets/apple-touch-icon.png.b64 > apple-touch-icon.png && find assets -name '*.b64' -exec sh -c 'base64 -d \"$1\" > \"${1%.b64}\"' _ {} \\;",
   "outputDirectory": "."
 }
