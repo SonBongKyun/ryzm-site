@@ -1473,8 +1473,7 @@ def write_sitemap(arts, briefs=(), about_lastmod=None):
         if any(c in a.get("categories", []) for a in arts):
             cat_mod = max(a["modified"][:10] for a in arts if c in a.get("categories", []))
             urls.append((SITE + cat_href(c), cat_mod, "weekly"))
-    urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None),
-             (SITE + "/rss.xml", today, "daily")]
+    urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None)]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
     if briefs:
