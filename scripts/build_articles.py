@@ -1222,8 +1222,8 @@ def render_pills(all_arts, current="All"):
     def pill(label, href, n, active):
         pressed = "true" if active else "false"
         current_attr = ' aria-current="page"' if active else ""
-        return ('<a class="pill" href="%s" data-cat="%s" aria-pressed="%s"%s>%s <span class="n">%d</span></a>'
-                % (href, esc(label), pressed, current_attr, esc(label), n))
+        return ('<a class="pill" href="%s" data-cat="%s"%s>%s <span class="n">%d</span></a>'
+                % (href, esc(label), current_attr, esc(label), n))
 
     pills = [pill("All", "/articles/", len(all_arts), current == "All")]
     pills += [pill(c, cat_href(c), counts[c], current == c)
