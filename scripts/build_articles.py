@@ -1657,9 +1657,13 @@ def update_home_panels(arts, briefs, path=None):
                         brief_html, s, count=1, flags=re.S)
         if n:
             s = s2
+    fw_all = sorted([a for a in arts if "Frameworks" in (a.get("categories") or [])],
+                    key=lambda a: a["date"], reverse=True)
+    fw_top_path = fw_all[0]["path"] if fw_all else None
     if arts:
         rows = []
-        for a in featured_articles(arts, 3):
+        # The newest framework already headlines the Explore Frameworks panel; do not repeat it here.
+        for a in featured_articles([x for x in arts if x["path"] != fw_top_path], 3):
             rows.append("""      <a class="feat-item" href="{path}">
         <div class="meta"><time datetime="{iso}">{date}</time><span class="cat-label">{cat}</span></div>
         <h3>{title}</h3>

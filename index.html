@@ -336,11 +336,11 @@
 
   /* ---------- section titles ---------- */
   .section-title {
-    font-size: 11.5px;
+    font-size: 12.5px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.14em;
-    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    color: var(--text-2);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
@@ -433,6 +433,8 @@
   @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
   .ticker-item { padding: 0 22px; border-right: 1px solid rgba(255, 255, 255, 0.08); }
   .ticker-item strong { color: #e8a476; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px; font-size: 11px; }
+  .ticker-item em { font-style: normal; font-size: 10.5px; opacity: 0.55; margin-left: 4px; }
+  .ticker-stamp { font-size: 11px; opacity: 0.7; }
 
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
   .intro h1, .home-panels { animation: fadeUp 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
@@ -443,7 +445,7 @@
     position: relative;
     max-width: var(--wrap);
     margin: 0 auto;
-    padding: 80px 28px 72px;
+    padding: 64px 28px 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -568,7 +570,10 @@
   #notes .section-title::before { background: var(--green); }
 
   /* breaking */
-  #breaking { margin-bottom: 64px; }
+  #breaking { margin-bottom: 40px; }
+  .home-panels-wrap { margin-bottom: 64px; }
+  .home-panels-wrap .home-panels { margin-top: 0; }
+  body.tab-mode .home-panels-wrap { display: none; }
   .breaking-list { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
   .breaking-list li {
     position: relative;
@@ -786,9 +791,10 @@
     .layout { grid-template-columns: minmax(0, 1fr) 300px; gap: 36px; }
   }
   @media (max-width: 900px) {
-    .intro { padding: 52px 20px 48px; }
+    .intro { padding: 36px 20px 24px; }
+    .home-panels-wrap { margin-bottom: 48px; }
     .intro::after { margin-bottom: 20px; font-size: 11px; }
-    .home-panels { grid-template-columns: 1fr; gap: 12px; margin-top: 28px; }
+    .home-panels { grid-template-columns: 1fr; gap: 12px; margin-top: 0; }
     .home-panel h2 { font-size: 20px; }
     main { padding: 0 16px 24px; }
     .layout { grid-template-columns: minmax(0, 1fr); gap: 56px; }
@@ -832,25 +838,48 @@
   </div>
   <div class="ticker-bar">
     <div class="ticker-inner">
-      <span class="ticker-item"><strong>US10Y</strong> 4.91</span>
-      <span class="ticker-item"><strong>DXY</strong> 103.8</span>
-      <span class="ticker-item"><strong>SOFR</strong> 3.91</span>
-      <span class="ticker-item"><strong>KRW</strong> 1,346</span>
-      <span class="ticker-item"><strong>KOSPI</strong> -5.2%</span>
-      <span class="ticker-item"><strong>HBM</strong> Sold out thru ’29</span>
-      <span class="ticker-item"><strong>RRP</strong> $0.4bn (Nov 20)</span>
-      <span class="ticker-item"><strong>US10Y</strong> 4.91</span>
-      <span class="ticker-item"><strong>DXY</strong> 103.8</span>
-      <span class="ticker-item"><strong>SOFR</strong> 3.91</span>
-      <span class="ticker-item"><strong>KRW</strong> 1,346</span>
-      <span class="ticker-item"><strong>KOSPI</strong> -5.2%</span>
+<!-- ticker -->
+      <span class="ticker-item"><strong>US2Y</strong> 4.63% <em>Nov 23</em></span>
+      <span class="ticker-item"><strong>US10Y</strong> 4.92% <em>Nov 23</em></span>
+      <span class="ticker-item"><strong>SOFR</strong> 3.92% <em>Nov 20</em></span>
+      <span class="ticker-item"><strong>ON RRP</strong> $0.35bn <em>Nov 23</em></span>
+      <span class="ticker-item"><strong>USD/KRW</strong> 1,342.7 <em>Nov 24</em></span>
+      <span class="ticker-item"><strong>KOSPI</strong> 5,006.03 +6.3% <em>Nov 24</em></span>
+      <span class="ticker-item"><strong>DXY</strong> 104.04 <em>Nov 24</em></span>
+      <span class="ticker-item ticker-stamp">Updated Nov 24 20:21 KST</span>
+      <span class="ticker-item" aria-hidden="true"><strong>US2Y</strong> 4.63% <em>Nov 23</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>US10Y</strong> 4.92% <em>Nov 23</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>SOFR</strong> 3.92% <em>Nov 20</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>ON RRP</strong> $0.35bn <em>Nov 23</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>USD/KRW</strong> 1,342.7 <em>Nov 24</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>KOSPI</strong> 5,006.03 +6.3% <em>Nov 24</em></span>
+      <span class="ticker-item" aria-hidden="true"><strong>DXY</strong> 104.04 <em>Nov 24</em></span>
+      <span class="ticker-item ticker-stamp" aria-hidden="true">Updated Nov 24 20:21 KST</span>
+      <!-- /ticker -->
     </div>
   </div>
 </header>
 
 <section class="intro">
   <h1>Frameworks for markets<br><em>Not forecasts</em></h1>
-  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.</p>
+  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets.</p>
+</section>
+
+<main id="main">
+  <div id="breaking" class="tab-section">
+    <div class="section-title">Breaking</div>
+    <ul class="breaking-list">
+      <li><span class="b-time">Nov 24, 04:51 KST</span><span class="tag green">Korea</span><a href="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list" target="_blank" rel="noopener noreferrer">US adds Singapore-based Megaspeed International and six other Southeast Asian firms to the Entity List</a><span class="b-src">Al Jazeera</span></li>
+      <li><span class="b-time">Nov 24, 02:06 KST</span><span class="tag green">Korea</span><a href="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/" target="_blank" rel="noopener noreferrer">Senate Banking Chair Tim Scott sets Dec. 3 public hearing with Nvidia CEO Jensen Huang on US chip export controls</a><span class="b-src">Washington Times</span></li>
+      <li><span class="b-time">Nov 23, 22:56 KST</span><span class="tag green">Korea</span><a href="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director" target="_blank" rel="noopener noreferrer">Nvidia board unanimously reinstates Jensen Huang as president and CEO, effective immediately</a><span class="b-src">NVIDIA</span></li>
+      <li><span class="b-time">Nov 23, 20:18 KST</span><span class="tag high">Rates</span>CrowdStrike agrees to acquire Zscaler in $43.9B all-stock deal as TSMC reaffirms intact AI demand<span class="b-src">RYZM</span></li>
+      <li><span class="b-time">Nov 23, 16:52 KST</span><span class="tag high">Rates</span><a href="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/" target="_blank" rel="noopener noreferrer">Bessent says the Fed could make a policy mistake by overtightening after a sharp tightening in financial conditions</a><span class="b-src">CBS News</span></li>
+      <li><span class="b-time">Nov 23, 16:38 KST</span><span class="tag green">Korea</span><a href="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91" target="_blank" rel="noopener noreferrer">Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</a><span class="b-src">AP</span></li>
+      <li><span class="b-time">Nov 23, 02:39 KST</span><span class="tag blue">FX</span><a href="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/" target="_blank" rel="noopener noreferrer">Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</a><span class="b-src">The Hill</span></li>
+    </ul>
+  </div>
+
+  <div class="home-panels-wrap">
   <div class="home-panels">
     <!-- home-latest-brief -->
     <article class="home-panel" aria-labelledby="latest-brief-title">
@@ -866,11 +895,6 @@
     <!-- home-featured-research -->
     <section class="home-panel" aria-labelledby="featured-research-title">
       <div class="section-title" id="featured-research-title">Featured Research</div>
-      <a class="feat-item" href="/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/">
-        <div class="meta"><time datetime="2026-11-21T23:26:09+09:00">Nov 21, 2026</time><span class="cat-label">Frameworks</span></div>
-        <h3>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h3>
-        <p>US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…</p>
-      </a>
       <a class="feat-item" href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/">
         <div class="meta"><time datetime="2026-11-21T21:22:56+09:00">Nov 21, 2026</time><span class="cat-label">Korea</span></div>
         <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally | November 21, 2026</h3>
@@ -880,6 +904,11 @@
         <div class="meta"><time datetime="2026-11-21T13:37:05+09:00">Nov 21, 2026</time><span class="cat-label">Funding</span></div>
         <h3>Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027 | November 21, 2026</h3>
         <p>Bank of America strategist Michael Hartnett sums up the current selloff in one line in his latest Flow Show: prices have capitulated, but positioning has not. He frames 2027 around two questions…</p>
+      </a>
+      <a class="feat-item" href="/articles/ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026/">
+        <div class="meta"><time datetime="2026-11-20T20:20:02+09:00">Nov 20, 2026</time><span class="cat-label">Frameworks</span></div>
+        <h3>RYZM Framework Note | How US rates and dollar funding reach Korea | November 20, 2026</h3>
+        <p>This note maps how four things connect: US rates, dollar funding, the won and Korean assets. It is a reading framework. It is not a forecast, a trade signal or a view on where any price goes next.</p>
       </a>
       <a class="panel-more" href="/articles/">All articles</a>
     </section>
@@ -901,20 +930,6 @@
       <a class="panel-more" href="/articles/frameworks/">All framework notes</a>
     </section>
   </div>
-</section>
-
-<main id="main">
-  <div id="breaking" class="tab-section">
-    <div class="section-title">Breaking</div>
-    <ul class="breaking-list">
-      <li><span class="b-time">Nov 24, 04:51 KST</span><span class="tag green">Korea</span><a href="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list" target="_blank" rel="noopener noreferrer">US adds Singapore-based Megaspeed International and six other Southeast Asian firms to the Entity List</a><span class="b-src">Al Jazeera</span></li>
-      <li><span class="b-time">Nov 24, 02:06 KST</span><span class="tag green">Korea</span><a href="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/" target="_blank" rel="noopener noreferrer">Senate Banking Chair Tim Scott sets Dec. 3 public hearing with Nvidia CEO Jensen Huang on US chip export controls</a><span class="b-src">Washington Times</span></li>
-      <li><span class="b-time">Nov 23, 22:56 KST</span><span class="tag green">Korea</span><a href="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director" target="_blank" rel="noopener noreferrer">Nvidia board unanimously reinstates Jensen Huang as president and CEO, effective immediately</a><span class="b-src">NVIDIA</span></li>
-      <li><span class="b-time">Nov 23, 20:18 KST</span><span class="tag high">Rates</span>CrowdStrike agrees to acquire Zscaler in $43.9B all-stock deal as TSMC reaffirms intact AI demand<span class="b-src">RYZM</span></li>
-      <li><span class="b-time">Nov 23, 16:52 KST</span><span class="tag high">Rates</span><a href="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/" target="_blank" rel="noopener noreferrer">Bessent says the Fed could make a policy mistake by overtightening after a sharp tightening in financial conditions</a><span class="b-src">CBS News</span></li>
-      <li><span class="b-time">Nov 23, 16:38 KST</span><span class="tag green">Korea</span><a href="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91" target="_blank" rel="noopener noreferrer">Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</a><span class="b-src">AP</span></li>
-      <li><span class="b-time">Nov 23, 02:39 KST</span><span class="tag blue">FX</span><a href="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/" target="_blank" rel="noopener noreferrer">Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</a><span class="b-src">The Hill</span></li>
-    </ul>
   </div>
 
   <div class="layout">
@@ -1084,61 +1099,43 @@
       <div class="section-title">Macro calendar</div>
       <div class="calendar-card">
         <div class="cal-header">Upcoming</div>
-        <div class="calendar-item">
-          <div class="cal-time">Nov 23<br>23:45 KST</div>
-          <div class="cal-event"><strong>US flash PMI, November</strong>S&amp;P Global, manufacturing and services</div>
-          <div class="impact mid"></div>
-        </div>
-        <div class="calendar-item">
+        <div class="calendar-item" data-ts="2026-11-25T22:30:00+09:00">
           <div class="cal-time">Nov 25<br>22:30 KST</div>
           <div class="cal-event"><strong>US PCE and Q3 GDP (2nd est.)</strong>BEA, October income and outlays</div>
           <div class="impact high"></div>
         </div>
-        <div class="calendar-item">
+        <div class="calendar-item" data-ts="2026-11-26T23:59:00+09:00">
           <div class="cal-time">Nov 26<br>Thu</div>
-          <div class="cal-event"><strong>BOK rate decision</strong>Monetary Policy Board meeting</div>
+          <div class="cal-event"><strong>BOK rate decision</strong>Monetary Policy Board, with economic outlook</div>
           <div class="impact high"></div>
         </div>
-        <div class="calendar-item">
+        <div class="calendar-item" data-ts="2026-12-02T08:00:00+09:00">
           <div class="cal-time">Dec 2<br>08:00 KST</div>
           <div class="cal-event"><strong>Korea CPI, November</strong>Ministry of Data and Statistics</div>
           <div class="impact high"></div>
         </div>
-        <div class="calendar-item">
+        <div class="calendar-item" data-ts="2026-12-04T22:30:00+09:00">
           <div class="cal-time">Dec 4<br>22:30 KST</div>
           <div class="cal-event"><strong>US jobs report, November</strong>BLS Employment Situation</div>
           <div class="impact high"></div>
         </div>
-        <div class="calendar-item">
+        <div class="calendar-item" data-ts="2026-12-10T04:00:00+09:00">
           <div class="cal-time">Dec 10<br>04:00 KST</div>
-          <div class="cal-event"><strong>FOMC decision</strong>Dec 8&ndash;9 meeting, with projections</div>
+          <div class="cal-event"><strong>FOMC decision</strong>Dec 8-9 meeting, with projections</div>
           <div class="impact high"></div>
         </div>
       </div>
       <p class="cal-note">Sources: official release calendars &middot; times in KST</p>
+      <script>
+        (function () {
+          var now = Date.now();
+          document.querySelectorAll("#calendar .calendar-item[data-ts]").forEach(function (el) {
+            var t = Date.parse(el.getAttribute("data-ts"));
+            if (!isNaN(t) && t + 3 * 3600 * 1000 < now) el.hidden = true;
+          });
+        })();
+      </script>
     </aside>
-  </div>
-
-  <div id="articles" class="tab-section" style="margin-top: 48px;">
-    <div class="section-title">Articles</div>
-    <div class="notes-list">
-      <a href="/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/" class="note-item">
-        <div class="meta">November 22, 2026 · Research Summary</div>
-        <h3>Goldman’s Global Reflections: The Q4 2018 Playbook Goes Mainstream</h3>
-        <p>Goldman says the Q4 2018 parallel is now the mainstream view, and lays out its short, hedge and defensive ideas.</p>
-      </a>
-      <a href="/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/" class="note-item">
-        <div class="meta">November 21, 2026 · Framework</div>
-        <h3>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h3>
-        <p>With the Fed’s reverse repo facility nearly empty, US dollar funding costs pass more directly into the FX swaps Korea uses to source dollars, while strong chip exports supply dollars from the other side. A framework for reading USD/KRW through both channels.</p>
-      </a>
-      <a href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/" class="note-item">
-        <div class="meta">November 21, 2026 · Research Summary</div>
-        <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally</h3>
-        <p>The KOSPI fell 7.9% this week to close at 4,869.96. The KOSDAQ lost 7.7% and MSCI Korea dropped 8.8%. Goldman Sachs cut its 12-month KOSPI target to 7,500 from 9,000, citing high volatility and slowing upward earnings revisions. The bank kept its view that Korea has the most upside in Asia. Source note This post […]</p>
-      </a>
-    </div>
-    <a class="all-link" href="/articles/">All articles &rarr;</a>
   </div>
 
   <div id="frameworks" class="tab-section">
@@ -1161,38 +1158,6 @@
         <p>Spreads and issuance change before multiples. When credit disagrees with the tape, credit is usually earlier.</p>
       </div>
     </div>
-  </div>
-
-  <div id="notes" class="tab-section">
-    <div class="section-title">Notes</div>
-    <div class="notes-list">
-      <a href="/notes/ryzm-daily-brief-2026-11-23/" class="note-item">
-        <div class="meta">Nov 23, 2026 · Daily Brief</div>
-        <h3>RYZM Daily Brief | Korea prepares market-stabilization measures | November 23, 2026</h3>
-        <p>Korea prepares a stabilization fund and announces planned buyback-limit relief. Readiness, formal decisions and actual deployment remain distinct.</p>
-      </a>
-      <a href="/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/" class="note-item">
-        <div class="meta">Nov 22, 2026 · Article</div>
-        <h3>Goldman’s Global Reflections: The Q4 2018 Playbook Goes Mainstream | November 20, 2026</h3>
-        <p>Goldman says the Q4 2018 parallel is now the mainstream view, and lays out its short, hedge and defensive ideas.</p>
-      </a>
-      <a href="/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/" class="note-item">
-        <div class="meta">Nov 21, 2026 · Framework</div>
-        <h3>How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?</h3>
-        <p>With the Fed’s reverse repo facility nearly empty, US dollar funding costs pass more directly into the FX swaps Korea uses to source dollars, while strong chip exports supply dollars from the other side. A framework for reading USD/KRW through both channels.</p>
-      </a>
-      <a href="/articles/goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026/" class="note-item">
-        <div class="meta">Nov 21, 2026 · Article</div>
-        <h3>Goldman’s Korea Weekly: KOSPI Drops 7.9% as AI Doubts Outweigh the China Deal Rally | November 21, 2026</h3>
-        <p>The KOSPI fell 7.9% this week to close at 4,869.96. The KOSDAQ lost 7.7% and MSCI Korea dropped 8.8%. Goldman Sachs cut its 12-month KOSPI target to 7,500 from 9,000, citing high volatility and slowing upward earnings revisions. The bank kept its view that Korea has the most upside in Asia. Source note This post […]</p>
-      </a>
-      <a href="/articles/prices-have-capitulated-positioning-hasnt-hartnetts-two-questions-for-2027-november-21-2026/" class="note-item">
-        <div class="meta">Nov 21, 2026 · Article</div>
-        <h3>Prices Have Capitulated, Positioning Hasn’t: Hartnett’s Two Questions for 2027 | November 21, 2026</h3>
-        <p>Bank of America strategist Michael Hartnett sums up the current selloff in one line in his latest Flow Show: prices have capitulated, but positioning has not. He frames 2027 around two questions. When do rate hikes end? And do they end before a recession arrives? Source note This post is based on a secondary summary […]</p>
-      </a>
-    </div>
-    <a class="all-link" href="/notes/">All briefs &rarr;</a>
   </div>
 </main>
 
