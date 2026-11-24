@@ -117,7 +117,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light dark;
@@ -140,7 +140,8 @@
     --blue: #3c6c8c;
     --purple: #6f5283;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --shadow: 0 1px 2px rgba(26, 21, 18, 0.04), 0 8px 24px -12px rgba(26, 21, 18, 0.10);
     --radius: 12px;
     --wrap: 1240px;
@@ -212,7 +213,7 @@
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 19px;
     letter-spacing: -0.04em;
     color: var(--text);
@@ -227,7 +228,7 @@
     flex: none;
     margin-right: 10px;
   }
-  .logo span { color: var(--accent); font-weight: 800; }
+  .logo span { color: var(--accent); font-weight: 700; }
   nav {
     display: flex;
     align-items: center;
@@ -684,7 +685,7 @@
   }
 
   /* calendar */
-  #calendar { position: sticky; top: 128px; }
+  #calendar { position: sticky; top: 88px; }
   .calendar-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); }
   .cal-header {
     padding: 14px 18px;
@@ -819,6 +820,29 @@
     .feed-filters::-webkit-scrollbar { display: none; }
     .filter-btn { flex: none; }
   }
+
+  /* ---------- design pass 2 (2026-11-24) ---------- */
+  .b-time, .cal-time, .card-meta .time, .ticker-inner { font-family: var(--mono); letter-spacing: 0; }
+  .prose { letter-spacing: 0; }
+  @media (max-width: 900px) {
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 80%, transparent);
+      mask-image: linear-gradient(90deg, #000 80%, transparent);
+    }
+  }
+
+  .ticker-bar { -webkit-mask-image: none; mask-image: none; overflow-x: auto; scrollbar-width: none; }
+  .ticker-bar::-webkit-scrollbar { display: none; }
+  .ticker-inner { animation: none; padding: 9px 12px; }
+  .ticker-label { padding: 0 18px 0 10px; color: var(--ink-band-text); opacity: 0.75; font-family: var(--sans); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+  #feed:not(.expanded) .feed > .card:nth-of-type(n+8) { display: none; }
+  body.tab-mode #feed .feed > .card:nth-of-type(n+8) { display: block; }
+  .feed-more {
+    margin-top: 20px; padding: 10px 18px; border: 1px solid var(--border-strong); border-radius: 999px;
+    background: var(--surface); color: var(--text); font-size: 14px; font-weight: 600; min-height: 44px;
+  }
+  .feed-more:hover { border-color: var(--text); }
+  #feed.expanded .feed-more, body.tab-mode .feed-more { display: none; }
 </style>
 </head>
 <body>
@@ -834,31 +858,24 @@
       <a href="/notes/">Notes</a>
       <a href="#calendar" data-tab-link="calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="/subscribe/" style="text-decoration:none;display:inline-block">Get alerts</a>
+    <a class="header-cta" href="/subscribe/" style="text-decoration:none;display:inline-block">Subscribe</a>
   </div>
-  <div class="ticker-bar">
+</header>
+  <div class="ticker-bar" aria-label="Market snapshot">
     <div class="ticker-inner">
 <!-- ticker -->
+      <span class="ticker-label">Market snapshot</span>
       <span class="ticker-item"><strong>US2Y</strong> 4.63% <em>Nov 23</em></span>
       <span class="ticker-item"><strong>US10Y</strong> 4.92% <em>Nov 23</em></span>
       <span class="ticker-item"><strong>SOFR</strong> 3.92% <em>Nov 20</em></span>
       <span class="ticker-item"><strong>ON RRP</strong> $0.35bn <em>Nov 23</em></span>
       <span class="ticker-item"><strong>USD/KRW</strong> 1,342.9 <em>Nov 24</em></span>
       <span class="ticker-item"><strong>KOSPI</strong> 5,006.03 +6.3% <em>Nov 24</em></span>
-      <span class="ticker-item"><strong>DXY</strong> 104.02 <em>Nov 24</em></span>
-      <span class="ticker-item ticker-stamp">Updated Nov 24 20:24 KST</span>
-      <span class="ticker-item" aria-hidden="true"><strong>US2Y</strong> 4.63% <em>Nov 23</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>US10Y</strong> 4.92% <em>Nov 23</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>SOFR</strong> 3.92% <em>Nov 20</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>ON RRP</strong> $0.35bn <em>Nov 23</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>USD/KRW</strong> 1,342.9 <em>Nov 24</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>KOSPI</strong> 5,006.03 +6.3% <em>Nov 24</em></span>
-      <span class="ticker-item" aria-hidden="true"><strong>DXY</strong> 104.02 <em>Nov 24</em></span>
-      <span class="ticker-item ticker-stamp" aria-hidden="true">Updated Nov 24 20:24 KST</span>
+      <span class="ticker-item"><strong>DXY</strong> 104.03 <em>Nov 24</em></span>
+      <span class="ticker-item ticker-stamp">Updated Nov 24 20:29 KST</span>
       <!-- /ticker -->
     </div>
   </div>
-</header>
 
 <section class="intro">
   <h1>Frameworks for markets<br><em>Not forecasts</em></h1>
@@ -1093,6 +1110,7 @@
           
         </article>
       </div>
+      <button type="button" class="feed-more" id="feed-more">Show all updates</button>
     </div>
 
     <aside id="calendar" class="tab-section">
@@ -1176,7 +1194,7 @@
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="/subscribe/">Alerts</a>
+      <a href="/subscribe/">Subscribe</a>
     </div>
   </div>
 </footer>
@@ -1217,6 +1235,20 @@ document.querySelectorAll('.filter-btn').forEach(function(btn){
   window.addEventListener('popstate',show);
   window.addEventListener('load',function(){if(document.body.classList.contains('tab-mode')){window.scrollTo(0,0);}});
   show();
+})();
+</script>
+<script>
+(function () {
+  var feed = document.getElementById('feed');
+  var more = document.getElementById('feed-more');
+  if (!feed || !more) return;
+  var total = feed.querySelectorAll('.feed > .card').length;
+  if (total <= 7) { more.hidden = true; return; }
+  more.textContent = 'Show all ' + total + ' updates';
+  more.addEventListener('click', function () { feed.classList.add('expanded'); });
+  document.querySelectorAll('.filter-btn').forEach(function (b) {
+    b.addEventListener('click', function () { feed.classList.add('expanded'); });
+  });
 })();
 </script>
 </body>
