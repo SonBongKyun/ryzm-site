@@ -2301,5 +2301,45 @@ def main():
         print("  %s  %-16s %s" % (a["date"][:10], a["type"], a["path"]))
 
 
+# ---------------------------------------------------------------- house style
+# RYZM never publishes an em dash or en dash. WordPress sources sometimes contain
+# them, so every build ends by rewriting the generated files:
+#   spaced dash ("a - b" with an em or en dash) and any em dash -> ", "
+#   en dash in a range ("8-9", "10:00-16:30", "$2.84-$2.89") -> "-"
+DASH_FILES_EXT = (".html", ".xml", ".txt", ".json")
+DASH_SKIP_DIRS = {".git", "scripts", "node_modules", ".vercel", "sources", "assets"}
+
+
+def no_dashes(text):
+    text = re.sub(r"[ \t]+[–—][ \t]+", ", ", text)
+    text = re.sub(r"\s*—\s*", ", ", text)
+    return text.replace("–", "-")
+
+
+def strip_dashes_everywhere(root=None):
+    root = root or ROOT
+    changed = 0
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = [d for d in dirnames if d not in DASH_SKIP_DIRS]
+        for name in filenames:
+            if not name.endswith(DASH_FILES_EXT):
+                continue
+            path = os.path.join(dirpath, name)
+            data = open(path, "rb").read()
+            if b"\xe2\x80\x93" not in data and b"\xe2\x80\x94" not in data:
+                continue
+            text = data.decode("utf-8")
+            fixed = no_dashes(text)
+            if fixed != text:
+                with open(path, "wb") as f:
+                    f.write(fixed.encode("utf-8"))
+                changed += 1
+    return changed
+
+
 if __name__ == "__main__":
-    sys.exit(main())
+    rc = main()
+    n = strip_dashes_everywhere()
+    if n:
+        print("house style: removed dashes in %d file(s)" % n)
+    sys.exit(rc)
