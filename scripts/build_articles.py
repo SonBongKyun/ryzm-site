@@ -426,7 +426,8 @@ CSS = """
     --blue: #3c6c8c;
     --purple: #6f5283;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --shadow: 0 1px 2px rgba(26, 21, 18, 0.04), 0 8px 24px -12px rgba(26, 21, 18, 0.10);
     --radius: 12px;
     --wrap: 1240px;
@@ -496,7 +497,7 @@ CSS = """
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 19px;
     letter-spacing: -0.04em;
     color: var(--text);
@@ -511,7 +512,7 @@ CSS = """
     flex: none;
     margin-right: 10px;
   }
-  .logo span { color: var(--accent); font-weight: 800; }
+  .logo span { color: var(--accent); font-weight: 700; }
   nav {
     display: flex;
     align-items: center;
@@ -859,7 +860,7 @@ HEADER = """<header>
       <a href="/notes/"{act_notes}>Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="/subscribe/">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Subscribe</a>
   </div>
 </header>"""
 
@@ -868,7 +869,7 @@ FOOTER = """<footer>
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="/subscribe/">Alerts</a>
+      <a href="/subscribe/">Subscribe</a>
     </div>
   </div>
 </footer>"""
@@ -985,8 +986,18 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
-<style>{css}</style>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<style>{css}
+  /* ---------- design pass 2 (2026-11-24) ---------- */
+  .b-time, .cal-time, .card-meta .time, .ticker-inner {{ font-family: var(--mono); letter-spacing: 0; }}
+  .prose {{ letter-spacing: 0; }}
+  @media (max-width: 900px) {{
+    nav {{
+      -webkit-mask-image: linear-gradient(90deg, #000 80%, transparent);
+      mask-image: linear-gradient(90deg, #000 80%, transparent);
+    }}
+  }}
+</style>
 </head>
 <body>
 
@@ -1107,6 +1118,13 @@ def brief_related(briefs, a, n=3):
              "date": b["date"], "title": b["title"]} for b in others[:n]]
 
 
+def short_brief_title(title):
+    """List-card title without the series prefix and trailing date already shown in the meta row."""
+    t = re.sub(r"^RYZM (Daily|Weekend) Brief\s*\|\s*", "", title or "")
+    t = re.sub(r"\s*\|\s*(January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2}, \d{4}$", "", t)
+    return t or title
+
+
 def render_notes_index(briefs):
     url = SITE + "/notes/"
     desc = "RYZM Daily Briefs: dated, sourced morning notes on rates, funding, FX, and Korea."
@@ -1121,7 +1139,7 @@ def render_notes_index(briefs):
       <h2>{title}</h2>
       <p>{desc}</p>
     </a>""".format(path=a["path"], iso=a["date"], date=fmt_date(a["date"]), type=esc(a["type"]),
-                   title=esc(a["title"]), desc=esc(a["desc"])))
+                   title=esc(short_brief_title(a["title"])), desc=esc(a["desc"])))
     ld = jsonld({
         "@context": "https://schema.org", "@type": "CollectionPage", "@id": url, "url": url,
         "name": "RYZM Daily Briefs", "description": desc, "inLanguage": "en-US",

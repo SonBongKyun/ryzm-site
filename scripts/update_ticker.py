@@ -106,18 +106,16 @@ def collect():
 
 
 def render(items, nl):
-    def one(label, val, d, hidden=False):
-        aria = ' aria-hidden="true"' if hidden else ""
-        return ('      <span class="ticker-item"%s><strong>%s</strong> %s <em>%s</em></span>'
-                % (aria, label, val, d))
+    def one(label, val, d):
+        return ('      <span class="ticker-item"><strong>%s</strong> %s <em>%s</em></span>'
+                % (label, val, d))
     now = datetime.now(KST)
     when = "%s %s KST" % (md(now), now.strftime("%H:%M"))
-    stamp = '      <span class="ticker-item ticker-stamp">Updated %s</span>' % when
-    stamp_hidden = '      <span class="ticker-item ticker-stamp" aria-hidden="true">Updated %s</span>' % when
-    # Two identical halves so the CSS marquee (translateX -50%) loops without a jump.
-    first = [one(*i) for i in items] + [stamp]
-    second = [one(*i, hidden=True) for i in items] + [stamp_hidden]
-    return nl + nl.join(first + second)
+    # A static snapshot, not a scrolling marquee: one set of items plus an update stamp.
+    lines = (['      <span class="ticker-label">Market snapshot</span>']
+             + [one(*i) for i in items]
+             + ['      <span class="ticker-item ticker-stamp">Updated %s</span>' % when])
+    return nl + nl.join(lines)
 
 
 def main():

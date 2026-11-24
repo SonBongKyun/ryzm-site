@@ -185,7 +185,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light dark;
@@ -208,7 +208,8 @@
     --blue: #3c6c8c;
     --purple: #6f5283;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --shadow: 0 1px 2px rgba(26, 21, 18, 0.04), 0 8px 24px -12px rgba(26, 21, 18, 0.10);
     --radius: 12px;
     --wrap: 1240px;
@@ -278,7 +279,7 @@
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 19px;
     letter-spacing: -0.04em;
     color: var(--text);
@@ -293,7 +294,7 @@
     flex: none;
     margin-right: 10px;
   }
-  .logo span { color: var(--accent); font-weight: 800; }
+  .logo span { color: var(--accent); font-weight: 700; }
   nav {
     display: flex;
     align-items: center;
@@ -628,6 +629,16 @@
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
+
+  /* ---------- design pass 2 (2026-11-24) ---------- */
+  .b-time, .cal-time, .card-meta .time, .ticker-inner { font-family: var(--mono); letter-spacing: 0; }
+  .prose { letter-spacing: 0; }
+  @media (max-width: 900px) {
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 80%, transparent);
+      mask-image: linear-gradient(90deg, #000 80%, transparent);
+    }
+  }
 </style>
 </head>
 <body>
@@ -643,7 +654,7 @@
       <a href="/notes/" class="active">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="/subscribe/">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Subscribe</a>
   </div>
 </header>
 
@@ -657,112 +668,112 @@
     <div class="month">November 2026</div>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-23/">
       <div class="meta"><time datetime="2026-11-23T09:07:31+09:00">Nov 23, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea prepares market-stabilization measures | November 23, 2026</h2>
+      <h2>Korea prepares market-stabilization measures</h2>
       <p>Korean authorities agreed on 22 November to prepare the stock-market stabilization fund for use if market conditions require it, Yonhap and Newsis reported. This announcement concerns readiness…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-21/">
       <div class="meta"><time datetime="2026-11-21T10:57:06+09:00">Nov 21, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Fed survey maps reserve sensitivity to funding spreads | November 21, 2026</h2>
+      <h2>Fed survey maps reserve sensitivity to funding spreads</h2>
       <p>The Fed’s September survey, released on 20 November, found 44 of 91 responding banks would reduce reserves if SOFR averaged 5 basis points above the interest rate on reserve balances (IORB). At a…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-20/">
       <div class="meta"><time datetime="2026-11-20T10:59:35+09:00">Nov 20, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | US factory prices, jobless claims and Walmart | November 20, 2026</h2>
+      <h2>US factory prices, jobless claims and Walmart</h2>
       <p>The Philadelphia Fed’s November manufacturing activity index fell from 20.9 to 6.3. The prices-paid index rose from 43.2 to 58.2, indicating that input-cost increases became more widespread…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-19/">
       <div class="meta"><time datetime="2026-11-19T09:10:25+09:00">Nov 19, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Fed minutes and Korea’s exam-day trading hours | November 19, 2026</h2>
+      <h2>Fed minutes and Korea’s exam-day trading hours</h2>
       <p>Almost all participants at the Fed’s October meeting judged that further rate increases would likely be appropriate under their baseline inflation and employment outlooks. A couple said an…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-18/">
       <div class="meta"><time datetime="2026-11-18T12:44:22+09:00">Nov 18, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Nvidia results, US prices and Korea | November 18, 2026</h2>
+      <h2>Nvidia results, US prices and Korea</h2>
       <p>Nvidia reported fiscal 2027 third-quarter revenue of $115.8 billion, up 20% from the previous quarter and 103% from a year earlier. Data Center revenue reached $107.6 billion, up 110% year on…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-17/">
       <div class="meta"><time datetime="2026-11-17T13:21:00+09:00">Nov 17, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | US AI chip rules, the Empire State survey and Korea | November 17, 2026</h2>
+      <h2>US AI chip rules, the Empire State survey and Korea</h2>
       <p>The US Bureau of Industry and Security announced an interim final rule on 16 November covering certain exports, reexports and transfers of advanced chips to overseas data centers. The new…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-16/">
       <div class="meta"><time datetime="2026-11-16T13:25:32+09:00">Nov 16, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Japan GDP, China activity and the KOSPI | November 16, 2026</h2>
+      <h2>Japan GDP, China activity and the KOSPI</h2>
       <p>Japan’s real GDP fell at a 0.1% annualized rate in the July–September quarter, according to the Cabinet Office’s first estimate. The seasonally adjusted quarter-on-quarter change rounded to 0.0%…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-15/">
       <div class="meta"><time datetime="2026-11-15T09:14:55+09:00">Nov 15, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Weekend Brief | Samara oil hub and the week ahead | November 15, 2026</h2>
+      <h2>Samara oil hub and the week ahead</h2>
       <p>Ukraine’s security service said on 14 November that its drones struck an oil dispatch station near Prosvet, in Russia’s Samara region, on 13 November. It reported preliminary damage to storage…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-14/">
       <div class="meta"><time datetime="2026-11-14T09:04:25+09:00">Nov 14, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | US producer prices, euro area GDP and the Korea close | November 14, 2026</h2>
+      <h2>US producer prices, euro area GDP and the Korea close</h2>
       <p>October final-demand producer prices rose 0.3% from September, seasonally adjusted, and 6.5% from a year earlier on an unadjusted basis. September’s monthly rise was revised to 1.4%. The index…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-13/">
       <div class="meta"><time datetime="2026-11-13T13:07:56+09:00">Nov 13, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Nvidia leadership, Cisco earnings and the Korea close | November 13, 2026</h2>
+      <h2>Nvidia leadership, Cisco earnings and the Korea close</h2>
       <p>Nvidia’s board accepted Jensen Huang’s resignation on 11 November. CFO Colette Kress will serve as interim CEO and retain her finance role during the search for a permanent CEO. The SEC accepted…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-12/">
       <div class="meta"><time datetime="2026-11-12T09:08:15+09:00">Nov 12, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea exports, CoreWeave and the market close | November 12, 2026</h2>
+      <h2>Korea exports, CoreWeave and the market close</h2>
       <p>Korea’s provisional exports for 1–10 November rose 111.9% from a year earlier to $33.46 billion. Semiconductor shipments totaled about $16.6 billion. Daily exports adjusted for working days rose…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-11/">
       <div class="meta"><time datetime="2026-11-11T09:18:58+09:00">Nov 11, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | US CPI, TSMC revenue and the Korea close | November 11, 2026</h2>
+      <h2>US CPI, TSMC revenue and the Korea close</h2>
       <p>Headline CPI rose 0.4% and core CPI 0.3% month on month, seasonally adjusted. Headline CPI rose 0.6% in September. BLS published the report on 10 November at 22:30 KST. Headline and core…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-10/">
       <div class="meta"><time datetime="2026-11-10T10:47:03+09:00">Nov 10, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | China inflation, BOJ views and the Korea close | November 10, 2026</h2>
+      <h2>China inflation, BOJ views and the Korea close</h2>
       <p>October headline CPI rose 0.7% year on year and core CPI rose 0.8%. Producer prices climbed 5.7%, up from 5.0% in September. China NBS, published 9 November at 10:30 KST.</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-09/">
       <div class="meta"><time datetime="2026-11-09T09:13:45+09:00">Nov 9, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea’s margin-loan collateral waiver | November 9, 2026</h2>
+      <h2>Korea’s margin-loan collateral waiver</h2>
       <p>South Korea’s three-month waiver of the 140% margin-loan collateral maintenance requirement begins on 9 November. The Financial Services Commission dated its announcement 6 November and did not…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-08/">
       <div class="meta"><time datetime="2026-11-08T11:48:17+09:00">Nov 8, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Weekend Brief | New Zealand’s preliminary count and the week ahead | November 8, 2026</h2>
+      <h2>New Zealand’s preliminary count and the week ahead</h2>
       <p>Weekend edition checked 8 November 2026 at 11:46 KST. Daily checks are scheduled for 09:00 KST. New Zealand voted on 7 November local time. All economic releases below were pending at the check.</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-07/">
       <div class="meta"><time datetime="2026-11-07T12:03:33+09:00">Nov 7, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | US payrolls and the Korea close | November 7, 2026</h2>
+      <h2>US payrolls and the Korea close</h2>
       <p>The unemployment rate was 4.1%. Private nonfarm hourly earnings grew 0.4% from September and 3.1% from a year earlier. August and September payroll gains were revised up by a combined 84,000. BLS…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-06/">
       <div class="meta"><time datetime="2026-11-06T13:22:39+09:00">Nov 6, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea trading halt, UK rates and US productivity | November 6, 2026</h2>
+      <h2>Korea trading halt, UK rates and US productivity</h2>
       <p>The Korea Exchange triggered a first-stage KOSPI circuit breaker at about 09:03 KST on 6 November after a drop of more than 8%. Trading paused for 20 minutes. Korea Economic TV at 09:27 KST and…</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-05/">
       <div class="meta"><time datetime="2026-11-05T10:06:01+09:00">Nov 5, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea’s current account, US services and Qualcomm | November 5, 2026</h2>
+      <h2>Korea’s current account, US services and Qualcomm</h2>
       <p>Last checked: 5 Nov 2026 / 10:04 KST. Scheduled daily update: 09:00 KST. This is a daily briefing, not a live feed.</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-04/">
       <div class="meta"><time datetime="2026-11-04T11:50:30+09:00">Nov 4, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea’s reserves, US jobs and AMD earnings | November 4, 2026</h2>
+      <h2>Korea’s reserves, US jobs and AMD earnings</h2>
       <p>Checked 4 November 2026 at 11:49 KST. Daily review is scheduled for 09:00 KST; this edition was checked later. Original release times and upcoming events are distinguished below.</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-03/">
       <div class="meta"><time datetime="2026-11-03T14:24:51+09:00">Nov 3, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Inflation, rates and Apple earnings | November 3, 2026</h2>
+      <h2>Inflation, rates and Apple earnings</h2>
       <p>Checked 3 November 2026 at 14:23 KST. Daily review is scheduled for 09:00 KST; this edition was checked later. Original publication times and upcoming events are distinguished below.</p>
     </a>
     <a class="item" href="/notes/ryzm-daily-brief-2026-11-02/">
       <div class="meta"><time datetime="2026-11-02T13:10:03+09:00">Nov 2, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Daily Brief | Korea’s factory survey, trade and OPEC+ | November 2, 2026</h2>
+      <h2>Korea’s factory survey, trade and OPEC+</h2>
       <p>Checked 2 November 2026 at 13:07 KST. Daily review is scheduled for 09:00 KST; this edition was checked later. Source dates below distinguish new reports, the previous day’s release and future events.</p>
     </a>
     <a class="item" href="/notes/ryzm-weekend-brief-2026-11-01/">
       <div class="meta"><time datetime="2026-11-01T10:58:18+09:00">Nov 1, 2026</time><span class="tag">Daily Brief</span></div>
-      <h2>RYZM Weekend Brief | China PMI and the week ahead | November 1, 2026</h2>
+      <h2>China PMI and the week ahead</h2>
       <p>Weekend edition · 1 November 2026. This briefing separates the 31 October China release, the latest completed US trading session and scheduled US data. Market figures are dated snapshots.</p>
     </a>
   </div>
@@ -773,7 +784,7 @@
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="/subscribe/">Alerts</a>
+      <a href="/subscribe/">Subscribe</a>
     </div>
   </div>
 </footer>

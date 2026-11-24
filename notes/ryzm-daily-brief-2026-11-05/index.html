@@ -63,7 +63,7 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
 <style>
   :root {
     color-scheme: light dark;
@@ -86,7 +86,8 @@
     --blue: #3c6c8c;
     --purple: #6f5283;
     --serif: "Newsreader", "Iowan Old Style", Georgia, "Times New Roman", serif;
-    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
     --shadow: 0 1px 2px rgba(26, 21, 18, 0.04), 0 8px 24px -12px rgba(26, 21, 18, 0.10);
     --radius: 12px;
     --wrap: 1240px;
@@ -156,7 +157,7 @@
     display: inline-flex;
     align-items: center;
     white-space: nowrap;
-    font-weight: 800;
+    font-weight: 700;
     font-size: 19px;
     letter-spacing: -0.04em;
     color: var(--text);
@@ -171,7 +172,7 @@
     flex: none;
     margin-right: 10px;
   }
-  .logo span { color: var(--accent); font-weight: 800; }
+  .logo span { color: var(--accent); font-weight: 700; }
   nav {
     display: flex;
     align-items: center;
@@ -506,6 +507,16 @@
     .origin { align-items: center; }
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
+
+  /* ---------- design pass 2 (2026-11-24) ---------- */
+  .b-time, .cal-time, .card-meta .time, .ticker-inner { font-family: var(--mono); letter-spacing: 0; }
+  .prose { letter-spacing: 0; }
+  @media (max-width: 900px) {
+    nav {
+      -webkit-mask-image: linear-gradient(90deg, #000 80%, transparent);
+      mask-image: linear-gradient(90deg, #000 80%, transparent);
+    }
+  }
 </style>
 </head>
 <body>
@@ -521,7 +532,7 @@
       <a href="/notes/" class="active">Notes</a>
       <a href="/#calendar">Calendar</a>
     </nav>
-    <a class="header-cta" href="/subscribe/">Get alerts</a>
+    <a class="header-cta" href="/subscribe/">Subscribe</a>
   </div>
 </header>
 
@@ -603,7 +614,7 @@
     <div>RYZM · frameworks, not forecasts</div>
     <div class="footer-links">
       <a href="/about/">About</a>
-      <a href="/subscribe/">Alerts</a>
+      <a href="/subscribe/">Subscribe</a>
     </div>
   </div>
 </footer>
