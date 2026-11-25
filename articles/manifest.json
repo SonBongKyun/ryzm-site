@@ -1,6 +1,9 @@
 {
  "source": "https://public-api.wordpress.com/rest/v1.1/sites/ryzm9.wordpress.com/posts/",
  "slugs": [
+  "how-to-read-a-bank-of-korea-decision-rates-financial-stability-won",
+  "korea-close-november-23-2026",
+  "korea-exports-november-1-20-2026",
   "goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026",
   "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
   "goldmans-korea-weekly-kospi-drops-7-9-as-ai-doubts-outweigh-the-china-deal-rally-november-21-2026",
@@ -38,6 +41,56 @@
   "treasury-term-premium-explained"
  ],
  "items": [
+  {
+   "slug": "how-to-read-a-bank-of-korea-decision-rates-financial-stability-won",
+   "path": "/articles/how-to-read-a-bank-of-korea-decision-rates-financial-stability-won/",
+   "title": "How to Read a Bank of Korea Decision: Policy Rates, Financial Stability, and the Won",
+   "date": "2026-11-25T09:00:00+09:00",
+   "type": "Framework",
+   "category": "Frameworks",
+   "categories": [
+    "Frameworks",
+    "Rates",
+    "FX",
+    "Korea"
+   ],
+   "wp_categories": [
+    "FX",
+    "Framework Note",
+    "Korea Bridge",
+    "Rates & Bonds"
+   ]
+  },
+  {
+   "slug": "korea-close-november-23-2026",
+   "path": "/articles/korea-close-november-23-2026/",
+   "title": "Korea Close | November 23, 2026",
+   "date": "2026-11-23T17:18:06+09:00",
+   "type": "Key Issue",
+   "category": "Korea",
+   "categories": [
+    "Korea"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Korea Bridge"
+   ]
+  },
+  {
+   "slug": "korea-exports-november-1-20-2026",
+   "path": "/articles/korea-exports-november-1-20-2026/",
+   "title": "Korea’s Early-November Exports More Than Double as Chips Near Half of All Shipments | November 23, 2026",
+   "date": "2026-11-23T12:58:23+09:00",
+   "type": "Key Issue",
+   "category": "Korea",
+   "categories": [
+    "Korea"
+   ],
+   "wp_categories": [
+    "Key Issues",
+    "Korea Bridge"
+   ]
+  },
   {
    "slug": "goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026",
    "path": "/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/",

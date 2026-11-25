@@ -2,17 +2,17 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://ryzm.app/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://ryzm.app/articles/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>daily</changefreq>
   </url>
   <url>
     <loc>https://ryzm.app/articles/rates/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
@@ -22,12 +22,12 @@
   </url>
   <url>
     <loc>https://ryzm.app/articles/fx/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://ryzm.app/articles/korea/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
@@ -37,16 +37,16 @@
   </url>
   <url>
     <loc>https://ryzm.app/articles/frameworks/</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>weekly</changefreq>
   </url>
   <url>
     <loc>https://ryzm.app/llms.txt</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/subscribe/</loc>
-    <lastmod>2026-11-24</lastmod>
+    <lastmod>2026-11-25</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/about/</loc>
@@ -54,8 +54,20 @@
   </url>
   <url>
     <loc>https://ryzm.app/notes/</loc>
-    <lastmod>2026-11-23</lastmod>
+    <lastmod>2026-11-25</lastmod>
     <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://ryzm.app/articles/how-to-read-a-bank-of-korea-decision-rates-financial-stability-won/</loc>
+    <lastmod>2026-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://ryzm.app/articles/korea-close-november-23-2026/</loc>
+    <lastmod>2026-11-23</lastmod>
+  </url>
+  <url>
+    <loc>https://ryzm.app/articles/korea-exports-november-1-20-2026/</loc>
+    <lastmod>2026-11-23</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/articles/goldmans-global-reflections-q4-2018-playbook-goes-mainstream-november-20-2026/</loc>
@@ -196,6 +208,14 @@
   <url>
     <loc>https://ryzm.app/articles/treasury-term-premium-explained/</loc>
     <lastmod>2026-11-20</lastmod>
+  </url>
+  <url>
+    <loc>https://ryzm.app/notes/ryzm-daily-brief-2026-11-25/</loc>
+    <lastmod>2026-11-25</lastmod>
+  </url>
+  <url>
+    <loc>https://ryzm.app/notes/ryzm-daily-brief-2026-11-24/</loc>
+    <lastmod>2026-11-24</lastmod>
   </url>
   <url>
     <loc>https://ryzm.app/notes/ryzm-daily-brief-2026-11-23/</loc>
