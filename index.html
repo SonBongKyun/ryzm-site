@@ -821,6 +821,20 @@
     .filter-btn { flex: none; }
   }
 
+  /* ---------- no external links, RYZM view (2026-11-26) ---------- */
+  .breaking-list .b-head, .breaking-list summary { font-family: var(--serif); font-size: 19px; line-height: 1.3; font-weight: 500; letter-spacing: -0.01em; color: var(--text); }
+  .breaking-list .b-more, .breaking-list .b-head { flex: 1; }
+  .breaking-list summary { cursor: pointer; list-style: none; }
+  .breaking-list summary::-webkit-details-marker { display: none; }
+  .breaking-list summary::after { content: " +"; font-family: var(--mono); font-size: 14px; color: var(--text-muted); }
+  .breaking-list details[open] summary::after { content: " -"; }
+  .breaking-list summary:hover { color: var(--accent-ink); }
+  .b-sum { font-size: 14px; line-height: 1.6; color: var(--text-2); margin-top: 12px; }
+  .b-view, .card p.ryzm-view { font-size: 14px; line-height: 1.6; color: var(--text); margin-top: 10px; padding-left: 10px; border-left: 2px solid var(--accent); max-width: 70ch; }
+  .card p.ryzm-view { font-size: 15px; margin: -6px 0 18px; }
+  .rv-label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--accent-ink); margin-right: 6px; }
+  .card .source { color: var(--text-muted); }
+  @media (max-width: 600px) { .breaking-list .b-head, .breaking-list summary { font-size: 18px; } .card p.ryzm-view { font-size: 14.5px; } }
   /* ---------- design pass 2 (2026-11-24) ---------- */
   .b-time, .cal-time, .card-meta .time, .ticker-inner { font-family: var(--mono); letter-spacing: 0; }
   .prose { letter-spacing: 0; }
@@ -886,17 +900,17 @@
   <div id="breaking" class="tab-section">
     <div class="section-title">Breaking</div>
     <ul class="breaking-list">
-      <li><span class="b-time">Nov 26, 00:05 KST</span><span class="tag green">Korea</span><a href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural" target="_blank" rel="noopener noreferrer">USTR proposes tariffs of up to 15% on goods from South Korea, Japan and Taiwan</a><span class="b-src">USTR</span></li>
-      <li><span class="b-time">Nov 25, 00:26 KST</span><span class="tag blue">Funding</span><a href="https://www.washingtonpost.com/politics/2026/11/20/pentagon-watchdog-audit-deals-with-defense-tech-start-ups/" target="_blank" rel="noopener noreferrer">Pentagon inspector general opens audit of defense tech funding</a><span class="b-src">The Washington Post</span></li>
-      <li><span class="b-time">Nov 24, 23:56 KST</span><span class="tag green">Korea</span><a href="https://democrats-foreignaffairs.house.gov/2026/11/meeks-calls-for-public-hfac-hearing-with-nvidia-ceo-jensen-huang/" target="_blank" rel="noopener noreferrer">House Democrat Gregory Meeks calls for a public hearing with Nvidia CEO Jensen Huang</a><span class="b-src">House Foreign Affairs Committee Democrats</span></li>
-      <li><span class="b-time">Nov 24, 23:31 KST</span><span class="tag green">Korea</span><a href="https://markedchart.com/wire/story/7fad8d670b943acf" target="_blank" rel="noopener noreferrer">Hunterbrook says AMD removed partner listings from its website after a report on China links</a><span class="b-src">Marked Chart</span></li>
-      <li><span class="b-time">Nov 24, 04:51 KST</span><span class="tag green">Korea</span><a href="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list" target="_blank" rel="noopener noreferrer">US adds Singapore-based Megaspeed International and six other Southeast Asian firms to the Entity List</a><span class="b-src">Al Jazeera</span></li>
-      <li><span class="b-time">Nov 24, 02:06 KST</span><span class="tag green">Korea</span><a href="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/" target="_blank" rel="noopener noreferrer">Senate Banking Chair Tim Scott sets Dec. 3 public hearing with Nvidia CEO Jensen Huang on US chip export controls</a><span class="b-src">Washington Times</span></li>
-      <li><span class="b-time">Nov 23, 22:56 KST</span><span class="tag green">Korea</span><a href="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director" target="_blank" rel="noopener noreferrer">Nvidia board unanimously reinstates Jensen Huang as president and CEO, effective immediately</a><span class="b-src">NVIDIA</span></li>
-      <li><span class="b-time">Nov 23, 20:18 KST</span><span class="tag high">Rates</span>CrowdStrike agrees to acquire Zscaler in $43.9B all-stock deal as TSMC reaffirms intact AI demand<span class="b-src">RYZM</span></li>
-      <li><span class="b-time">Nov 23, 16:52 KST</span><span class="tag high">Rates</span><a href="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/" target="_blank" rel="noopener noreferrer">Bessent says the Fed could make a policy mistake by overtightening after a sharp tightening in financial conditions</a><span class="b-src">CBS News</span></li>
-      <li><span class="b-time">Nov 23, 16:38 KST</span><span class="tag green">Korea</span><a href="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91" target="_blank" rel="noopener noreferrer">Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</a><span class="b-src">AP</span></li>
-      <li><span class="b-time">Nov 23, 02:39 KST</span><span class="tag blue">FX</span><a href="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/" target="_blank" rel="noopener noreferrer">Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</a><span class="b-src">The Hill</span></li>
+      <li data-src="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural"><span class="b-time">Nov 26, 00:05 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>USTR proposes tariffs of up to 15% on goods from South Korea, Japan and Taiwan</summary><p class="b-sum">The proposed rates are net of most-favored-nation duties and existing Section 301 tariffs, with exemptions for certain products. The proposal follows findings on excess manufacturing capacity in 14 economies.</p><p class="b-view"><span class="rv-label">RYZM view</span>What matters for Korea is the final version: which products are exempted and whether the 15% cap holds. Those details set the hit to exporters&#x27; margins and to demand for the won.</p></details><span class="b-src">USTR</span></li>
+      <li data-src="https://www.washingtonpost.com/politics/2026/11/20/pentagon-watchdog-audit-deals-with-defense-tech-start-ups/"><span class="b-time">Nov 25, 00:26 KST</span><span class="tag blue">Funding</span><details class="b-more"><summary>Pentagon inspector general opens audit of defense tech funding</summary><p class="b-sum">The review covers loans, grants, contracts and direct investments. Auditors plan to sample awards across industries including rare earths, drones, AI and rocketry.</p></details><span class="b-src">The Washington Post</span></li>
+      <li data-src="https://democrats-foreignaffairs.house.gov/2026/11/meeks-calls-for-public-hfac-hearing-with-nvidia-ceo-jensen-huang/"><span class="b-time">Nov 24, 23:56 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>House Democrat Gregory Meeks calls for a public hearing with Nvidia CEO Jensen Huang</summary><p class="b-sum">Meeks asked House Foreign Affairs Committee Chair Brian Mast to convene a hearing. Huang is already scheduled for a transcribed interview with the committee.</p></details><span class="b-src">House Foreign Affairs Committee Democrats</span></li>
+      <li data-src="https://markedchart.com/wire/story/7fad8d670b943acf"><span class="b-time">Nov 24, 23:31 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>Hunterbrook says AMD removed partner listings from its website after a report on China links</summary><p class="b-sum">Hunterbrook linked the partners to Chinese companies on a US blacklist, Marked Chart reported. AMD told Seeking Alpha it had corrected outdated webpages and complies with US export controls.</p></details><span class="b-src">Marked Chart</span></li>
+      <li data-src="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list"><span class="b-time">Nov 24, 04:51 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>US adds Singapore-based Megaspeed International and six other Southeast Asian firms to the Entity List</summary><p class="b-sum">The Bureau of Industry and Security said the firms acted contrary to US national security or foreign policy interests. Shipping them advanced US technology, including Nvidia AI GPUs, now requires an export license.</p></details><span class="b-src">Al Jazeera</span></li>
+      <li data-src="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/"><span class="b-time">Nov 24, 02:06 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>Senate Banking Chair Tim Scott sets Dec. 3 public hearing with Nvidia CEO Jensen Huang on US chip export controls</summary><p class="b-sum">The hearing, titled &quot;Protecting America&#x27;s AI Advantage: Oversight of U.S. Export Controls,&quot; follows bipartisan criticism of Huang&#x27;s reinstatement.</p></details><span class="b-src">Washington Times</span></li>
+      <li data-src="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director"><span class="b-time">Nov 23, 22:56 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>Nvidia board unanimously reinstates Jensen Huang as president and CEO, effective immediately</summary><p class="b-sum">The board cited input from senior US government officials and said his return poses no national security risk. An independent board committee review will continue. Nvidia shares jumped about 31%, CNBC reported.</p></details><span class="b-src">NVIDIA</span></li>
+      <li><span class="b-time">Nov 23, 20:18 KST</span><span class="tag high">Rates</span><span class="b-head">CrowdStrike agrees to acquire Zscaler in $43.9B all-stock deal as TSMC reaffirms intact AI demand</span><span class="b-src">RYZM</span></li>
+      <li data-src="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/"><span class="b-time">Nov 23, 16:52 KST</span><span class="tag high">Rates</span><details class="b-more"><summary>Bessent says the Fed could make a policy mistake by overtightening after a sharp tightening in financial conditions</summary><p class="b-sum">Treasury Secretary Scott Bessent told CBS's "Face the Nation" on Nov. 22 that recent remarks from Fed officials had been very hawkish and that many people think overtightening would be a policy mistake. He said financial conditions have already tightened substantially over the past few months, and he listed that, together with political uncertainty over the AI buildout, among the causes of last week's equity selloff.</p></details><span class="b-src">CBS News</span></li>
+      <li data-src="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91"><span class="b-time">Nov 23, 16:38 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</summary><p class="b-sum">Asian markets mostly fell on Monday after Friday's AI-led selloff took the S&amp;P 500 down 3.7%. South Korea's Kospi lost 3.3% to close at 4,708.54, with Samsung Electronics down 3.1% and SK Hynix down 2.5%, even though both had recovered from steeper intraday losses. In early Monday trading, S&amp;P 500 futures were up 2.1%.</p></details><span class="b-src">AP</span></li>
+      <li data-src="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/"><span class="b-time">Nov 23, 02:39 KST</span><span class="tag blue">FX</span><span class="b-head">Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</span><span class="b-src">The Hill</span></li>
     </ul>
   </div>
 
@@ -958,65 +972,66 @@
       <div class="section-title">Feed</div>
       <div class="feed-filters"><button type="button" class="filter-btn active" data-cat="All">All</button><button type="button" class="filter-btn" data-cat="Rates">Rates</button><button type="button" class="filter-btn" data-cat="Korea">Korea</button><button type="button" class="filter-btn" data-cat="Funding">Funding</button><button type="button" class="filter-btn" data-cat="Credit">Credit</button><button type="button" class="filter-btn" data-cat="FX">FX</button></div>
       <div class="feed">
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural">
           <div class="card-meta">
           <span class="time">Nov 26, 00:05 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/november/ustr-makes-determinations-and-proposes-actions-14-section-301-investigations-relating-structural" target="_blank" rel="noopener noreferrer">USTR</a></span>
+          <span class="source">USTR</span>
           </div>
           <h3>USTR proposes tariffs of up to 15% on goods from South Korea, Japan and Taiwan</h3>
           <p class="summary">The proposed rates are net of most-favored-nation duties and existing Section 301 tariffs, with exemptions for certain products. The proposal follows findings on excess manufacturing capacity in 14 economies.</p>
+          <p class="ryzm-view"><span class="rv-label">RYZM view</span>What matters for Korea is the final version: which products are exempted and whether the 15% cap holds. Those details set the hit to exporters&#x27; margins and to demand for the won.</p>
         </article>
-        <article class="card" data-cat="Funding">
+        <article class="card" data-cat="Funding" data-src="https://www.washingtonpost.com/politics/2026/11/20/pentagon-watchdog-audit-deals-with-defense-tech-start-ups/">
           <div class="card-meta">
           <span class="time">Nov 25, 00:26 KST</span>
           <span class="tag blue">Funding</span>
-          <span class="source"><a href="https://www.washingtonpost.com/politics/2026/11/20/pentagon-watchdog-audit-deals-with-defense-tech-start-ups/" target="_blank" rel="noopener noreferrer">The Washington Post</a></span>
+          <span class="source">The Washington Post</span>
           </div>
           <h3>Pentagon inspector general opens audit of defense tech funding</h3>
           <p class="summary">The review covers loans, grants, contracts and direct investments. Auditors plan to sample awards across industries including rare earths, drones, AI and rocketry.</p>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://democrats-foreignaffairs.house.gov/2026/11/meeks-calls-for-public-hfac-hearing-with-nvidia-ceo-jensen-huang/">
           <div class="card-meta">
           <span class="time">Nov 24, 23:56 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://democrats-foreignaffairs.house.gov/2026/11/meeks-calls-for-public-hfac-hearing-with-nvidia-ceo-jensen-huang/" target="_blank" rel="noopener noreferrer">House Foreign Affairs Committee Democrats</a></span>
+          <span class="source">House Foreign Affairs Committee Democrats</span>
           </div>
           <h3>House Democrat Gregory Meeks calls for a public hearing with Nvidia CEO Jensen Huang</h3>
           <p class="summary">Meeks asked House Foreign Affairs Committee Chair Brian Mast to convene a hearing. Huang is already scheduled for a transcribed interview with the committee.</p>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://markedchart.com/wire/story/7fad8d670b943acf">
           <div class="card-meta">
           <span class="time">Nov 24, 23:31 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://markedchart.com/wire/story/7fad8d670b943acf" target="_blank" rel="noopener noreferrer">Marked Chart</a></span>
+          <span class="source">Marked Chart</span>
           </div>
           <h3>Hunterbrook says AMD removed partner listings from its website after a report on China links</h3>
           <p class="summary">Hunterbrook linked the partners to Chinese companies on a US blacklist, Marked Chart reported. AMD told Seeking Alpha it had corrected outdated webpages and complies with US export controls.</p>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list">
           <div class="card-meta">
           <span class="time">Nov 24, 04:51 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.aljazeera.com/economy/2026/11/24/us-adds-megaspeed-firm-at-centre-of-nvidia-scandal-to-export-control-list" target="_blank" rel="noopener noreferrer">Al Jazeera</a></span>
+          <span class="source">Al Jazeera</span>
           </div>
           <h3>US adds Singapore-based Megaspeed International and six other Southeast Asian firms to the Entity List</h3>
           <p class="summary">The Bureau of Industry and Security said the firms acted contrary to US national security or foreign policy interests. Shipping them advanced US technology, including Nvidia AI GPUs, now requires an export license.</p>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/">
           <div class="card-meta">
           <span class="time">Nov 24, 02:06 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.washingtontimes.com/news/2026/nov/23/sen-tim-scott-announces-hearing-nvidia-ceo-jensen-huang-amid-scandal/" target="_blank" rel="noopener noreferrer">Washington Times</a></span>
+          <span class="source">Washington Times</span>
           </div>
           <h3>Senate Banking Chair Tim Scott sets Dec. 3 public hearing with Nvidia CEO Jensen Huang on US chip export controls</h3>
           <p class="summary">The hearing, titled &quot;Protecting America&#x27;s AI Advantage: Oversight of U.S. Export Controls,&quot; follows bipartisan criticism of Huang&#x27;s reinstatement.</p>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director">
           <div class="card-meta">
           <span class="time">Nov 23, 22:56 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://nvidianews.nvidia.com/news/nvidia-board-reinstates-jensen-huang-as-president-ceo-and-board-director" target="_blank" rel="noopener noreferrer">NVIDIA</a></span>
+          <span class="source">NVIDIA</span>
           </div>
           <h3>Nvidia board unanimously reinstates Jensen Huang as president and CEO, effective immediately</h3>
           <p class="summary">The board cited input from senior US government officials and said his return poses no national security risk. An independent board committee review will continue. Nvidia shares jumped about 31%, CNBC reported.</p>
@@ -1031,118 +1046,118 @@
           <p class="summary">CrowdStrike announced an all-stock acquisition of cybersecurity peer Zscaler valued at $43.9 billion alongside its latest earnings release. Separately, TSMC stated that AI growth remains intact with no signs of customer order cuts, while Goldman Sachs trading desk flagged a potential buying opportunity in US equities despite lingering macro risks and Taiwan reviewed expanding its stock stabilization fund to $15 billion.</p>
           <div class="framework">Large-scale all-stock M&amp;A in cybersecurity alongside steady TSMC order commentary tests whether last week's tech selloff was positioning-driven rather than a demand break. Watch US software and semiconductor multiples, 2-year Treasury yields, and Korea memory/AI supply-chain names for follow-through.</div>
         </article>
-        <article class="card" data-cat="Rates">
+        <article class="card" data-cat="Rates" data-src="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/">
           <div class="card-meta">
           <span class="time">Nov 23, 16:52 KST</span>
           <span class="tag high">Rates</span>
-          <span class="source"><a href="https://www.cbsnews.com/news/transcript-treasury-secretary-scott-bessent-face-the-nation-with-margaret-brennan-nov-22-2026/" target="_blank" rel="noopener noreferrer">CBS News</a></span>
+          <span class="source">CBS News</span>
           </div>
           <h3>Bessent says the Fed could make a policy mistake by overtightening after a sharp tightening in financial conditions</h3>
           <p class="summary">Treasury Secretary Scott Bessent told CBS's "Face the Nation" on Nov. 22 that recent remarks from Fed officials had been very hawkish and that many people think overtightening would be a policy mistake. He said financial conditions have already tightened substantially over the past few months, and he listed that, together with political uncertainty over the AI buildout, among the causes of last week's equity selloff.</p>
           <div class="framework">Public pressure from the Treasury on the Fed shows up first in pricing for the December meeting and at the front end of the Treasury curve. Watch fed funds futures, 2-year yields, credit spreads and other measures of financial conditions, and whether Fed speakers acknowledge the tightening that has already happened.</div>
           
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91">
           <div class="card-meta">
           <span class="time">Nov 23, 16:38 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91" target="_blank" rel="noopener noreferrer">AP</a></span>
+          <span class="source">AP</span>
           </div>
           <h3>Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</h3>
           <p class="summary">Asian markets mostly fell on Monday after Friday's AI-led selloff took the S&amp;P 500 down 3.7%. South Korea's Kospi lost 3.3% to close at 4,708.54, with Samsung Electronics down 3.1% and SK Hynix down 2.5%, even though both had recovered from steeper intraday losses. In early Monday trading, S&amp;P 500 futures were up 2.1%.</p>
           <div class="framework">Korea's exposure to the AI trade runs through two big memory makers and the foreign money that owns them. Watch foreign net selling of Korean equities, USD/KRW and onshore dollar funding, and whether authorities actually use the stabilization tools they discussed over the weekend.</div>
           
         </article>
-        <article class="card" data-cat="FX">
+        <article class="card" data-cat="FX" data-src="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/">
           <div class="card-meta">
           <span class="time">Nov 23, 02:39 KST</span>
           <span class="tag blue">FX</span>
-          <span class="source"><a href="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/" target="_blank" rel="noopener noreferrer">The Hill</a></span>
+          <span class="source">The Hill</span>
           </div>
           <h3>Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</h3>
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://www.moneycontrol.com/news/markets/global-markets/asia-s-stock-rescue-efforts-gather-pace-after-wall-street-plunge-14086629.html">
           <div class="card-meta">
           <span class="time">Nov 22, 23:23 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.moneycontrol.com/news/markets/global-markets/asia-s-stock-rescue-efforts-gather-pace-after-wall-street-plunge-14086629.html" target="_blank" rel="noopener noreferrer">Bloomberg via Moneycontrol</a></span>
+          <span class="source">Bloomberg via Moneycontrol</span>
           </div>
           <h3>Seoul, Beijing and Taipei roll out market-calming steps after Friday's Wall Street slide</h3>
           <p class="summary">South Korea's top financial officials held an emergency meeting on Sunday and announced phased measures to steady markets, including keeping a stock stabilization fund ready to deploy if needed. China's exchanges, with regulator approval, will cut the minimum margin requirement for leveraged stock purchases to 80% from 100% on Nov. 30, a change Xinhua said could free up nearly 400 billion yuan. Taiwan had already widened curbs on short selling after its benchmark posted its worst weekly drop in 35 years.</p>
           <div class="framework">Policy backstops in Korea work through liquidity and positioning rather than rates. Watch whether the stabilization fund is actually activated, foreign investors' net flows in Korean equities, and how USD/KRW and onshore dollar funding behave while regional authorities lean against the selloff.</div>
           
         </article>
-        <article class="card" data-cat="Funding">
+        <article class="card" data-cat="Funding" data-src="https://www.investing.com/news/stock-market-news/exclusivelike-spacex-anthropic-ran-an-unusual-ipo-process-chafing-some-bankers-5043898">
           <div class="card-meta">
           <span class="time">Nov 22, 20:33 KST</span>
           <span class="tag blue">Funding</span>
-          <span class="source"><a href="https://www.investing.com/news/stock-market-news/exclusivelike-spacex-anthropic-ran-an-unusual-ipo-process-chafing-some-bankers-5043898" target="_blank" rel="noopener noreferrer">Reuters</a></span>
+          <span class="source">Reuters</span>
           </div>
           <h3>Reuters: Anthropic set tight terms for the banks on its record IPO</h3>
           <p class="summary">Reuters, citing people close to the deal, reported that Anthropic told some of its 22 underwriters to keep their deal teams to four senior bankers, largely out of concern about leaks. The sources described a compressed timeline with late changes and rushed document approvals, even as the banks earned more than half a billion dollars in fees on the offering.</p>
           <div class="framework">Mega-cap AI listings are reshaping how equity capital gets raised. Watch the terms issuers impose on underwriters and how much new supply the primary market can absorb, since that sets the funding path for the next large AI raise.</div>
           
         </article>
-        <article class="card" data-cat="Credit">
+        <article class="card" data-cat="Credit" data-src="https://ir.apollo.com/news-events/press-releases/detail/662/apollo-and-goldman-sachs-announce-pricing-of-44-billion">
           <div class="card-meta">
           <span class="time">Nov 22, 16:01 KST</span>
           <span class="tag mid">Credit</span>
-          <span class="source"><a href="https://ir.apollo.com/news-events/press-releases/detail/662/apollo-and-goldman-sachs-announce-pricing-of-44-billion" target="_blank" rel="noopener noreferrer">Apollo</a></span>
+          <span class="source">Apollo</span>
           </div>
           <h3>Apollo and Goldman price about $44 billion of notes to finance SpaceX's GPU purchases through a lease vehicle</h3>
           <p class="summary">Apollo and Goldman Sachs said on Nov. 20 they priced roughly $44 billion of senior and subordinated notes to buy GPUs and related equipment that SpaceX will lease, calling it the largest GPU financing to date. The deal was oversubscribed and upsized, with BlackRock, Goldman Sachs Asset Management and KKR-advised accounts as anchors. Lease schedules are expected to start as the equipment is delivered in the first half of 2027.</p>
           <div class="framework">Lease-backed, off-balance-sheet structures move AI capex into the investment-grade credit market. Watch the spread these notes need over ordinary high-grade paper and how rating agencies treat collateral that ages as fast as chips do.</div>
           
         </article>
-        <article class="card" data-cat="Funding">
+        <article class="card" data-cat="Funding" data-src="https://www.oracle.com/news/announcement/oracle-statement-2026-11-20/">
           <div class="card-meta">
           <span class="time">Nov 21, 06:23 KST</span>
           <span class="tag blue">Funding</span>
-          <span class="source"><a href="https://www.oracle.com/news/announcement/oracle-statement-2026-11-20/" target="_blank" rel="noopener noreferrer">Oracle</a></span>
+          <span class="source">Oracle</span>
           </div>
           <h3>Oracle says its OpenAI contract is fully funded and targets more than $30 billion of free cash flow in FY2029</h3>
           <p class="summary">In a Nov. 20 statement, Oracle said a final capital raise earlier this month completed the financing outlined at its Investor Day, including vendor financing. It said further talks with vendors are optional and are not required to deliver the OpenAI contract. The company said it continues to expect positive free cash flow in the second half of fiscal 2028 and is targeting more than $30 billion in fiscal 2029.</p>
           <div class="framework">AI infrastructure spending is a funding question first. Watch how hyperscalers close the gap between capital outlays and free cash flow, not the headline size of the contract.</div>
           
         </article>
-        <article class="card" data-cat="Credit">
+        <article class="card" data-cat="Credit" data-src="https://news.bloomberglaw.com/mergers-and-acquisitions/crowdstrike-is-said-in-talks-to-buy-cybersecurity-firm-zscaler">
           <div class="card-meta">
           <span class="time">Nov 21, 06:07 KST</span>
           <span class="tag mid">Credit</span>
-          <span class="source"><a href="https://news.bloomberglaw.com/mergers-and-acquisitions/crowdstrike-is-said-in-talks-to-buy-cybersecurity-firm-zscaler" target="_blank" rel="noopener noreferrer">Bloomberg</a></span>
+          <span class="source">Bloomberg</span>
           </div>
           <h3>CrowdStrike is in talks to acquire Zscaler, people familiar with the matter tell Bloomberg</h3>
           <p class="summary">Bloomberg, citing people familiar with the matter, said the companies are discussing a combination and that a deal is not certain. Zscaler’s market value was $32 billion at Friday’s regular close, Bloomberg reported.</p>
           <div class="framework">A large software combination would be a financing event in equity and credit markets. Watch whether any agreed deal, if one is reached, is funded with cash, stock, or new issuance.</div>
           
         </article>
-        <article class="card" data-cat="Korea">
+        <article class="card" data-cat="Korea" data-src="https://www.barrons.com/articles/broadcom-stock-google-ai-chips-e75d888d">
           <div class="card-meta">
           <span class="time">Nov 21, 04:49 KST</span>
           <span class="tag green">Korea</span>
-          <span class="source"><a href="https://www.barrons.com/articles/broadcom-stock-google-ai-chips-e75d888d" target="_blank" rel="noopener noreferrer">Barron's</a></span>
+          <span class="source">Barron's</span>
           </div>
           <h3>Barron's: Google cuts planned 2027 shipments of Broadcom-designed AI chips</h3>
           <p class="summary">Barron's reported that Google has cut planned 2027 shipments of custom chips developed with Broadcom. The paper said Broadcom shares fell more than 10% on Friday.</p>
           <div class="framework">Revisions to custom-accelerator build plans move through the memory and packaging chain. Watch Korea’s export data and HBM order books as those plans are updated.</div>
           
         </article>
-        <article class="card" data-cat="Rates">
+        <article class="card" data-cat="Rates" data-src="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm">
           <div class="card-meta">
           <span class="time">Nov 21, 02:18 KST</span>
           <span class="tag high">Rates</span>
-          <span class="source"><a href="https://www.federalreserve.gov/newsevents/speech/cook20261120a.htm" target="_blank" rel="noopener noreferrer">Federal Reserve</a></span>
+          <span class="source">Federal Reserve</span>
           </div>
           <h3>Fed's Cook says inflation is well above target and dissented in favor of another hike</h3>
           <p class="summary">In a Nov. 20 speech, Governor Lisa Cook said inflation has been above the Fed’s 2% target for 67 months, with October PCE estimated at 3.8% and core PCE at 3.2%. She dissented from the October decision to hold the federal funds rate at 3.75% to 4%, preferring another quarter-point increase.</p>
           <div class="framework">Watch the policy-rate path and real yields as officials weigh whether current settings are tight enough while inflation remains above target.</div>
           
         </article>
-        <article class="card" data-cat="Rates">
+        <article class="card" data-cat="Rates" data-src="https://www.sca.isr.umich.edu/">
           <div class="card-meta">
           <span class="time">Nov 21, 00:03 KST</span>
           <span class="tag high">Rates</span>
-          <span class="source"><a href="https://www.sca.isr.umich.edu/" target="_blank" rel="noopener noreferrer">University of Michigan</a></span>
+          <span class="source">University of Michigan</span>
           </div>
           <h3>Michigan final sentiment rises to 51.5 as year-ahead inflation expectations fall to 3.7%</h3>
           <p class="summary">The University of Michigan’s final November Consumer Sentiment Index was 51.5, up 7.3% from 48.0 in October. Median year-ahead inflation expectations fell to 3.7% from 4.7%, and longer-run expectations moved down to 3.3% from 3.5%.</p>
