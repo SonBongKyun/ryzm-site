@@ -1,6 +1,7 @@
 {
  "source": "https://public-api.wordpress.com/rest/v1.1/sites/ryzm9.wordpress.com/posts/",
  "slugs": [
+  "korea-close-november-26-2026",
   "korea-close-november-25-2026",
   "how-to-read-a-bank-of-korea-decision-rates-financial-stability-won",
   "us-close-november-25-2026",
@@ -43,6 +44,21 @@
   "treasury-term-premium-explained"
  ],
  "items": [
+  {
+   "slug": "korea-close-november-26-2026",
+   "path": "/articles/korea-close-november-26-2026/",
+   "title": "Korea Close | November 26, 2026",
+   "date": "2026-11-26T16:55:00+09:00",
+   "type": "Market Close",
+   "category": "Korea",
+   "categories": [
+    "Korea"
+   ],
+   "wp_categories": [
+    "Korea Close"
+   ],
+   "source": "local"
+  },
   {
    "slug": "korea-close-november-25-2026",
    "path": "/articles/korea-close-november-25-2026/",
