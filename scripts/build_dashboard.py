@@ -60,7 +60,7 @@ BLOCK = """<!-- ryzm-dash -->
     <div class="ck-compass">
       <div class="ck-panel-h"><h3>Macro Compass</h3><span class="cap">US rates and funding regime</span></div>
       <svg id="compass-svg" viewBox="0 0 300 300" role="img" aria-labelledby="regime-name" focusable="false"></svg>
-      <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost" id="ghost-note">1W ago</span></div>
+      <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost">1W ago</span><span class="lg-vals" id="ghost-note"></span></div>
       <div class="cmp-cap">US rates and funding regime</div>
     </div>
     <div class="ck-map">
@@ -71,7 +71,7 @@ BLOCK = """<!-- ryzm-dash -->
         <ol class="tt-list" id="tension-list" aria-label="Top tension signals, ranked"></ol>
       </div>
       <div class="bm-legend" aria-hidden="true">
-        <span><i class="in"></i>Inflow</span><span><i class="flat"></i>Neutral</span><span><i class="out"></i>Outflow</span><span><i class="warn"></i>Priced-in 80+ or tension 75+</span><span>Size = tension</span>
+        <span><i class="in"></i>Inflow</span><span><i class="flat"></i>Neutral</span><span><i class="out"></i>Outflow</span><span><i class="warn"></i>Pulse: priced-in 80+ or tension 75+</span><span><i class="size"></i>Size: tension</span>
       </div>
     </div>
     <div class="ck-side" aria-live="polite">
