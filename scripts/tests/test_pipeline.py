@@ -1,0 +1,120 @@
+"""Unit tests for scripts/pipeline (pure code; no network)."""
+import math
+import os
+import shutil
+import sys
+import tempfile
+import unittest
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from pipeline import common as c  # noqa: E402
+from pipeline import scoring  # noqa: E402
+
+
+def good_item(**kw):
+    it = {"node_id": "asia_early_signal", "asset_or_theme": "USD/KRW", "metric_value": "1,337.1",
+          "delta": "+0.2%", "priced_in_score": 60, "momentum_score": -5, "tension_score": 30,
+          "claim": "USD/KRW at 1,337.1 on Nov 27.", "source_url": "https://finance.yahoo.com/quote/KRW%3DX/",
+          "published_at": "2026-11-27"}
+    it.update(kw)
+    return it
+
+
+def series(start, step, n, d0=1):
+    return [("2026-%02d-%02d" % (1 + (i // 28), 1 + (i % 28)), start + step * i) for i in range(n)]
+
+
+class ItemValidation(unittest.TestCase):
+    def test_good_item(self):
+        self.assertEqual(c.validate_item(good_item()), [])
+
+    def test_ranges_and_url(self):
+        self.assertTrue(c.validate_item(good_item(priced_in_score=120)))
+        self.assertTrue(c.validate_item(good_item(momentum_score=-51)))
+        self.assertTrue(c.validate_item(good_item(source_url="http://example.com")))
+        self.assertTrue(c.validate_item(good_item(published_at="yesterday")))
+
+    def test_missing_field_and_forbidden(self):
+        it = good_item()
+        del it["claim"]
+        self.assertTrue(c.validate_item(it))
+        self.assertTrue(c.validate_item(good_item(source_url="https://x.com/someone/status/1")))
+
+    def test_node(self):
+        self.assertTrue(c.validate_node({"node_id": "asia_early_signal", "items": []}, "asia_early_signal"))
+        self.assertEqual(c.validate_node({"node_id": "asia_early_signal", "items": [good_item()]}, "asia_early_signal"), [])
+
+
+class Compass(unittest.TestCase):
+    def hist(self):
+        h = {k: series(4.0, 0.0, 40) for k in ("US2Y", "US10Y", "SOFR")}
+        h["ONRRP"] = series(1.0, 0.0, 40)
+        h["DXY"] = series(100.0, 0.0, 40)
+        return h
+
+    def test_formula(self):
+        h = self.hist()
+        last = h["US2Y"][-1][0]
+        snap = {"US2Y": {"value": 4.30, "date": last}, "US10Y": {"value": 4.10, "date": last},
+                "SOFR": {"value": 4.0, "date": last}, "ONRRP": {"value": 1.0, "date": last},
+                "DXY": {"value": 102.0, "date": last}}
+        r = scoring.compass(h, snap)
+        y = 50 * math.tanh((0.5 * 30 + 0.3 * 10) / 30)
+        x = 50 * math.tanh(-(0.6 * 2.0 / 2))
+        self.assertAlmostEqual(r["y"], round(y, 1), places=1)
+        self.assertAlmostEqual(r["x"], round(x, 1), places=1)
+        self.assertEqual(r["quadrant"], "stagflation_defense")
+        self.assertTrue(-50 <= r["x"] <= 50 and -50 <= r["y"] <= 50)
+
+    def test_incomplete_returns_none(self):
+        h = self.hist()
+        del h["DXY"]
+        self.assertIsNone(scoring.compass(h, {}))
+
+
+class Bubbles(unittest.TestCase):
+    def test_scores_in_range(self):
+        h = [("d%03d" % i, 100 + 5 * math.sin(i / 7.0) + i * 0.1) for i in range(200)]
+        s = scoring.bubble_scores(h, "pct", 1)
+        self.assertTrue(0 <= s["priced_in_score"] <= 100)
+        self.assertTrue(-50 <= s["momentum_score"] <= 50)
+        self.assertTrue(0 <= s["tension_score"] <= 100)
+
+    def test_short_history(self):
+        self.assertIsNone(scoring.bubble_scores([("d", 1.0)] * 10, "pct", 1))
+
+
+class Fallback(unittest.TestCase):
+    """A node that fails is replaced by its last valid cache, with a WARNING."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.old = (c.NODES, c.LASTGOOD)
+        c.NODES = os.path.join(self.tmp, "nodes")
+        c.LASTGOOD = os.path.join(c.NODES, "_lastgood")
+        from pipeline import aggregate
+        self.agg = aggregate
+
+    def tearDown(self):
+        c.NODES, c.LASTGOOD = self.old
+        shutil.rmtree(self.tmp)
+
+    def test_lastgood(self):
+        for n in c.NODE_IDS:
+            doc = {"node_id": n, "status": "ok", "items": [good_item(node_id=n, asset_or_theme="T " + n)]}
+            c.write_json(os.path.join(c.NODES, n + ".json"), doc)
+        warnings = []
+        used, items, returned = self.agg.load_nodes(warnings)
+        self.assertEqual(returned, 4)
+        self.assertEqual(warnings, [])
+        c.write_json(os.path.join(c.NODES, "crypto_leverage.json"), {"node_id": "crypto_leverage", "status": "failed", "items": []})
+        warnings = []
+        used, items, returned = self.agg.load_nodes(warnings)
+        self.assertEqual(returned, 3)
+        self.assertTrue(any("crypto_leverage" in w for w in warnings))
+        self.assertEqual(used["crypto_leverage"]["source"], "lastgood")
+        self.assertTrue(any(it["node_id"] == "crypto_leverage" and it["stale"] for it in items))
+
+
+if __name__ == "__main__":
+    unittest.main()
