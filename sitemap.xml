@@ -41,6 +41,20 @@
     <changefreq>weekly</changefreq>
   </url>
   <url>
+    <loc>https://ryzm.app/closes/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://ryzm.app/archive/</loc>
+    <lastmod>2026-11-27</lastmod>
+    <changefreq>daily</changefreq>
+  </url>
+  <url>
+    <loc>https://ryzm.app/search/</loc>
+    <lastmod>2026-11-27</lastmod>
+  </url>
+  <url>
     <loc>https://ryzm.app/llms.txt</loc>
     <lastmod>2026-11-27</lastmod>
   </url>
