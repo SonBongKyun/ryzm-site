@@ -2184,7 +2184,8 @@ def write_community_guidelines():
 
 
 def write_membership():
-    inner = """  <div class="tiers">
+    inner = """  <style>.tiers, .tiers-note { max-width: 920px; padding: 0; }</style>
+  <div class="tiers">
     <section class="tier" aria-labelledby="tier-free">
       <div class="tier-name" id="tier-free">Free</div>
       <div class="tier-price">$0</div>
