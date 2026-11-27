@@ -48,17 +48,13 @@ def quadrant(x, y):
 
 QUADRANTS = [
     {"id": "liquidity_rally", "label": "Liquidity Rally", "x": 1, "y": -1,
-     "read": ["Easier US rates and ample dollar liquidity are lifting risk appetite.",
-              "Foreign money tends to reach the KOSPI and the won through this channel."]},
+     "read": ["Easier rates and ample dollar liquidity lift risk appetite, and foreign money reaches Korea."]},
     {"id": "selective_growth", "label": "Selective Growth", "x": 1, "y": 1,
-     "read": ["Risk appetite holds up while rates press higher.",
-              "Flows narrow toward themes with their own earnings story, such as memory chips."]},
+     "read": ["Risk appetite holds as rates rise, and flows narrow to themes with earnings, like memory chips."]},
     {"id": "stagflation_defense", "label": "Stagflation Defense", "x": -1, "y": 1,
-     "read": ["Tighter rates meet weaker dollar liquidity, the hardest mix for funding.",
-              "The dollar and hedging costs carry the pressure into USD/KRW and Korean bonds."]},
+     "read": ["Tighter rates meet thinner dollar liquidity, and the pressure runs into USD/KRW."]},
     {"id": "safe_haven", "label": "Safe-Haven Bond Crowding", "x": -1, "y": -1,
-     "read": ["Yields ease while dollar liquidity tightens, so money crowds into bonds.",
-              "Korean equities lean on domestic buyers, and the won reflects global de-risking."]},
+     "read": ["Yields ease while dollar liquidity tightens, so money crowds into bonds."]},
 ]
 QLABEL = {q["id"]: q["label"] for q in QUADRANTS}
 
