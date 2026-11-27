@@ -608,3 +608,13 @@
   .ryzm-dash .ck-fine a { padding: 14px 8px; margin: -14px -8px; }
   .ryzm-dash .ap-src a { padding: 15px 6px; margin: -15px -6px; }
 }
+/* hotfix (2026-11-28): keep BREAKING on the 1280x800 first screen when the verified-claim note runs long:
+   tighter hero spacing and a wider reading column, no truncation */
+@media (min-width: 981px) {
+  .intro { padding: 20px 28px 14px; }
+  .intro::after { margin-bottom: 10px; }
+  .intro h1 { font-size: 42px; line-height: 1.06; }
+  .intro-lead { margin-top: 8px; }
+  .ryzm-dash .ck-grid { grid-template-columns: 220px minmax(0, 1fr) 360px; }
+  .ryzm-dash .rg-note { font-size: 11px; line-height: 1.38; }
+}
