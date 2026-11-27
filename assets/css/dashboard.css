@@ -289,3 +289,10 @@
 }
 .ryzm-dash .tt-name small { display: block; margin: 1px 0 0; }
 .ryzm-dash .tt-list button { grid-template-rows: auto auto; align-items: center; }
+
+/* ---- subscribe call to action under the dashboard ---- */
+.ryzm-dash .ck-cta { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--rd-hair); }
+.ryzm-dash .ck-cta p { flex: 1 1 280px; margin: 0; font-family: var(--rd-serif); font-size: 14.5px; color: var(--rd-ink); }
+.ryzm-dash .ck-cta-btn { min-height: 32px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--rd-ink); color: var(--rd-surface); font-size: 13px; font-weight: 600; text-decoration: none; }
+.ryzm-dash .ck-cta-btn:hover { background: var(--rd-terra-ink); }
+.ryzm-dash .ck-cta-link { font-size: 13px; color: var(--rd-terra-ink); text-decoration: underline; text-underline-offset: 3px; }
