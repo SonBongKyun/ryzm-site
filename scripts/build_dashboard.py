@@ -37,8 +37,9 @@ PLACEHOLDER = """<!-- regime-summary -->
 BLOCK = """<!-- ryzm-dash -->
 <section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
   <div class="ck-head">
-    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><span class="ck-subtitle">Computed from the market snapshot above.</span></div>
+    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Live snapshot</span></div></div>
     <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
+    <button type="button" class="ck-reset" id="ck-reset" hidden>Reset to Live</button>
   </div>
 
   <div class="ck-controls">
@@ -77,16 +78,16 @@ BLOCK = """<!-- ryzm-dash -->
       %(regime)s
       <div class="asset-panel" id="asset-panel">
         <div class="ap-kicker">Selected asset</div>
-        <div class="ap-name-row"><span class="ap-name" id="ap-name">Memory chips (Samsung + SK hynix)</span><span class="ap-chip" id="ap-group">Korea</span><span class="ap-chip ex" id="ap-ex" hidden>Example</span><span class="ap-status" id="ap-status" hidden></span></div>
+        <div class="ap-name-row"><span class="ap-name" id="ap-name">Memory chips (Samsung, SK hynix)</span><span class="ap-chip" id="ap-group">Korea</span><span class="ap-chip ex" id="ap-ex" hidden>Example</span><span class="ap-status" id="ap-status" hidden></span></div>
         <p class="ap-src" id="ap-src"></p>
         <p class="ap-read" id="ap-read">Select a bubble to read its structure.</p>
         <div class="ap-bottom">
           <div class="ap-metrics">
             <div class="ap-m"><div class="k" title="Priced-in: 1-year range position">Heat</div><div class="v" id="ap-heat">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-heat-bar"></span></div></div>
-            <div class="ap-m"><div class="k">Flow</div><div class="v" id="ap-flow">&middot;</div><div class="ap-track ap-flow-track"><span class="ap-fill ap-flow pos" id="ap-flow-bar"></span></div></div>
+            <div class="ap-m"><div class="k" title="Flow momentum: 20-session move, scaled">Momentum</div><div class="v" id="ap-flow">&middot;</div><div class="ap-track ap-flow-track"><span class="ap-fill ap-flow pos" id="ap-flow-bar"></span></div></div>
             <div class="ap-m"><div class="k">Tension</div><div class="v" id="ap-tension">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-tension-bar"></span></div></div>
           </div>
-          <div class="ap-room-row"><button type="button" class="ap-room" id="ap-room">Analysis room</button><span class="ap-room-note" id="ap-room-note">Coming later</span></div>
+          <div class="ap-room-row"><button type="button" class="ap-room" id="ap-room" title="Analysis room: coming later">Analysis room</button><span class="ap-room-note" id="ap-room-note">Coming later</span></div>
         </div>
       </div>
     </div>
@@ -94,8 +95,7 @@ BLOCK = """<!-- ryzm-dash -->
 
   <p class="ck-error" id="cockpit-error" hidden>Live dashboard data could not load; the reading shown is the last published one.</p>
   <div class="ck-fine">
-    <span class="ck-fine-txt"><span class="ck-tag ex">Simulation prototype</span> Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
-    <span class="ck-fine-cta"><a class="ck-cta-btn" href="/subscribe/">Subscribe free</a><a class="ck-cta-link" href="/membership/">Membership</a></span>
+    <span class="ck-fine-txt">Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
   </div>
 </section>
 <!-- /ryzm-dash -->"""

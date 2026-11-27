@@ -21,7 +21,7 @@
   var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var WINDOW = 20, WEEK = 5;
   var data, trends, base = { x: 0, y: 0 }, ghost = null, bubbles = [], quadrants = {}, selected = null;
-  var state = { x: 0, y: 0 }, anim = null, activeScenario = 'current', inputs = {};
+  var state = { x: 0, y: 0 }, anim = null, activeScenario = 'current', inputs = {}, touched = false;
 
   function el(tag, attrs, parent) {
     var n = document.createElementNS(NS, tag);
@@ -130,6 +130,7 @@
     cmp.ghost = el('g', { class: 'cmp-ghost' }, svg);
     cmp.gl = el('line', { x1: C, y1: C, x2: C, y2: C }, cmp.ghost);
     cmp.gd = el('circle', { cx: C, cy: C, r: 4 }, cmp.ghost);
+    cmp.gt = el('text', { x: C, y: C, class: 'cmp-ghost-t', 'text-anchor': 'middle' }, cmp.ghost); cmp.gt.textContent = '1W ago';
     cmp.nl = el('line', { x1: C, y1: C, x2: C, y2: C, class: 'cmp-needle' }, svg);
     cmp.halo = el('circle', { cx: C, cy: C, r: 9, class: 'cmp-halo' }, svg);
     cmp.tip = el('circle', { cx: C, cy: C, r: 4.5, class: 'cmp-tip' }, svg);
@@ -148,6 +149,7 @@
     cmp.ghost.style.display = '';
     var p = toXY(ghost.x, ghost.y);
     cmp.gl.setAttribute('x2', p[0]); cmp.gl.setAttribute('y2', p[1]); cmp.gd.setAttribute('cx', p[0]); cmp.gd.setAttribute('cy', p[1]);
+    var up = p[1] > C ? 1 : -1; cmp.gt.setAttribute('x', p[0].toFixed(1)); cmp.gt.setAttribute('y', (p[1] + up * 15 + (up > 0 ? 3 : 0)).toFixed(1));
   }
 
   /* ---------------- bubble map ---------------- */
@@ -163,7 +165,9 @@
     var conc = clamp(b.concentration + 0.3 * (heat - b.priced_in), 10, 100);
     return { heat: heat, flow: flow, tension: tension, conc: conc };
   }
-  function short(l) { return l.replace(/\s*\(.*\)\s*$/, ''); }
+  var SHORT = { us2y: 'US 2Y', us10y: 'US 10Y', usd: 'DXY', krw: 'KRW', kospi: 'KOSPI', memory: 'KR Memory', yen_carry: 'Yen Carry',
+    sox: 'US Semis', hy: 'HY Credit', ig: 'IG Credit', btc_lev: 'BTC Lev', eth_lev: 'ETH Lev' };
+  function shortOf(b) { return b.short && b.short !== b.label ? b.short : SHORT[b.id] || b.label.replace(/\s*\(.*\)\s*$/, ''); }
   function buildBubbles() {
     var svg = $('bubble-svg'); svg.textContent = '';
     var w = Math.max(280, Math.round(svg.parentNode.clientWidth || 520));
@@ -192,7 +196,11 @@
     bm.nodes = bubbles.map(function (b) {
       var node = el('g', { class: 'bm-b', tabindex: '0', role: 'button', 'data-id': b.id, 'aria-label': b.label + (b.example ? ' (example data)' : '') + ': show details' }, bm.layer);
       var ring = el('circle', { r: 10, class: 'bm-ring' }, node), sel = el('circle', { r: 10, class: 'bm-sel' }, node), c = el('circle', { r: 10, class: 'bm-c' }, node);
-      var t = el('text', { class: 'bm-label', 'text-anchor': 'middle' }, node); t.textContent = short(b.label);
+      el('title', {}, node).textContent = b.label;
+      var t = el('text', { class: 'bm-label', 'text-anchor': 'middle' }, node); t.textContent = shortOf(b);
+      var full = function (on) { t.textContent = on ? b.label : shortOf(b); node.classList.toggle('is-hover', on); if (on) bm.layer.appendChild(node); };
+      node.addEventListener('mouseenter', function () { full(true); }); node.addEventListener('mouseleave', function () { full(false); });
+      node.addEventListener('focus', function () { full(true); }); node.addEventListener('blur', function () { full(false); });
       node.addEventListener('click', function () { select(b.id, true); });
       node.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(b.id, true); } });
       return { b: b, g: node, c: c, ring: ring, sel: sel, t: t };
@@ -213,31 +221,37 @@
     declutter();
     if (selected) renderDetail();
   }
-  /* Labels never overlap: try below, then above; otherwise hide (selected keeps its label). */
+  /* Labels: short names, always shown. Try 12 spots around each bubble (below, above, sides, diagonals,
+     near then far) and take the first with no overlap with labels, bubbles, axis captions or the plot edge;
+     if none is clear, take the spot with the least overlap. */
   function declutter() {
-    var placed = [], fs = W < 460 ? 5.4 : 6.0;
+    var fs = W < 460 ? 5.6 : 6.1, lh = 11;
+    var placed = [[PAD.l + 2, PAD.t, PAD.l + 50, PAD.t + 14], [PAD.l + 2, H - PAD.b - 18, PAD.l + 58, H - PAD.b]];
     var order = bm.nodes.slice().sort(function (a, b) { return (b.b.id === selected) - (a.b.id === selected) || b.r - a.r; });
+    function overlap(bx) {
+      var o = 0;
+      if (bx[0] < PAD.l - 2) o += PAD.l - 2 - bx[0]; if (bx[2] > W - 2) o += bx[2] - W + 2;
+      if (bx[1] < PAD.t - 2) o += PAD.t - 2 - bx[1]; if (bx[3] > H - PAD.b + 2) o += bx[3] - H + PAD.b - 2;
+      for (var i = 0; i < placed.length; i++) { var p = placed[i], ox = Math.min(bx[2], p[2]) - Math.max(bx[0], p[0]), oy = Math.min(bx[3], p[3]) - Math.max(bx[1], p[1]); if (ox > 0 && oy > 0) o += ox * oy / 4 + 20; }
+      for (var j = 0; j < bm.nodes.length; j++) { var n = bm.nodes[j], cx = clamp(n.x, bx[0], bx[2]), cy = clamp(n.y, bx[1], bx[3]), d2 = (cx - n.x) * (cx - n.x) + (cy - n.y) * (cy - n.y); if (d2 < n.r * n.r) o += 10 + (n.r * n.r - d2) / 8; }
+      return o;
+    }
     order.forEach(function (n) {
-      var lw = short(n.b.label).length * fs + 6, lh = 12;
-      function box(below, dx) { var cy = n.y + (below ? n.r + 9 : -n.r - 9); return [n.x + dx - lw / 2, cy - lh / 2, n.x + dx + lw / 2, cy + lh / 2]; }
-      var dx = 0;
-      if (n.x + lw / 2 > W - 3) dx = W - 3 - (n.x + lw / 2);
-      if (n.x - lw / 2 < PAD.l - 2) dx = PAD.l - 2 - (n.x - lw / 2);
-      function hit(bx) {
-        if (bx[1] < PAD.t - 2 || bx[3] > H - PAD.b + 2) return true;
-        for (var i = 0; i < placed.length; i++) { var p = placed[i]; if (bx[0] < p[2] && bx[2] > p[0] && bx[1] < p[3] && bx[3] > p[1]) return true; }
-        for (var j = 0; j < bm.nodes.length; j++) { var o = bm.nodes[j]; if (o === n) continue;
-          var cx = clamp(o.x, bx[0], bx[2]), cy = clamp(o.y, bx[1], bx[3]); if ((cx - o.x) * (cx - o.x) + (cy - o.y) * (cy - o.y) < o.r * o.r) return true; }
-        return false;
+      var lw = shortOf(n.b).length * fs + 6, cands = [];
+      [0, 9].forEach(function (far) {
+        var g = n.r + 5 + far;
+        cands.push([0, g + lh / 2, 'middle'], [0, -g - lh / 2 + 2, 'middle'], [g, 3, 'start'], [-g, 3, 'end'],
+                   [g * 0.72, g * 0.72 + 4, 'start'], [-g * 0.72, g * 0.72 + 4, 'end'], [g * 0.72, -g * 0.72, 'start'], [-g * 0.72, -g * 0.72, 'end']);
+      });
+      var best = null, bestO = Infinity;
+      for (var k = 0; k < cands.length; k++) {
+        var c = cands[k], x0 = c[2] === 'middle' ? n.x + c[0] - lw / 2 : c[2] === 'start' ? n.x + c[0] : n.x + c[0] - lw, y1 = n.y + c[1];
+        var sh = 0; if (x0 < PAD.l - 2) sh = PAD.l - 2 - x0; if (x0 + lw > W - 2) sh = W - 2 - (x0 + lw);
+        var bx = [x0 + sh, y1 - lh + 2, x0 + sh + lw, y1 + 2], o = overlap(bx);
+        if (o < bestO) { bestO = o; best = [c[0] + sh, c[1], c[2], bx]; if (!o) break; }
       }
-      function side(right) { var cx = n.x + (right ? 1 : -1) * (n.r + 4 + lw / 2), cy = n.y; return [cx - lw / 2, cy - lh / 2, cx + lw / 2, cy + lh / 2]; }
-      var cands = [[box(n.below, dx), 0, n.below ? n.r + 12 : -n.r - 6, 'middle'], [box(!n.below, dx), 0, !n.below ? n.r + 12 : -n.r - 6, 'middle'],
-                   [side(true), n.r + 4, 4, 'start'], [side(false), -n.r - 4, 4, 'end']];
-      var use = null;
-      for (var ci = 0; ci < cands.length && !use; ci++) { var cb = cands[ci][0]; if (cb[0] >= PAD.l - 2 && cb[2] <= W - 2 && !hit(cb)) use = cands[ci]; }
-      if (!use && n.b.id === selected) use = cands[0];
-      if (use) { n.t.setAttribute('x', (use[1] || dx).toFixed(1)); n.t.setAttribute('y', use[2].toFixed(1)); n.t.setAttribute('text-anchor', use[3]); n.t.style.opacity = ''; placed.push(use[0]); }
-      else n.t.style.opacity = '0';
+      n.t.setAttribute('x', best[0].toFixed(1)); n.t.setAttribute('y', best[1].toFixed(1)); n.t.setAttribute('text-anchor', best[2]); n.t.style.opacity = '';
+      placed.push(best[3]);
     });
   }
 
@@ -248,7 +262,7 @@
     bubbles.forEach(function (b) {
       var li = document.createElement('li'), btn = document.createElement('button');
       btn.type = 'button'; btn.setAttribute('aria-label', b.label + ': show details');
-      var nm = document.createElement('span'); nm.className = 'tt-name'; nm.textContent = short(b.label);
+      var nm = document.createElement('span'); nm.className = 'tt-name'; nm.textContent = b.label;
       var sm = document.createElement('small'); nm.appendChild(sm);
       var v = document.createElement('span'); v.className = 'tt-val';
       var bar = document.createElement('span'); bar.className = 'tt-bar'; var fill = document.createElement('i'); bar.appendChild(fill);
@@ -284,7 +298,8 @@
     $('ap-ex').hidden = !n.b.example;
     var src = $('ap-src'); src.textContent = '';
     if (n.b.metric_value != null) {
-      src.appendChild(document.createTextNode(n.b.metric_value + (n.b.delta ? ' \u00b7 ' + n.b.delta : '') + (n.b.published_at ? ' \u00b7 ' + md(n.b.published_at) : '') + ' \u00b7 '));
+      var nb = function (t) { return String(t).replace(/ /g, '\u00a0'); };
+      src.appendChild(document.createTextNode(nb(n.b.metric_value) + (n.b.delta ? ' \u00b7 ' + nb(n.b.delta) : '') + (n.b.published_at ? ' \u00b7 ' + nb(md(n.b.published_at)) : '') + '\u00a0\u00b7 '));
       if (n.b.source_url) { var a = document.createElement('a'); a.href = n.b.source_url; a.rel = 'noopener'; a.target = '_blank'; a.textContent = n.b.stale ? 'source (cached)' : 'source'; src.appendChild(a); }
     }
     $('ap-read').textContent = n.b.read || n.b.note || '';
@@ -304,7 +319,11 @@
     $('regime-name').textContent = q.label || '';
     $('regime-read').textContent = (q.read || []).join(' ');
     $('ro-rates').textContent = sgn(state.y, 1); $('ro-liq').textContent = sgn(state.x, 1);
-    var stEl = $('regime-static'), tag = $('regime-mode'), live = activeScenario === 'current' && Math.abs(state.x - base.x) < 0.6 && Math.abs(state.y - base.y) < 0.6;
+    var stEl = $('regime-static'), tag = $('regime-mode'), live = !touched;
+    var mode = $('ck-mode'), rs = $('ck-reset');
+    if (mode) { mode.textContent = live ? 'Live snapshot' : 'Simulation mode'; mode.className = 'ck-mode ' + (live ? 'live' : 'sim'); }
+    if (rs) rs.hidden = live;
+    root.classList.toggle('is-sim', !live);
     if (stEl) stEl.classList.toggle('is-sim', !live);
     if (live) { tag.textContent = 'Sourced \u00b7 snapshot ' + (data.snapshotStamp || ''); tag.className = 'rg-mode'; }
     else { tag.textContent = activeScenario === 'custom' ? 'Simulated position \u00b7 sliders' : 'Illustrative scenario'; tag.className = 'rg-mode sim'; }
@@ -328,7 +347,7 @@
   function pressed(id) { [].forEach.call(document.querySelectorAll('#scenario-pills button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === id ? 'true' : 'false'); }); }
   function setScenario(id) {
     var s = null; data.scenarios.forEach(function (x) { if (x.id === id) s = x; }); if (!s) return;
-    activeScenario = id; pressed(id); $('scenario-note').textContent = s.note || ''; animateTo(s.x, s.y);
+    activeScenario = id; touched = id !== 'current'; pressed(id); $('scenario-note').textContent = s.note || ''; animateTo(s.x, s.y);
   }
   function buildControls() {
     var wrap = $('scenario-pills'); wrap.textContent = '';
@@ -338,11 +357,12 @@
     });
     function onSlide() {
       if (anim) { cancelAnimationFrame(anim); anim = null; }
-      state.y = +$('sl-rates').value; state.x = +$('sl-liq').value; activeScenario = 'custom'; pressed('');
+      state.y = +$('sl-rates').value; state.x = +$('sl-liq').value; activeScenario = 'custom'; touched = true; pressed('');
       $('scenario-note').textContent = 'Custom position from the sliders (illustrative).'; render();
     }
     $('sl-rates').addEventListener('input', onSlide); $('sl-liq').addEventListener('input', onSlide);
     [$('sl-rates'), $('sl-liq')].forEach(function (s) { s.disabled = false; });
+    var rs = $('ck-reset'); if (rs) rs.addEventListener('click', function () { setScenario('current'); var p = document.querySelector('#scenario-pills [data-id="current"]'); if (p) p.focus(); });
   }
 
   function init(reg, tr) {
@@ -361,7 +381,7 @@
     selected = (reg.bubble_map && reg.bubble_map.default_selected) || (bubbles[0] && bubbles[0].id);
     if (reg.bubble_map && reg.bubble_map.example) { var mt = $('map-tag'); if (mt) { mt.textContent = 'Example data'; mt.className = 'ck-tag ex'; } }
     buildCompass(); drawGhost(); buildControls(); buildBubbles(); buildList();
-    $('ghost-note').textContent = ghost ? '1W ago: rates ' + sgn(ghost.y, 1) + ', liquidity ' + sgn(ghost.x, 1) : '1W-ago position not available';
+    $('ghost-note').textContent = ghost ? '1W ago: rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : '1W ago: n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
     $('data-stamp').textContent = 'Snapshot ' + data.snapshotStamp + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +

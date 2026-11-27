@@ -335,3 +335,81 @@
   .ryzm-dash .ck-head .sc-row { flex-wrap: nowrap; justify-content: flex-start; }
   .ryzm-dash .ck-fine-cta { width: 100%; justify-content: flex-start; }
 }
+
+/* ---- polish round (2026-11-27 c) ---- */
+/* mode badge + reset */
+.ryzm-dash .ck-title-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.ryzm-dash .ck-mode { font-family: var(--rd-mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.ryzm-dash .ck-mode.live { color: var(--rd-ink); border: 1px solid var(--rd-ink-line); }
+.ryzm-dash .ck-mode.live::before { content: ""; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--rd-ink); margin-right: 5px; vertical-align: 1px; }
+.ryzm-dash .ck-mode.sim { color: var(--rd-surface); background: var(--rd-terra-ink); border: 1px solid var(--rd-terra-ink); }
+.ryzm-dash .ck-reset { font: inherit; font-size: 11px; font-weight: 600; min-height: 22px; padding: 0 9px; border-radius: 999px; border: 1px solid var(--rd-terra-ink); background: var(--rd-surface); color: var(--rd-terra-ink); cursor: pointer; white-space: nowrap; }
+.ryzm-dash .ck-reset:hover { background: var(--rd-terra-ink); color: var(--rd-surface); }
+.ryzm-dash .ck-reset[hidden] { display: none; }
+/* inspector: no truncation anywhere */
+.ryzm-dash .rg-drivers li, .ryzm-dash .ap-src, .ryzm-dash .tt-name, .ryzm-dash .rg-nums dt,
+.ryzm-dash .ap-name-row .ap-name { white-space: normal !important; overflow: visible !important; text-overflow: clip !important; }
+.ryzm-dash .rg-read, .ryzm-dash .ap-read, .ryzm-dash .rg-note, .ryzm-dash .rg-static.is-sim #regime-read { display: block !important; -webkit-line-clamp: unset !important; overflow: visible !important; }
+.ryzm-dash .rg-static:not(.is-sim) #regime-read { display: none !important; }
+.ryzm-dash .ap-name-row { flex-wrap: wrap !important; }
+.ryzm-dash .ap-src a { white-space: nowrap; }
+/* compass: clearer ghost needle */
+.ryzm-dash .cmp-ghost line { stroke-opacity: 0.55; stroke-width: 1.3; stroke-dasharray: 4 3; }
+.ryzm-dash .cmp-ghost circle { r: 3.5; fill: var(--rd-surface); stroke-opacity: 0.6; stroke-dasharray: none; }
+.ryzm-dash .cmp-ghost-t { font-family: var(--rd-mono); font-size: 10px; fill: var(--rd-text-muted); paint-order: stroke; stroke: var(--rd-surface); stroke-width: 3px; }
+/* bubble map: subtle pulse on overheated bubbles; full label on hover/focus */
+.ryzm-dash .bm-b.warn .bm-ring { stroke: var(--rd-accent); stroke-width: 1; stroke-dasharray: none; stroke-opacity: 0.7; animation: rdPulse 2.8s ease-out infinite; }
+@keyframes rdPulse { 0% { transform: scale(1); opacity: 0.75; } 70% { transform: scale(1.45); opacity: 0; } 100% { transform: scale(1.45); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .ryzm-dash .bm-b.warn .bm-ring { animation: none; opacity: 0.6; stroke-dasharray: 2 2; } }
+.ryzm-dash .bm-b.is-hover .bm-label, .ryzm-dash .bm-b:focus .bm-label { font-weight: 700; paint-order: stroke; stroke: var(--rd-surface); stroke-width: 3px; }
+.ryzm-dash .bm-label { paint-order: stroke; stroke: var(--rd-surface); stroke-width: 2.5px; stroke-linejoin: round; }
+/* selected-asset bar: labeled values + small terracotta bars */
+.ryzm-dash .ap-m .k { font-size: 9.5px; letter-spacing: 0.06em; color: var(--rd-ink); font-weight: 600; }
+.ryzm-dash .ap-m .v { font-size: 15px; }
+.ryzm-dash .ap-track { height: 4px; border-radius: 2px; background: var(--rd-hair); }
+.ryzm-dash .ap-fill { background: var(--rd-accent); border-radius: 2px; }
+.ryzm-dash .ap-flow.neg { background: var(--rd-ink); }
+.ryzm-dash .ap-flow-track::after { content: ""; position: absolute; left: 50%; top: -2px; bottom: -2px; width: 1px; background: var(--rd-ink-line); }
+/* fine line now carries text only */
+.ryzm-dash .ck-fine { flex-wrap: wrap; }
+@media (min-width: 981px) {
+  .ryzm-dash .ck-grid { grid-template-columns: 206px minmax(0, 1fr) 336px; }
+  .ryzm-dash .ck-compass { padding-right: 22px; }
+  .ryzm-dash .ck-map { padding: 0 18px 0 24px; }
+  .ryzm-dash .ck-side { padding-left: 16px; gap: 6px; }
+  .ryzm-dash .ap-bottom { grid-template-columns: minmax(0, 1fr) auto; }
+  .ryzm-dash .rg-drivers li, .ryzm-dash .rg-note, .ryzm-dash .ap-read, .ryzm-dash .ap-src { font-size: 11.5px; line-height: 1.38; }
+  .ryzm-dash .ap-src { font-size: 10.5px; }
+}
+/* hero: new kicker and lead, Subscribe on the right of the lead */
+.intro-row { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px 28px; width: 100%; flex-wrap: wrap; }
+.intro-row .intro-lead { flex: 1 1 420px; }
+.intro-cta { display: inline-flex; align-items: center; gap: 14px; margin: 0; flex: none; }
+.intro-sub { min-height: 36px; display: inline-flex; align-items: center; padding: 0 18px; border-radius: 999px; background: var(--text); color: var(--bg) !important; font-size: 14px; font-weight: 600; text-decoration: none !important; white-space: nowrap; }
+.intro-sub:hover { background: var(--accent-ink); }
+.intro-mem { font-size: 14px; font-weight: 600; color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; white-space: nowrap; }
+@media (max-width: 640px) { .intro-cta { margin-top: 2px; } }
+
+/* polish: keep the first screen compact */
+.ryzm-dash .ck-sub-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
+.ryzm-dash .ck-sub-row .ck-subtitle { margin: 0; }
+@media (min-width: 981px) {
+  .ryzm-dash .ck-head .ck-subtitle { display: inline; }
+  .intro-row .intro-lead { max-width: none; font-size: 16.5px; }
+  .ryzm-dash .cmp-cap { display: none; }
+  .ryzm-dash .cmp-legend { white-space: nowrap; }
+  .ryzm-dash .rg-static:not(.is-sim) .rg-mode { display: none; }
+  .ryzm-dash .ap-room-note { display: none; }
+  .ryzm-dash .ap-bottom { align-items: center; }
+}
+@media (min-width: 981px) {
+  .ryzm-dash .ck-head > div:first-child { flex: 1 0 auto; }
+  .ryzm-dash .ck-head .sc-row { flex: 0 1 auto; }
+  .ryzm-dash .ck-sub-row { flex-wrap: nowrap; }
+}
+.ryzm-dash .cmp-ghost line { stroke-width: 2.2; stroke-opacity: 0.6; stroke-dasharray: 6 4; }
+.ryzm-dash .cmp-ghost circle { stroke-width: 1.6; }
+.ryzm-dash .cmp-ghost-t { font-size: 17px; font-weight: 600; fill: var(--rd-text-2); stroke-width: 4px; }
+@media (max-width: 980px) { .ryzm-dash .cmp-ghost-t { font-size: 12px; } }
+.ryzm-dash .ck-head .ck-reset { flex: none; min-height: 28px; font-size: 12px; }
+@media (min-width: 981px) { .ryzm-dash .sc-pill { padding: 0 9px; font-size: 11.5px; } .ryzm-dash .ck-head { gap: 10px; } .ryzm-dash .sc-row { gap: 5px; } }
