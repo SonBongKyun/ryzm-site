@@ -1,61 +1,61 @@
 {
- "generated_at": "2026-11-28T03:02+09:00",
- "snapshot_stamp": "Nov 27 22:40 KST",
+ "generated_at": "2026-11-28T08:41+09:00",
+ "snapshot_stamp": "Nov 28 08:40 KST",
  "returned_nodes": 4,
  "nodes": {
   "rates_funding": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-27T22:41+09:00",
+   "generated_at": "2026-11-28T08:41+09:00",
    "items": 3
   },
   "global_credit_macro": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-27T22:41+09:00",
+   "generated_at": "2026-11-28T08:41+09:00",
    "items": 2
   },
   "asia_early_signal": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-27T22:41+09:00",
+   "generated_at": "2026-11-28T08:41+09:00",
    "items": 5
   },
   "crypto_leverage": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-27T22:41+09:00",
+   "generated_at": "2026-11-28T08:41+09:00",
    "items": 2
   }
  },
  "warnings": [],
  "compass": {
-  "x": -25.8,
-  "y": -14.1,
-  "rate_pressure": -14.1,
-  "liquidity_flow": -25.8,
-  "angle": -151.3,
-  "magnitude": 29.4,
+  "x": -26.2,
+  "y": -3.8,
+  "rate_pressure": -3.8,
+  "liquidity_flow": -26.2,
+  "angle": -171.7,
+  "magnitude": 26.4,
   "quadrant": "safe_haven",
   "quadrant_label": "Safe-Haven Bond Crowding",
-  "as_of_data": "2026-11-27",
+  "as_of_data": "2026-11-28",
   "inputs": {
    "US2Y": {
-    "change": -9.0,
+    "change": 2.0,
     "unit": "bp",
-    "end": 4.61,
-    "end_date": "2026-11-25",
-    "base": 4.7,
-    "base_date": "2026-10-27",
+    "end": 4.69,
+    "end_date": "2026-11-27",
+    "base": 4.67,
+    "base_date": "2026-10-28",
     "end_from_snapshot": true
    },
    "US10Y": {
-    "change": -14.0,
+    "change": -11.0,
     "unit": "bp",
-    "end": 4.85,
-    "end_date": "2026-11-25",
-    "base": 4.99,
-    "base_date": "2026-10-27",
+    "end": 4.94,
+    "end_date": "2026-11-27",
+    "base": 5.05,
+    "base_date": "2026-10-28",
     "end_from_snapshot": true
    },
    "SOFR": {
@@ -68,36 +68,36 @@
     "end_from_snapshot": true
    },
    "ONRRP": {
-    "change": 0.074,
+    "change": 0.174,
     "unit": "usd_bn",
-    "end": 0.3,
-    "end_date": "2026-11-25",
-    "base": 0.226,
-    "base_date": "2026-10-27",
+    "end": 0.35,
+    "end_date": "2026-11-27",
+    "base": 0.176,
+    "base_date": "2026-10-28",
     "end_from_snapshot": true
    },
    "DXY": {
-    "change": 1.901,
+    "change": 1.931,
     "unit": "pct",
-    "end": 103.98,
-    "end_date": "2026-11-27",
+    "end": 104.01,
+    "end_date": "2026-11-28",
     "base": 102.04,
     "base_date": "2026-10-28",
     "end_from_snapshot": true
    }
   },
   "contributions": {
-   "US2Y": -0.15,
-   "US10Y": -0.14,
+   "US2Y": 0.0333,
+   "US10Y": -0.11,
    "SOFR": 0.0,
-   "DXY": -0.5703,
-   "ONRRP": -0.0006
+   "DXY": -0.5793,
+   "ONRRP": -0.0014
   }
  },
  "compass_stale": false,
  "prev_needle": {
   "x": -29.5,
-  "y": -1.0,
+  "y": -7.9,
   "as_of": "2026-11-19",
   "source": "recomputed_5_sessions_back"
  },
@@ -105,43 +105,43 @@
   {
    "key": "DXY",
    "axis": "dollar liquidity",
-   "change": 1.901,
+   "change": 1.931,
    "unit": "pct",
    "from_date": "2026-10-28",
-   "to_date": "2026-11-27",
+   "to_date": "2026-11-28",
    "text": "DXY +1.9% in 20 sessions: tighter dollar liquidity."
-  },
-  {
-   "key": "US2Y",
-   "axis": "rate pressure",
-   "change": -9.0,
-   "unit": "bp",
-   "from_date": "2026-10-27",
-   "to_date": "2026-11-25",
-   "text": "US 2Y −9 bp in 20 sessions: less rate pressure."
   },
   {
    "key": "US10Y",
    "axis": "rate pressure",
-   "change": -14.0,
+   "change": -11.0,
    "unit": "bp",
-   "from_date": "2026-10-27",
-   "to_date": "2026-11-25",
-   "text": "US 10Y −14 bp in 20 sessions: less rate pressure."
+   "from_date": "2026-10-28",
+   "to_date": "2026-11-27",
+   "text": "US 10Y −11 bp in 20 sessions: less rate pressure."
+  },
+  {
+   "key": "US2Y",
+   "axis": "rate pressure",
+   "change": 2.0,
+   "unit": "bp",
+   "from_date": "2026-10-28",
+   "to_date": "2026-11-27",
+   "text": "US 2Y +2 bp in 20 sessions: more rate pressure."
   }
  ],
  "bubbles": [
   {
    "node_id": "asia_early_signal",
    "asset_or_theme": "Korean won (USD/KRW)",
-   "metric_value": "1,335.70",
-   "delta": "-0.2% (20 sessions)",
-   "priced_in_score": 94.0,
-   "momentum_score": 1.5,
-   "tension_score": 2.4,
-   "claim": "USD/KRW at 1,335.70 on Nov 27; -0.2% over 20 sessions; 6% of its 1-year range.",
+   "metric_value": "1,333.00",
+   "delta": "+0.6% (20 sessions)",
+   "priced_in_score": 95.2,
+   "momentum_score": -5.1,
+   "tension_score": 56.0,
+   "claim": "USD/KRW at 1,333.00 on Nov 28; +0.6% over 20 sessions; 5% of its 1-year range.",
    "source_url": "https://finance.yahoo.com/quote/KRW%3DX/",
-   "published_at": "2026-11-27",
+   "published_at": "2026-11-28",
    "id": "krw",
    "series_key": "USDKRW",
    "group": "Korea",
@@ -149,9 +149,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "Yahoo Finance (KRW=X)",
-   "z20": -0.06,
-   "z5": 0.05,
-   "delta_value": -0.17,
+   "z20": 0.2,
+   "z5": -0.6,
+   "delta_value": 0.564,
    "delta_unit": "pct",
    "sens": {
     "priced_in_x": 0.3,
@@ -159,7 +159,9 @@
     "flow_x": 0.35,
     "flow_y": -0.15
    },
-   "read": "The won is where US rates and dollar funding meet Korean flows; a higher USD/KRW reads as outflow.",
+   "read": "Where US rates and dollar funding meet Korean flows. A higher USD/KRW reads as outflow.",
+   "short": "KRW",
+   "range_pct": 5,
    "notes": []
   },
   {
@@ -190,7 +192,9 @@
     "flow_x": 0.4,
     "flow_y": -0.15
    },
-   "read": "Foreign equity flow sets the index, so it reacts first when global liquidity turns.",
+   "read": "Foreign equity flow sets the index, so it turns first when global liquidity does.",
+   "short": "KOSPI",
+   "range_pct": 19,
    "notes": [
     {
      "claim": "The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.",
@@ -201,7 +205,7 @@
   },
   {
    "node_id": "asia_early_signal",
-   "asset_or_theme": "Memory chips (Samsung + SK hynix)",
+   "asset_or_theme": "Memory chips (Samsung, SK hynix)",
    "metric_value": "188.5 (1y ago = 100)",
    "delta": "-21.1% (20 sessions)",
    "priced_in_score": 26.5,
@@ -227,23 +231,19 @@
     "flow_x": 0.35,
     "flow_y": -0.05
    },
-   "read": "Index weight and narrative are concentrated in AI memory, so the pair reacts to any change in US tech funding.",
-   "notes": [
-    {
-     "claim": "South Korea's chip exports nearly quadrupled from a year earlier to $38.5 billion in November 1-20, 2026, a record for the 20-day period, according to Korea Customs Service data.",
-     "source_url": "https://en.yna.co.kr/view/AEN20261123002551320",
-     "published_at": "2026-11-23"
-    }
-   ]
+   "read": "AI memory dominates index weight, so the pair moves with US tech funding.",
+   "short": "KR Memory",
+   "range_pct": 26,
+   "notes": []
   },
   {
    "node_id": "crypto_leverage",
    "asset_or_theme": "Spot bitcoin ETF flows",
-   "metric_value": "-$5.39bn (Nov MTD)",
-   "delta": "largest monthly outflow on record",
-   "priced_in_score": 60,
-   "momentum_score": -35,
-   "tension_score": 75,
+   "metric_value": "-$5.39bn",
+   "delta": "Nov MTD to Nov 25",
+   "priced_in_score": 70,
+   "momentum_score": -30,
+   "tension_score": 70,
    "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
    "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
    "published_at": "2026-11-26",
@@ -263,87 +263,64 @@
   },
   {
    "node_id": "rates_funding",
-   "asset_or_theme": "US 2Y Treasury",
-   "metric_value": "4.61%",
-   "delta": "-9 bp (20 sessions)",
-   "priced_in_score": 20.1,
-   "momentum_score": 11.4,
-   "tension_score": 66.6,
-   "claim": "US2Y at 4.61% on Nov 25; -9 bp over 20 sessions; 80% of its 1-year range.",
+   "asset_or_theme": "US 10Y Treasury",
+   "metric_value": "4.94%",
+   "delta": "-11 bp (20 sessions)",
+   "priced_in_score": 27.6,
+   "momentum_score": 14.4,
+   "tension_score": 47.9,
+   "claim": "US10Y at 4.94% on Nov 27; -11 bp over 20 sessions; 72% of its 1-year range.",
    "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
-   "published_at": "2026-11-25",
-   "id": "us2y",
-   "series_key": "US2Y",
+   "published_at": "2026-11-27",
+   "id": "us10y",
+   "series_key": "US10Y",
    "group": "Rates",
    "orientation": -1,
    "score_method": "deterministic",
    "stale": false,
    "source": "US Treasury daily par yield curve",
-   "z20": -0.46,
-   "z5": -1.86,
-   "delta_value": -9.0,
+   "z20": -0.59,
+   "z5": -1.04,
+   "delta_value": -11.0,
    "delta_unit": "bp",
    "sens": {
-    "priced_in_x": -0.05,
-    "priced_in_y": -0.3,
-    "flow_x": -0.1,
-    "flow_y": -0.35
+    "priced_in_x": -0.1,
+    "priced_in_y": -0.2,
+    "flow_x": -0.2,
+    "flow_y": -0.25
    },
-   "read": "Front-end yields carry the policy path; a lower yield means more of the easing path is already in the price.",
-   "notes": []
-  },
-  {
-   "node_id": "global_credit_macro",
-   "asset_or_theme": "US high-yield credit",
-   "metric_value": "3.72%",
-   "delta": "+54 bp (20 sessions)",
-   "priced_in_score": 3.4,
-   "momentum_score": -41.0,
-   "tension_score": 47.8,
-   "claim": "US high-yield OAS at 3.72% on Nov 24; +54 bp over 20 sessions; 97% of its 1-year range.",
-   "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-   "published_at": "2026-11-24",
-   "id": "hy",
-   "series_key": "HYOAS",
-   "group": "Credit",
-   "orientation": -1,
-   "score_method": "deterministic",
-   "stale": false,
-   "source": "FRED (BAMLH0A0HYM2, ICE BofA)",
-   "z20": 2.31,
-   "z5": 2.38,
-   "delta_value": 54.0,
-   "delta_unit": "bp",
-   "sens": {
-    "priced_in_x": 0.25,
-    "priced_in_y": -0.1,
-    "flow_x": 0.3,
-    "flow_y": -0.15
-   },
-   "read": "Tight high-yield spreads mean credit risk is priced for calm; widening is an early stress read.",
-   "notes": []
+   "read": "Long-end yields mix policy, inflation and term premium.",
+   "short": "US 10Y",
+   "range_pct": 72,
+   "notes": [
+    {
+     "claim": "The 10-year Treasury par yield rose to 4.94% on November 27, 2026 from 4.85% on November 25, while the 2-year yield rose to 4.69% from 4.61%, according to Treasury daily yield curve data.",
+     "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202611",
+     "published_at": "2026-11-27"
+    }
+   ]
   },
   {
    "node_id": "crypto_leverage",
-   "asset_or_theme": "BTC leverage (perp funding)",
-   "metric_value": "0.74 bp/8h",
-   "delta": "+0.32 bp/8h (20 sessions)",
-   "priced_in_score": 81.9,
-   "momentum_score": 17.3,
-   "tension_score": 43.8,
-   "claim": "BTC perp funding at 0.74 bp/8h on Nov 27; +0.32 bp/8h over 20 sessions; 82% of its 1-year range.",
+   "asset_or_theme": "ETH leverage (perp funding)",
+   "metric_value": "0.51 bp/8h",
+   "delta": "-0.21 bp/8h (20 sessions)",
+   "priced_in_score": 74.6,
+   "momentum_score": -10.6,
+   "tension_score": 47.0,
+   "claim": "ETH perp funding at 0.51 bp/8h on Nov 27; -0.21 bp/8h over 20 sessions; 75% of its 1-year range.",
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "published_at": "2026-11-27",
-   "id": "btc_lev",
-   "series_key": "BTCFUND",
+   "id": "eth_lev",
+   "series_key": "ETHFUND",
    "group": "Crypto",
    "orientation": 1,
    "score_method": "deterministic",
    "stale": false,
    "source": "Binance USD-M futures funding history",
-   "z20": 0.72,
-   "z5": 1.96,
-   "delta_value": 0.323,
+   "z20": -0.43,
+   "z5": 0.91,
+   "delta_value": -0.215,
    "delta_unit": "level",
    "sens": {
     "priced_in_x": 0.35,
@@ -351,17 +328,46 @@
     "flow_x": 0.4,
     "flow_y": -0.1
    },
-   "read": "Positive perpetual funding means longs pay shorts; elevated funding is crowded leverage.",
-   "notes": [
-    {
-     "claim": "Bitcoin futures open interest rose 5.1% over 24 hours to Nov. 26, 2026, and perpetual funding was positive on Binance, OKX, Bybit and Hyperliquid, CoinDesk reported.",
-     "source_url": "https://www.coindesk.com/markets/2026/11/26/bitcoin-little-changed-defi-tokens-lead-the-bounce-as-u-s-marks-thanksgiving",
-     "published_at": "2026-11-26"
-    }
-   ]
+   "read": "The higher-beta read on crypto leverage.",
+   "short": "ETH Lev",
+   "range_pct": 75,
+   "notes": []
+  },
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US high-yield credit",
+   "metric_value": "3.77%",
+   "delta": "+51 bp (20 sessions)",
+   "priced_in_score": 0.0,
+   "momentum_score": -39.5,
+   "tension_score": 45.6,
+   "claim": "US high-yield OAS at 3.77% on Nov 26; +51 bp over 20 sessions; 100% of its 1-year range.",
+   "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+   "published_at": "2026-11-26",
+   "id": "hy",
+   "series_key": "HYOAS",
+   "group": "Credit",
+   "orientation": -1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "FRED (BAMLH0A0HYM2, ICE BofA)",
+   "z20": 2.14,
+   "z5": 2.02,
+   "delta_value": 51.0,
+   "delta_unit": "bp",
+   "sens": {
+    "priced_in_x": 0.25,
+    "priced_in_y": -0.1,
+    "flow_x": 0.3,
+    "flow_y": -0.15
+   },
+   "read": "Tight spreads price credit for calm. Widening is an early stress signal.",
+   "short": "HY Credit",
+   "range_pct": 100,
+   "notes": []
   }
  ],
- "claims_kept": 11,
+ "claims_kept": 12,
  "claims_dropped": [],
  "claims_rejected": [],
  "stale_series": [],
