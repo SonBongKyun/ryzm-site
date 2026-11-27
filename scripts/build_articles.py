@@ -889,6 +889,8 @@ FOOTER = """<footer>
       <div class="footer-h">Site</div>
       <a href="/about/">About</a>
       <a href="/subscribe/">Free weekly brief</a>
+      <a href="/membership/">Membership</a>
+      <a href="/community-guidelines/">Community guidelines</a>
       <a href="/search/">Search</a>
       <a href="/rss.xml">RSS</a>
       <a href="/data/frameworks.json">Frameworks API</a>
@@ -1146,6 +1148,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
 {content}
     </div>
   </article>
+{discussion}
   </div>{related}
   {subscribe}
   <div class="origin">
@@ -1157,7 +1160,8 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
                   title=esc(a["title"]), content=fix_wp_link_text(a["html"]),
                   cat=('<a class="cat-label" href="%s">%s</a>' % (cat_href(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
-                  related=render_related(related), subscribe=SUBSCRIBE)
+                  related=render_related(related), subscribe=SUBSCRIBE,
+                  discussion=discussion_block(a.get("slug") or "", a.get("type") or ""))
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active,
                 og_image=og_image)
 
@@ -1547,7 +1551,8 @@ def write_sitemap(arts, briefs=(), about_lastmod=None):
             cat_mod = max(a["modified"][:10] for a in arts if c in a.get("categories", []))
             urls.append((SITE + cat_href(c), cat_mod, "weekly"))
     urls += [(SITE + "/closes/", newest, "daily"), (SITE + "/archive/", newest, "daily"),
-             (SITE + "/search/", today, None)]
+             (SITE + "/search/", today, None), (SITE + "/membership/", today, None),
+             (SITE + "/community-guidelines/", today, None)]
     urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None)]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
@@ -1842,7 +1847,30 @@ V2_CSS = """
   .search-box { max-width: 920px; margin: -12px auto 14px; display: flex; flex-direction: column; gap: 12px; }
   .search-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); max-width: 920px; margin: 0 auto 8px; }
   .item mark { background: var(--accent-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  /* discussion placeholder, guidelines, membership */
+  .discussion { max-width: 720px; margin: 40px auto 0; padding: 20px 22px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); }
+  .disc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .disc-title { font-family: var(--serif); font-size: 22px; font-weight: 500; margin: 0; }
+  .disc-badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 3px 9px; }
+  .disc-lead, .disc-rule { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
+  .disc-cats { margin: 10px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.55; color: var(--text-2); }
+  .disc-cats li { margin: 4px 0; }
+  .disc-list:empty { display: none; }
+  .disc-rule a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .tiers { max-width: 880px; margin: 8px auto 0; padding: 0 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .tier { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .tier-pro { border-color: var(--accent); }
+  .tier-name { font-family: var(--serif); font-size: 24px; font-weight: 500; }
+  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
+  .tier-price { font-family: var(--mono); font-size: 18px; color: var(--text); }
+  .tier-price.soon { font-size: 14px; color: var(--accent-ink); }
+  .tier ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); flex: 1; }
+  .tier-cta { align-self: flex-start; min-height: 38px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--text); color: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tier-cta.disabled { background: transparent; color: var(--text-muted); border: 1px dashed var(--border-strong); }
+  .tiers-note { max-width: 880px; margin: 14px auto 0; padding: 0 28px; }
+  .guide-prose { max-width: 720px; margin: 0 auto; padding: 0 28px; }
   @media (max-width: 900px) {
+    .tiers { grid-template-columns: 1fr; }
     .footer-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer-brand { grid-column: 1 / -1; }
     .arch-grid { grid-template-columns: 1fr; }
@@ -2004,6 +2032,8 @@ def render_archive(arts, briefs):
   <div class="arch-grid">
 %s
   </div>
+  <!-- ad-slot: archive-footer. Reserved for a future, clearly labeled sponsor unit below the archive only.
+       Not active: no ad code, no tracking. Home, briefs and notes carry no ad slots. -->
 </main>""" % cards
     return page("Archive · RYZM", desc, url, "website", "", ld, body, "archive")
 
@@ -2073,8 +2103,120 @@ def render_search():
     return page("Search · RYZM", desc, url, "website", "", ld, body, "search")
 
 
+# ---------------------------------------------------------------- discussion, guidelines, membership
+# Added 2026-11-27. Discussion is a placeholder: no backend, no form, no data
+# collection. The markup is structured for future moderation: each comment type
+# has a category tag (data-category), each comment a status and a report slot.
+COMMENT_CATEGORIES = [
+    ("path-check", "Transmission-path check", "Does the chain from US rates or dollar funding to Korean markets hold? Show where it breaks."),
+    ("data", "Additional data", "A dataset, release or chart that tests the note, with its source and date."),
+    ("korea-context", "Korea local context", "Local rules, flows, tax, household or corporate detail the note misses."),
+]
+
+
+def discussion_block(slug, kind=""):
+    cats = "\n".join('          <li data-category="%s"><strong>%s.</strong> %s</li>' % (c, esc(n), esc(d))
+                     for c, n, d in COMMENT_CATEGORIES)
+    return """  <section class="discussion" id="discussion" aria-labelledby="discussion-title" data-thread="%s" data-status="closed">
+    <div class="disc-head">
+      <h2 class="disc-title" id="discussion-title">Discussion</h2>
+      <span class="disc-badge">Discussion opens soon</span>
+    </div>
+    <p class="disc-lead">Comments will open under each brief and note. Nothing is collected yet. Three kinds of comment will be welcome:</p>
+    <ul class="disc-cats">
+%s
+    </ul>
+    <p class="disc-rule">Forecasts, price targets and stock picks are off topic and may be removed. Read the <a href="/community-guidelines/">community guidelines</a>.</p>
+    <div class="disc-list" data-role="comments" aria-live="polite"></div>
+    <template id="comment-template">
+      <article class="comment" data-comment-id="" data-category="" data-status="visible">
+        <header class="comment-meta"><span class="comment-author"></span><span class="comment-cat"></span><time class="comment-time"></time></header>
+        <div class="comment-body"></div>
+        <button type="button" class="comment-report" data-action="report" disabled>Report</button>
+      </article>
+    </template>
+  </section>""" % (esc(slug), cats)
+
+
+def _simple_page(sub, title, desc, h1, lead, inner, name):
+    url = SITE + "/%s/" % sub
+    ld = jsonld({"@context": "https://schema.org", "@type": "WebPage", "@id": url, "url": url,
+                 "name": name, "description": desc, "inLanguage": "en-US",
+                 "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG})
+    body = """<main>
+  <div class="page-head %s-page">
+    <div class="section-title">%s</div>
+    <h1 class="page-title">%s</h1>
+    <p class="page-lead">%s</p>
+  </div>
+%s
+</main>""" % (sub, esc(name), h1, lead, inner)
+    d = os.path.join(ROOT, sub)
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+        f.write(page(title, desc, url, "website", "", ld, body, ""))
+
+
+def write_community_guidelines():
+    cats = "\n".join('      <li data-category="%s"><strong>%s.</strong> %s</li>' % (c, esc(n), esc(d))
+                     for c, n, d in COMMENT_CATEGORIES)
+    inner = """  <div class="prose guide-prose">
+    <h2>What discussion is for</h2>
+    <p>RYZM publishes frameworks, not forecasts. Discussion sits under each brief and note and stays on three topics:</p>
+    <ul>
+%s
+    </ul>
+    <h2>What may be removed</h2>
+    <ul>
+      <li>Forecasts, price targets, buy or sell calls and stock picks.</li>
+      <li>Promotion, referral links, paid groups and signal services.</li>
+      <li>Unsourced numbers. Give the source and the date for any figure.</li>
+      <li>Personal attacks, harassment and anything unlawful.</li>
+    </ul>
+    <h2>How moderation will work</h2>
+    <p>Each comment carries one of the three topic tags above. Readers will be able to report a comment; reported comments are reviewed against these guidelines and may be hidden or removed. Discussion is not open yet, and nothing is collected until it is.</p>
+    <p>Nothing on RYZM or in its discussion is investment advice.</p>
+  </div>""" % cats
+    _simple_page("community-guidelines", "Community guidelines · RYZM",
+                 "How discussion works on RYZM: transmission-path checks, additional data and Korea context. No forecasts or stock picks.",
+                 "Community guidelines", "Discussion under RYZM briefs and notes is for testing frameworks, not for calls.",
+                 inner, "Community guidelines")
+
+
+def write_membership():
+    inner = """  <div class="tiers">
+    <section class="tier" aria-labelledby="tier-free">
+      <div class="tier-name" id="tier-free">Free</div>
+      <div class="tier-price">$0</div>
+      <ul>
+        <li>The weekly RYZM brief by email</li>
+        <li>The live Macro Compass and bubble map</li>
+        <li>Daily briefs, market closes and framework notes</li>
+      </ul>
+      <a class="tier-cta" href="/subscribe/">Get the free brief</a>
+    </section>
+    <section class="tier tier-pro" aria-labelledby="tier-pro">
+      <div class="tier-name" id="tier-pro">Pro <span class="tier-tag">Planned</span></div>
+      <div class="tier-price soon">Pricing coming soon</div>
+      <ul>
+        <li>Dashboard history: past compass readings and bubble maps</li>
+        <li>Deep notes: longer framework work on rates, funding and Korea</li>
+        <li>Alerts when the compass changes regime or tension spikes</li>
+      </ul>
+      <span class="tier-cta disabled" aria-disabled="true">Not available yet</span>
+    </section>
+  </div>
+  <p class="page-lead small tiers-note">No payment is taken on this site yet. Pro is planned; nothing here is a forecast, signal or investment advice.</p>"""
+    _simple_page("membership", "Membership · RYZM",
+                 "RYZM Free and planned Pro membership: weekly brief, dashboard history, deep notes and alerts. Pricing coming soon.",
+                 "Free now, Pro planned", "Start with the free weekly brief. Pro adds dashboard history, deep notes and alerts once it opens.",
+                 inner, "Membership")
+
+
 def write_v2_pages(arts, briefs):
     """Write /closes/, /archive/, /search/, /search-index.json and /data/frameworks.json."""
+    write_membership()
+    write_community_guidelines()
     for sub, html_out in (("closes", render_closes(arts)), ("archive", render_archive(arts, briefs)),
                           ("search", render_search())):
         d = os.path.join(ROOT, sub)
