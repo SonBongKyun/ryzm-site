@@ -25,30 +25,33 @@ from pipeline import snapshot as snap  # noqa: E402
 # structural one-liner. Sensitivities are illustrative, not estimated.
 CANDIDATES = [
     ("us2y", "US2Y", "US 2Y Treasury", "Rates", -1, (-0.05, -0.30, -0.10, -0.35),
-     "Front-end yields carry the policy path; a lower yield means more of the easing path is already in the price."),
+     "Front-end yields carry the policy path. Lower yields price in more easing."),
     ("us10y", "US10Y", "US 10Y Treasury", "Rates", -1, (-0.10, -0.20, -0.20, -0.25),
-     "Long-end yields mix policy, inflation and term premium, which is where disagreement shows first."),
+     "Long-end yields mix policy, inflation and term premium."),
     ("usd", "DXY", "US dollar (DXY)", "FX", 1, (-0.25, 0.20, -0.30, 0.20),
-     "A firm dollar tightens global funding and reaches Korea through the won and hedging costs."),
+     "A firm dollar tightens global funding and reaches Korea through the won."),
     ("krw", "USDKRW", "Korean won (USD/KRW)", "Korea", -1, (0.30, -0.15, 0.35, -0.15),
-     "The won is where US rates and dollar funding meet Korean flows; a higher USD/KRW reads as outflow."),
+     "Where US rates and dollar funding meet Korean flows. A higher USD/KRW reads as outflow."),
     ("kospi", "KOSPI", "KOSPI", "Korea", 1, (0.35, -0.10, 0.40, -0.15),
-     "Foreign equity flow sets the index, so it reacts first when global liquidity turns."),
-    ("memory", "MEMORY", "Memory chips (Samsung + SK hynix)", "Korea", 1, (0.30, -0.05, 0.35, -0.05),
-     "Index weight and narrative are concentrated in AI memory, so the pair reacts to any change in US tech funding."),
+     "Foreign equity flow sets the index, so it turns first when global liquidity does."),
+    ("memory", "MEMORY", "Memory chips (Samsung, SK hynix)", "Korea", 1, (0.30, -0.05, 0.35, -0.05),
+     "AI memory dominates index weight, so the pair moves with US tech funding."),
     ("yen_carry", "USDJPY", "Yen carry (USD/JPY)", "FX", 1, (0.25, 0.10, 0.30, 0.10),
-     "A higher USD/JPY rewards borrowing in yen; a sharp drop is the classic carry-unwind signal."),
+     "A higher USD/JPY rewards yen borrowing. A sharp drop signals a carry unwind."),
     ("sox", "SOX", "US semiconductors (SOX)", "Equities", 1, (0.30, -0.10, 0.35, -0.10),
-     "The US chip index is the funding-sensitive end of tech and leads Korean chip flows."),
+     "The funding-sensitive end of US tech. It leads Korean chip flows."),
     ("hy", "HYOAS", "US high-yield credit", "Credit", -1, (0.25, -0.10, 0.30, -0.15),
-     "Tight high-yield spreads mean credit risk is priced for calm; widening is an early stress read."),
+     "Tight spreads price credit for calm. Widening is an early stress signal."),
     ("ig", "IGOAS", "US investment-grade credit", "Credit", -1, (0.15, -0.10, 0.20, -0.10),
-     "Investment-grade spreads show how easily large borrowers fund themselves."),
+     "Shows how easily large borrowers fund themselves."),
     ("btc_lev", "BTCFUND", "BTC leverage (perp funding)", "Crypto", 1, (0.35, -0.10, 0.40, -0.10),
-     "Positive perpetual funding means longs pay shorts; elevated funding is crowded leverage."),
+     "Positive funding means longs pay shorts. High funding is crowded leverage."),
     ("eth_lev", "ETHFUND", "ETH leverage (perp funding)", "Crypto", 1, (0.35, -0.10, 0.40, -0.10),
-     "ETH funding is the higher-beta read on crypto leverage."),
+     "The higher-beta read on crypto leverage."),
 ]
+SHORT = {"us2y": "US 2Y", "us10y": "US 10Y", "usd": "DXY", "krw": "KRW", "kospi": "KOSPI", "memory": "KR Memory",
+         "yen_carry": "Yen Carry", "sox": "US Semis", "hy": "HY Credit", "ig": "IG Credit", "btc_lev": "BTC Lev",
+         "eth_lev": "ETH Lev"}   # map labels; the full label shows on hover/focus and in the inspector
 PINNED = ("krw", "kospi", "memory")   # Korea transmission assets, always shown
 MAX_BUBBLES = 7
 
@@ -106,9 +109,9 @@ def code_items(full, snapshot):
         if not sc:
             continue
         unit = "index100" if key == "MEMORY" else s["unit"]
+        range_pct = round(sc["priced_in_score"] if orient > 0 else 100 - sc["priced_in_score"])
         claim = "%s at %s on %s; %s over 20 sessions; %d%% of its 1-year range." % (
-            s["label"], fmt_value(unit, last_v), md(last_d), fmt_delta(s["unit"], sc["change_20"]),
-            round(100 * (sc["priced_in_score"] if orient > 0 else 100 - sc["priced_in_score"]) / 100))
+            s["label"], fmt_value(unit, last_v), md(last_d), fmt_delta(s["unit"], sc["change_20"]), range_pct)
         out[s["node_id"]].append({
             "node_id": s["node_id"], "asset_or_theme": label,
             "metric_value": fmt_value(unit, last_v), "delta": fmt_delta(s["unit"], sc["change_20"]) + " (20 sessions)",
@@ -120,7 +123,7 @@ def code_items(full, snapshot):
             "score_method": "deterministic", "stale": bool(s.get("stale")), "source": s["source"],
             "z20": sc["z20"], "z5": sc["z5"], "delta_value": sc["change_20"], "delta_unit": unit,
             "sens": {"priced_in_x": sens[0], "priced_in_y": sens[1], "flow_x": sens[2], "flow_y": sens[3]},
-            "read": read,
+            "read": read, "short": SHORT.get(bid, label), "range_pct": range_pct,
         })
     return out
 

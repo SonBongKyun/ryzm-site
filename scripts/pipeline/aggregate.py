@@ -139,7 +139,7 @@ def ghost(history, snapshot, now, hist_entries):
 
 
 def drivers(now):
-    labels = {"US2Y": "US 2Y yield", "US10Y": "US 10Y yield", "SOFR": "SOFR", "DXY": "The dollar index (DXY)", "ONRRP": "ON RRP usage"}
+    labels = {"US2Y": "US 2Y", "US10Y": "US 10Y", "SOFR": "SOFR", "DXY": "DXY", "ONRRP": "ON RRP"}
     out = []
     for k, w in sorted(now["contributions"].items(), key=lambda kv: -abs(kv[1]))[:3]:
         inp = now["inputs"][k]
@@ -150,11 +150,11 @@ def drivers(now):
         val = ("%s%.0f bp" % (s, a)) if unit == "bp" else ("%s$%.2fbn" % (s, a)) if unit == "usd_bn" else ("%s%.1f%%" % (s, a))
         axis = "rate pressure" if k in ("US2Y", "US10Y", "SOFR") else "dollar liquidity"
         if k in ("US2Y", "US10Y", "SOFR"):
-            effect = "added to rate pressure" if w > 0 else "eased rate pressure" if w < 0 else "left rate pressure flat"
+            effect = "more rate pressure" if w > 0 else "less rate pressure" if w < 0 else "rate pressure flat"
         else:
-            effect = "tightened dollar liquidity" if w < 0 else "eased dollar liquidity" if w > 0 else "left dollar liquidity flat"
+            effect = "tighter dollar liquidity" if w < 0 else "easier dollar liquidity" if w > 0 else "dollar liquidity flat"
         out.append({"key": k, "axis": axis, "change": ch, "unit": unit, "from_date": inp["base_date"], "to_date": inp["end_date"],
-                    "text": "%s %s over 20 sessions %s." % (labels[k], val, effect)})
+                    "text": "%s %s in 20 sessions: %s." % (labels[k], val, effect)})
     return out
 
 

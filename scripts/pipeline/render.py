@@ -35,14 +35,15 @@ def note_for(agg):
     top = max(agg["bubbles"], key=lambda b: b["tension_score"], default=None)
     if not top:
         return {"text": "Bubble inputs are unavailable this run.", "source_url": None, "kind": "notice"}
-    return {"text": "Highest tension on the map: %s (tension %d). %s" % (
-        top["asset_or_theme"], round(top["tension_score"]), top["claim"]),
+    rng = top.get("range_pct")
+    return {"text": ("Highest tension: %s (%d), at %d%% of its 1-year range." % (top.get("short") or top["asset_or_theme"], round(top["tension_score"]), rng))
+            if rng is not None else ("Highest tension: %s (%d)." % (top.get("short") or top["asset_or_theme"], round(top["tension_score"]))),
         "source_url": top["source_url"], "kind": "highest_tension"}
 
 
 def bubble_out(b):
     return {
-        "id": b.get("id"), "label": b["asset_or_theme"], "group": b.get("group", ""), "node_id": b["node_id"],
+        "id": b.get("id"), "label": b["asset_or_theme"], "short": b.get("short") or b["asset_or_theme"], "group": b.get("group", ""), "node_id": b["node_id"],
         "metric_value": b["metric_value"], "delta": b["delta"],
         "priced_in": b["priced_in_score"], "flow": b["momentum_score"], "tension": b["tension_score"],
         "priced_in_score": b["priced_in_score"], "momentum_score": b["momentum_score"], "tension_score": b["tension_score"],
