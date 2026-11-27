@@ -1,0 +1,30 @@
+{
+ "node_id": "crypto_leverage",
+ "generated_at": "2026-11-27T22:55+09:00",
+ "items": [
+  {
+   "node_id": "crypto_leverage",
+   "asset_or_theme": "Spot bitcoin ETF flows",
+   "metric_value": "-$5.39bn (Nov MTD)",
+   "delta": "largest monthly outflow on record",
+   "priced_in_score": 60,
+   "momentum_score": -35,
+   "tension_score": 75,
+   "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
+   "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
+   "published_at": "2026-11-26"
+  },
+  {
+   "node_id": "crypto_leverage",
+   "asset_or_theme": "BTC leverage (perp funding)",
+   "metric_value": "BTC futures OI +5.1% (24h)",
+   "delta": null,
+   "priced_in_score": 45,
+   "momentum_score": 10,
+   "tension_score": 55,
+   "claim": "Bitcoin futures open interest rose 5.1% over 24 hours to Nov. 26, 2026, and perpetual funding was positive on Binance, OKX, Bybit and Hyperliquid, CoinDesk reported.",
+   "source_url": "https://www.coindesk.com/markets/2026/11/26/bitcoin-little-changed-defi-tokens-lead-the-bounce-as-u-s-marks-thanksgiving",
+   "published_at": "2026-11-26"
+  }
+ ]
+}

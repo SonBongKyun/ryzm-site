@@ -1,0 +1,42 @@
+{
+ "node_id": "rates_funding",
+ "generated_at": "2026-11-27T22:55+09:00",
+ "items": [
+  {
+   "node_id": "rates_funding",
+   "asset_or_theme": "US 7-year Treasury auction",
+   "metric_value": "4.708%",
+   "delta": "-18.6 bp vs Oct 29 auction (4.894%)",
+   "priced_in_score": 60,
+   "momentum_score": -15,
+   "tension_score": 35,
+   "claim": "Treasury sold $44 billion of 7-year notes on November 25, 2026 at a high yield of 4.708%, with a 4-5/8% coupon.",
+   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_3.pdf",
+   "published_at": "2026-11-25"
+  },
+  {
+   "node_id": "rates_funding",
+   "asset_or_theme": "US 2-year Treasury auction",
+   "metric_value": "4.700%",
+   "delta": null,
+   "priced_in_score": 65,
+   "momentum_score": -10,
+   "tension_score": 40,
+   "claim": "Treasury sold $69 billion of 2-year notes on November 23, 2026 at a high yield of 4.700%.",
+   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261123_3.pdf",
+   "published_at": "2026-11-23"
+  },
+  {
+   "node_id": "rates_funding",
+   "asset_or_theme": "US 5-year Treasury auction",
+   "metric_value": "4.719%",
+   "delta": null,
+   "priced_in_score": 60,
+   "momentum_score": -10,
+   "tension_score": 35,
+   "claim": "Treasury sold $70 billion of 5-year notes on November 24, 2026 at a high yield of 4.719%.",
+   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261124_3.pdf",
+   "published_at": "2026-11-24"
+  }
+ ]
+}

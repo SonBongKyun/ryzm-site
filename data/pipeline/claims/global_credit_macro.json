@@ -1,0 +1,42 @@
+{
+ "node_id": "global_credit_macro",
+ "generated_at": "2026-11-27T22:55+09:00",
+ "items": [
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US PCE inflation",
+   "metric_value": "3.8% y/y",
+   "delta": "core 3.3% y/y",
+   "priced_in_score": 55,
+   "momentum_score": 15,
+   "tension_score": 70,
+   "claim": "The PCE price index rose 3.8% from a year earlier in October 2026, and 3.3% excluding food and energy, according to BEA.",
+   "source_url": "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026",
+   "published_at": "2026-11-25"
+  },
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US real GDP growth",
+   "metric_value": "4.3% SAAR",
+   "delta": "+0.9 pp vs advance estimate",
+   "priced_in_score": 50,
+   "momentum_score": 20,
+   "tension_score": 45,
+   "claim": "BEA's second estimate put US real GDP growth at a 4.3% annual rate in the third quarter of 2026, revised up from 3.4% in the advance estimate.",
+   "source_url": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-3rd-quarter-2026",
+   "published_at": "2026-11-25"
+  },
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US initial jobless claims",
+   "metric_value": 189000,
+   "delta": "-13,000 w/w",
+   "priced_in_score": 60,
+   "momentum_score": 5,
+   "tension_score": 30,
+   "claim": "Seasonally adjusted US initial jobless claims fell by 13,000 to 189,000 in the week ending November 21, 2026, according to the Labor Department.",
+   "source_url": "https://oui.doleta.gov/press/2026/112526.pdf",
+   "published_at": "2026-11-25"
+  }
+ ]
+}
