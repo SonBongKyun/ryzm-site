@@ -1,0 +1,125 @@
+{
+ "run_id": "20261127T2030",
+ "generated_at": "2026-11-27T20:30+09:00",
+ "procedure": "scripts/pipeline/ROUTINE.md",
+ "schema": "scripts/pipeline/schema/item.schema.json",
+ "verify_log": "data/pipeline/verify_log.json",
+ "tasks": [
+  {
+   "node_id": "rates_funding",
+   "scope": "US policy-rate path, Treasury auctions and supply, SOFR and repo funding, Fed balance-sheet and reserve news.",
+   "context": [
+    {
+     "asset_or_theme": "US 2Y Treasury",
+     "metric_value": "4.61%",
+     "delta": "-9 bp (20 sessions)",
+     "published_at": "2026-11-25",
+     "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"
+    },
+    {
+     "asset_or_theme": "US 10Y Treasury",
+     "metric_value": "4.85%",
+     "delta": "-14 bp (20 sessions)",
+     "published_at": "2026-11-25",
+     "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"
+    },
+    {
+     "asset_or_theme": "US dollar (DXY)",
+     "metric_value": "103.68",
+     "delta": "+1.6% (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/"
+    }
+   ],
+   "output": "data/pipeline/claims/rates_funding.json",
+   "max_items": 3
+  },
+  {
+   "node_id": "global_credit_macro",
+   "scope": "Credit spreads, defaults and issuance, US growth and inflation releases, financial-conditions news.",
+   "context": [
+    {
+     "asset_or_theme": "US high-yield credit",
+     "metric_value": "3.72%",
+     "delta": "+54 bp (20 sessions)",
+     "published_at": "2026-11-24",
+     "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2"
+    },
+    {
+     "asset_or_theme": "US investment-grade credit",
+     "metric_value": "0.98%",
+     "delta": "+10 bp (20 sessions)",
+     "published_at": "2026-11-24",
+     "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM"
+    }
+   ],
+   "output": "data/pipeline/claims/global_credit_macro.json",
+   "max_items": 3
+  },
+  {
+   "node_id": "asia_early_signal",
+   "scope": "USD/KRW and Korean FX policy, KOSPI foreign flows, Bank of Japan and yen carry, Korean memory-chip demand and export data.",
+   "context": [
+    {
+     "asset_or_theme": "Korean won (USD/KRW)",
+     "metric_value": "1,337.10",
+     "delta": "-0.1% (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://finance.yahoo.com/quote/KRW%3DX/"
+    },
+    {
+     "asset_or_theme": "KOSPI",
+     "metric_value": "4,907.11",
+     "delta": "-14.4% (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://finance.yahoo.com/quote/%5EKS11/"
+    },
+    {
+     "asset_or_theme": "Memory chips (Samsung + SK hynix)",
+     "metric_value": "188.5 (1y ago = 100)",
+     "delta": "-21.1% (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://finance.yahoo.com/quote/000660.KS/"
+    },
+    {
+     "asset_or_theme": "Yen carry (USD/JPY)",
+     "metric_value": "159.45",
+     "delta": "+1.0% (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://finance.yahoo.com/quote/JPY%3DX/"
+    },
+    {
+     "asset_or_theme": "US semiconductors (SOX)",
+     "metric_value": "8,774.86",
+     "delta": "-24.9% (20 sessions)",
+     "published_at": "2026-11-25",
+     "source_url": "https://finance.yahoo.com/quote/%5ESOX/"
+    }
+   ],
+   "output": "data/pipeline/claims/asia_early_signal.json",
+   "max_items": 3
+  },
+  {
+   "node_id": "crypto_leverage",
+   "scope": "Bitcoin and Ether perpetual funding, open interest, liquidations, ETF flows and exchange leverage.",
+   "context": [
+    {
+     "asset_or_theme": "BTC leverage (perp funding)",
+     "metric_value": "0.74 bp/8h",
+     "delta": "+0.32 bp/8h (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history"
+    },
+    {
+     "asset_or_theme": "ETH leverage (perp funding)",
+     "metric_value": "0.79 bp/8h",
+     "delta": "+0.06 bp/8h (20 sessions)",
+     "published_at": "2026-11-27",
+     "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history"
+    }
+   ],
+   "output": "data/pipeline/claims/crypto_leverage.json",
+   "max_items": 3
+  }
+ ]
+}
