@@ -1,20 +1,25 @@
 {
- "run_id": "20261127T2241",
+ "run_id": "20261128T0841",
  "verdicts": [
-  {
-   "claim_id": "84fb65f5c06e",
-   "verdict": "keep",
-   "reason": "Re-fetched BOK release dated 2026-11-26: Base Rate raised 25 bp from 3.00% to 3.25%, citing growth, above-target inflation and financial stability risks."
-  },
   {
    "claim_id": "65bd4cd6d5d9",
    "verdict": "keep",
-   "reason": "Re-fetched Yonhap article of Nov 27, 2026: KOSPI up 4.34% to 4,915.68; foreigners net bought 1.13 trillion won."
+   "reason": "Re-fetched Yonhap article dated Nov 27, 2026: KOSPI up 4.34% to 4,915.68; foreigners net bought 1.13 trillion won."
   },
   {
-   "claim_id": "a68e152f1af0",
+   "claim_id": "84fb65f5c06e",
    "verdict": "keep",
-   "reason": "Re-fetched Yonhap article of Nov 23, 2026 citing Korea Customs Service: chip exports nearly quadrupled to $38.5 billion in Nov 1-20, a record for the period."
+   "reason": "Re-fetched BOK release dated Nov 26, 2026: Base Rate raised 25 bp from 3.00% to 3.25%, citing growth, above-target inflation and financial stability risks."
+  },
+  {
+   "claim_id": "ad72eb126bff",
+   "verdict": "keep",
+   "reason": "Re-fetched Statistics Bureau PDF dated Nov 27, 2026: Tokyo ku-area core CPI (ex fresh food) +2.9% y/y in Nov (mid-month prelim), Oct 2.6%; headline +2.8%."
+  },
+  {
+   "claim_id": "18f14ec25423",
+   "verdict": "keep",
+   "reason": "Re-fetched CoinDesk Markets article of Nov 27, 2026: BTC gained 1.3% with futures OI little changed; funding cooled to roughly neutral on Binance, OKX and Bybit."
   },
   {
    "claim_id": "82818f283a49",
@@ -22,39 +27,39 @@
    "reason": "Re-fetched CoinDesk Daybook of Nov 26, 2026: spot bitcoin ETFs lost a net $5.39 billion in November through Nov 25, largest since January 2024 debut, per SoSoValue."
   },
   {
-   "claim_id": "6322083796f2",
+   "claim_id": "1fafa326e44e",
    "verdict": "keep",
-   "reason": "Re-fetched CoinDesk Markets article of Nov 26, 2026: BTC futures OI up 5.1% over 24h; funding positive on Binance, OKX, Bybit and Hyperliquid."
+   "reason": "Re-fetched CoinDesk Daybook of Nov 27, 2026: 50-day SMA about 3.45% above the 200-day; gap was 12% a month earlier."
   },
   {
    "claim_id": "91d23dd97a4d",
    "verdict": "keep",
-   "reason": "Re-fetched BEA release of Nov 25, 2026: October PCE price index +3.8% y/y, core +3.3% y/y."
+   "reason": "Re-fetched BEA release of Nov 25, 2026: October PCE price index +3.8% y/y, +3.3% excluding food and energy."
   },
   {
    "claim_id": "1e9da14d4855",
    "verdict": "keep",
-   "reason": "Re-fetched BEA release of Nov 25, 2026: Q3 2026 real GDP 4.3% SAAR in second estimate vs 3.4% advance."
+   "reason": "Re-fetched BEA release of Nov 25, 2026: Q3 2026 real GDP +4.3% annual rate in second estimate, revised up 0.9 pt from 3.4% advance."
   },
   {
    "claim_id": "eb4b2af01f64",
    "verdict": "keep",
-   "reason": "Re-fetched DOL release of Nov 25, 2026: SA initial claims 189,000 in week ending Nov 21, down 13,000 from revised 202,000."
+   "reason": "Re-fetched DOL weekly claims PDF of Nov 25, 2026: SA initial claims 189,000 for week ending Nov 21, down 13,000."
   },
   {
-   "claim_id": "d002fb1cf079",
+   "claim_id": "d0e349cbbfa0",
    "verdict": "keep",
-   "reason": "Re-fetched TreasuryDirect results dated 11/25/2026: 7-year note, $44,000,000,000 offered, high yield 4.708%, interest rate 4-5/8."
+   "reason": "Re-fetched Treasury daily par yield curve (Nov 2026): 10Y 4.94% on 11/27 vs 4.85% on 11/25; 2Y 4.69% vs 4.61%."
   },
   {
-   "claim_id": "4719945892f2",
+   "claim_id": "daca6064d3b9",
    "verdict": "keep",
-   "reason": "Re-fetched TreasuryDirect results dated 11/23/2026: 2-year note, $69,000,000,000 offered, high yield 4.700%."
+   "reason": "Re-fetched New York Fed SOFR API: 3.95% on 2026-11-25 with $3,145bn volume; 3.92% on 2026-11-20."
   },
   {
-   "claim_id": "8890ed5772fa",
+   "claim_id": "62945f9eb236",
    "verdict": "keep",
-   "reason": "Re-fetched TreasuryDirect results dated 11/24/2026: 5-year note, $70,000,000,000 offered, high yield 4.719%."
+   "reason": "Re-fetched TreasuryDirect 7-year auction results of Nov 25, 2026: $44 billion, high yield 4.708%, bid-to-cover 2.43."
   }
  ]
 }
