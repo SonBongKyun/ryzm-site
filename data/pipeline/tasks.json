@@ -1,6 +1,6 @@
 {
- "run_id": "20261127T2030",
- "generated_at": "2026-11-27T20:30+09:00",
+ "run_id": "20261127T2241",
+ "generated_at": "2026-11-27T22:41+09:00",
  "procedure": "scripts/pipeline/ROUTINE.md",
  "schema": "scripts/pipeline/schema/item.schema.json",
  "verify_log": "data/pipeline/verify_log.json",
@@ -25,8 +25,8 @@
     },
     {
      "asset_or_theme": "US dollar (DXY)",
-     "metric_value": "103.68",
-     "delta": "+1.6% (20 sessions)",
+     "metric_value": "103.98",
+     "delta": "+1.9% (20 sessions)",
      "published_at": "2026-11-27",
      "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/"
     }
@@ -62,15 +62,15 @@
    "context": [
     {
      "asset_or_theme": "Korean won (USD/KRW)",
-     "metric_value": "1,337.10",
-     "delta": "-0.1% (20 sessions)",
+     "metric_value": "1,335.70",
+     "delta": "-0.2% (20 sessions)",
      "published_at": "2026-11-27",
      "source_url": "https://finance.yahoo.com/quote/KRW%3DX/"
     },
     {
      "asset_or_theme": "KOSPI",
-     "metric_value": "4,907.11",
-     "delta": "-14.4% (20 sessions)",
+     "metric_value": "4,915.68",
+     "delta": "-14.2% (20 sessions)",
      "published_at": "2026-11-27",
      "source_url": "https://finance.yahoo.com/quote/%5EKS11/"
     },
@@ -83,8 +83,8 @@
     },
     {
      "asset_or_theme": "Yen carry (USD/JPY)",
-     "metric_value": "159.45",
-     "delta": "+1.0% (20 sessions)",
+     "metric_value": "159.55",
+     "delta": "+1.1% (20 sessions)",
      "published_at": "2026-11-27",
      "source_url": "https://finance.yahoo.com/quote/JPY%3DX/"
     },
