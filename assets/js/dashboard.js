@@ -108,7 +108,7 @@
     var q = el('g', { 'clip-path': 'url(#cmp-clip)' }, svg);
     var quads = { selective_growth: [C, C - R], stagflation_defense: [C - R, C - R], safe_haven: [C - R, C], liquidity_rally: [C, C] };
     cmp.quad = {};
-    for (var id in quads) cmp.quad[id] = el('rect', { x: quads[id][0], y: quads[id][1], width: R, height: R, class: 'cmp-q' }, q);
+    for (var id in quads) cmp.quad[id] = el('rect', { x: quads[id][0], y: quads[id][1], width: R, height: R, class: 'cmp-q q-' + id }, q);
     [R / 3, 2 * R / 3].forEach(function (r) { el('circle', { cx: C, cy: C, r: r, class: 'cmp-ring' }, svg); });
     el('line', { x1: C - R, y1: C, x2: C + R, y2: C, class: 'cmp-axis' }, svg);
     el('line', { x1: C, y1: C - R, x2: C, y2: C + R, class: 'cmp-axis' }, svg);
@@ -128,7 +128,7 @@
     (data.quadrants || []).forEach(function (qq) {
       var p = ql[qq.id]; if (!p) return;
       var w = qq.label.split(' '), lines = w.length > 1 ? [w.slice(0, Math.ceil(w.length / 2)).join(' '), w.slice(Math.ceil(w.length / 2)).join(' ')] : [qq.label];
-      var t = el('text', { x: p[0], y: p[1] - (lines.length - 1) * 7 + 4, class: 'cmp-ql', 'text-anchor': 'middle' }, svg);
+      var t = el('text', { x: p[0], y: p[1] - (lines.length - 1) * 7 + 4, class: 'cmp-ql q-' + qq.id, 'text-anchor': 'middle' }, svg);
       lines.forEach(function (ln, i) { var s = el('tspan', { x: p[0], dy: i ? 14 : 0 }, t); s.textContent = ln; });
       cmp.qlabel[qq.id] = t;
     });
@@ -190,6 +190,21 @@
   var SHORT = { us2y: 'US 2Y', us10y: 'US 10Y', usd: 'DXY', krw: 'KRW', kospi: 'KOSPI', memory: 'KR Memory', yen_carry: 'Yen Carry',
     sox: 'US Semis', hy: 'HY Credit', ig: 'IG Credit', btc_lev: 'BTC Lev', eth_lev: 'ETH Lev' };
   function shortOf(b) { return b.short && b.short !== b.label ? b.short : SHORT[b.id] || b.label.replace(/\s*\(.*\)\s*$/, ''); }
+  /* signal groups (pipeline nodes): color is a second cue; labels, the inspector chip and the legend text carry the same information */
+  var NODE_KEYS = { rates_funding: 'rates', global_credit_macro: 'credit', asia_early_signal: 'asia', crypto_leverage: 'crypto' };
+  var NODE_NAMES = { rates: 'Rates & funding', credit: 'Credit & macro', asia: 'Asia early signal', crypto: 'Crypto leverage' };
+  function nodeKey(b) { return NODE_KEYS[b.node_id] || 'asia'; }
+  function buildNodeLegend() {
+    var lg = root.querySelector('.bm-legend'); if (!lg) return;
+    var old = root.querySelector('.bm-nodes'); if (old) old.parentNode.removeChild(old);
+    var seen = {}, box = document.createElement('div'); box.className = 'bm-nodes'; box.setAttribute('aria-label', 'Signal groups');
+    ['rates', 'credit', 'asia', 'crypto'].forEach(function (k) {
+      if (!bubbles.some(function (b) { return nodeKey(b) === k; }) || seen[k]) return; seen[k] = 1;
+      var sp = document.createElement('span'); sp.className = 'n-' + k; var i = document.createElement('i'); sp.appendChild(i);
+      sp.appendChild(document.createTextNode(NODE_NAMES[k])); box.appendChild(sp);
+    });
+    lg.parentNode.insertBefore(box, lg);
+  }
   function buildBubbles() {
     var svg = $('bubble-svg'); svg.textContent = '';
     var w = Math.max(280, Math.round(svg.parentNode.clientWidth || 520));
@@ -200,6 +215,12 @@
     var defs = el('defs', {}, svg);
     var pat = el('pattern', { id: 'bm-hatch', width: 5, height: 5, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
     el('line', { x1: 0, y1: 0, x2: 0, y2: 5, class: 'bm-hatch-line' }, pat);
+    /* one hatch per signal group, drawn in that group's ink (outflow = hatched, inflow = solid tint, neutral = light tint) */
+    Object.keys(NODE_KEYS).forEach(function (nid) {
+      var k = NODE_KEYS[nid], hp = el('pattern', { id: 'bm-hatch-' + k, width: 5, height: 5, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+      el('rect', { x: 0, y: 0, width: 5, height: 5, class: 'bm-hatch-bg n-' + k }, hp);
+      el('line', { x1: 0, y1: 0, x2: 0, y2: 5, class: 'bm-hatch-line n-' + k }, hp);
+    });
     var g = el('g', { class: 'bm-grid' }, svg);
     [25, 50, 75, 100].forEach(function (v) { el('line', { x1: sx(v), y1: PAD.t, x2: sx(v), y2: H - PAD.b }, g); });
     [-60, -30, 30].forEach(function (v) { el('line', { x1: PAD.l, y1: sy(v), x2: W - PAD.r, y2: sy(v) }, g); });
@@ -220,6 +241,7 @@
     var a3 = el('text', { x: W - PAD.r, y: H - 3, class: 'bm-axl bm-axt', 'text-anchor': 'end' }, svg); a3.textContent = 'PRICED-IN, 1Y RANGE \u2192';
     var my = (PAD.t + H - PAD.b) / 2, a4 = el('text', { x: 11, y: my, class: 'bm-axl bm-axt', 'text-anchor': 'middle', transform: 'rotate(-90 11 ' + my + ')' }, svg);
     a4.textContent = 'FLOW MOMENTUM';
+    bm.caps = [a1, a2, czt];
     bm.layer = el('g', {}, svg);
     bm.nodes = bubbles.map(function (b) {
       var node = el('g', { class: 'bm-b', tabindex: '0', role: 'button', 'data-id': b.id, 'aria-label': b.label + (b.example ? ' (example data)' : '') + ': show details' }, bm.layer);
@@ -243,43 +265,81 @@
       n.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
       n.c.setAttribute('r', r.toFixed(1)); n.sel.setAttribute('r', (r + 3.5).toFixed(1)); n.ring.setAttribute('r', (r + 3.5).toFixed(1));
       var tone = m.flow > 12 ? 'in' : m.flow < -12 ? 'out' : 'flat';
-      n.g.setAttribute('class', 'bm-b tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : ''));
+      n.g.setAttribute('class', 'bm-b n-' + nodeKey(n.b) + ' tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : ''));
       n.m = m; n.x = x; n.y = y; n.r = r; n.below = y + r + 13 < H - PAD.b;
     });
     declutter();
     if (selected) renderDetail();
   }
-  /* Labels: short names, always shown. Try 12 spots around each bubble (below, above, sides, diagonals,
-     near then far) and take the first with no overlap with labels, bubbles, axis captions or the plot edge;
-     if none is clear, take the spot with the least overlap. */
+  /* Labels: short names, always shown. Try 64 spots around each bubble (16 directions x 4 distances), measured
+     with the real text size, and keep the lowest-cost one: no label/label contact, no caption cover, no bubble
+     cover, and never nearer another bubble than its own. Re-run on every scenario/slider change. */
   function declutter() {
-    var fs = W < 460 ? 5.9 : 6.5, lh = 12;
-    var placed = [[PAD.l + 2, PAD.t, PAD.l + 66, PAD.t + 15], [PAD.l + 2, H - PAD.b - 19, PAD.l + 74, H - PAD.b], [sx(75) + 4, H - PAD.b - 19, sx(100) - 4, H - PAD.b]];
-    var order = bm.nodes.slice().sort(function (a, b) { return (b.b.id === selected) - (a.b.id === selected) || b.r - a.r; });
-    function overlap(bx) {
-      var o = 0;
-      if (bx[0] < PAD.l - 2) o += PAD.l - 2 - bx[0]; if (bx[2] > W - 2) o += bx[2] - W + 2;
-      if (bx[1] < PAD.t - 2) o += PAD.t - 2 - bx[1]; if (bx[3] > H - PAD.b + 2) o += bx[3] - H + PAD.b - 2;
-      for (var i = 0; i < placed.length; i++) { var p = placed[i], ox = Math.min(bx[2], p[2]) - Math.max(bx[0], p[0]), oy = Math.min(bx[3], p[3]) - Math.max(bx[1], p[1]); if (ox > 0 && oy > 0) o += ox * oy / 4 + 20; }
-      for (var j = 0; j < bm.nodes.length; j++) { var n = bm.nodes[j], cx = clamp(n.x, bx[0], bx[2]), cy = clamp(n.y, bx[1], bx[3]), d2 = (cx - n.x) * (cx - n.x) + (cy - n.y) * (cy - n.y); if (d2 < n.r * n.r) o += 10 + (n.r * n.r - d2) / 8; }
-      return o;
-    }
-    order.forEach(function (n) {
-      var lw = shortOf(n.b).length * fs + 6, cands = [];
-      [0, 9].forEach(function (far) {
-        var g = n.r + 5 + far;
-        cands.push([0, g + lh / 2, 'middle'], [0, -g - lh / 2 + 2, 'middle'], [g, 3, 'start'], [-g, 3, 'end'],
-                   [g * 0.72, g * 0.72 + 4, 'start'], [-g * 0.72, g * 0.72 + 4, 'end'], [g * 0.72, -g * 0.72, 'start'], [-g * 0.72, -g * 0.72, 'end']);
-      });
-      var best = null, bestO = Infinity;
-      for (var k = 0; k < cands.length; k++) {
-        var c = cands[k], x0 = c[2] === 'middle' ? n.x + c[0] - lw / 2 : c[2] === 'start' ? n.x + c[0] : n.x + c[0] - lw, y1 = n.y + c[1];
-        var sh = 0; if (x0 < PAD.l - 2) sh = PAD.l - 2 - x0; if (x0 + lw > W - 2) sh = W - 2 - (x0 + lw);
-        var bx = [x0 + sh, y1 - lh + 2, x0 + sh + lw, y1 + 2], o = overlap(bx);
-        if (o < bestO) { bestO = o; best = [c[0] + sh, c[1], c[2], bx]; if (!o) break; }
+    var fs = W < 460 ? 5.9 : 6.5, lh = 12, GAP = 3;
+    /* measure the real rendered size (font + halo stroke) so neighbouring labels never touch */
+    var px = 0; try { px = parseFloat(getComputedStyle(bm.nodes[0].t).fontSize) || 0; } catch (e) { px = 0; }
+    if (px) lh = Math.ceil(px * 1.2 + 3);
+    var caps = [[PAD.l + 2, PAD.t, PAD.l + 66, PAD.t + 15], [PAD.l + 2, H - PAD.b - 19, PAD.l + 74, H - PAD.b], [sx(75) + 4, H - PAD.b - 19, sx(100) - 4, H - PAD.b]];
+    /* use the real caption boxes when the browser can measure them */
+    if (bm.caps) { try { var cp = bm.caps.map(function (c) { var b = c.getBBox(); return [b.x - 2, b.y - 2, b.x + b.width + 2, b.y + b.height + 2]; }); if (cp.every(function (b) { return b[2] - b[0] > 6; })) caps = cp; } catch (e) { /* keep estimates */ } }
+    var nodes = bm.nodes, N = nodes.length, boxes = new Array(N);
+    function hit(bx, p, gap) { var ox = Math.min(bx[2], p[2]) - Math.max(bx[0], p[0]) + gap, oy = Math.min(bx[3], p[3]) - Math.max(bx[1], p[1]) + gap; return ox > 0 && oy > 0 ? ox * oy : 0; }
+    function edgeDist(bx, n) { var cx = clamp(n.x, bx[0], bx[2]), cy = clamp(n.y, bx[1], bx[3]); return Math.sqrt((cx - n.x) * (cx - n.x) + (cy - n.y) * (cy - n.y)) - n.r; }
+    /* Cost of a label box. Hard rules: never touch another label (1000), never sit nearer another bubble than
+       its own (500), never cover an axis caption (300); then avoid covering bubbles and stay inside the plot. */
+    function cost(bx, k) {
+      var own = nodes[k], o = 0, i, a;
+      if (bx[0] < PAD.l - 2) o += 50 + PAD.l - 2 - bx[0]; if (bx[2] > W - 2) o += 50 + bx[2] - W + 2;
+      if (bx[1] < PAD.t - 2) o += 50 + PAD.t - 2 - bx[1]; if (bx[3] > H - PAD.b + 2) o += 50 + bx[3] - H + PAD.b - 2;
+      for (i = 0; i < N; i++) { if (i !== k && boxes[i]) { a = hit(bx, boxes[i][3], GAP); if (a) o += 1000 + a; } }
+      for (i = 0; i < caps.length; i++) { a = hit(bx, caps[i], 1); if (a) o += 300 + a; }
+      var dOwn = edgeDist(bx, own);
+      for (i = 0; i < N; i++) {
+        var n = nodes[i], d = edgeDist(bx, n);
+        if (d < 0) o += 60 + Math.min(-d, n.r) * 4;
+        else if (i !== k && d < dOwn + 1) o += 500 + (dOwn + 1 - d) * 4;
       }
+      return o + dOwn * 0.4;
+    }
+    var cands = nodes.map(function (n) {
+      var lw = shortOf(n.b).length * fs + 6, list = [];
+      if (px) { var keep = n.t.textContent; n.t.textContent = shortOf(n.b); var tw = 0; try { tw = n.t.getComputedTextLength(); } catch (e) { tw = 0; } n.t.textContent = keep; if (tw > 0) lw = tw + 6; }
+      [0, 8, 16, 26].forEach(function (far) {
+        var g = n.r + 5 + far;
+        for (var s = 0; s < 16; s++) {
+          var ang = s * Math.PI / 8, dx = Math.cos(ang), dy = Math.sin(ang);
+          /* anchor the box so its nearest side faces the bubble */
+          var anchor = dx > 0.38 ? 'start' : dx < -0.38 ? 'end' : 'middle';
+          var ax = dx * g, ay = dy * g;
+          var x0 = anchor === 'middle' ? n.x + ax - lw / 2 : anchor === 'start' ? n.x + ax : n.x + ax - lw;
+          var top = dy > 0.38 ? n.y + ay : dy < -0.38 ? n.y + ay - lh : n.y + ay - lh / 2;
+          var sh = 0; if (x0 < PAD.l - 2) sh = PAD.l - 2 - x0; if (x0 + lw > W - 2) sh = W - 2 - (x0 + lw);
+          list.push([ax + sh, top + lh - 4 - n.y, anchor, [x0 + sh, top, x0 + sh + lw, top + lh], s % 4 ? 0.6 : (s === 0 ? 0 : 0.2)]);
+        }
+      });
+      return list;
+    });
+    function bestFor(k) { var best = null, bestO = Infinity; cands[k].forEach(function (c) { var o = cost(c[3], k) + c[4]; if (o < bestO) { bestO = o; best = c; } }); return best; }
+    function total() { var t = 0; for (var k = 0; k < N; k++) t += cost(boxes[k][3], k); return t; }
+    var idx = nodes.map(function (n, i) { return i; }), sel = function (i) { return nodes[i].b.id === selected ? 1 : 0; };
+    var crowd = nodes.map(function (n) { return nodes.reduce(function (c, m) { return c + (m !== n && Math.hypot(m.x - n.x, m.y - n.y) < n.r + m.r + 40 ? 1 : 0); }, 0); });
+    var orders = [
+      idx.slice().sort(function (a, b) { return sel(b) - sel(a) || nodes[b].r - nodes[a].r; }),
+      idx.slice().sort(function (a, b) { return sel(b) - sel(a) || crowd[b] - crowd[a] || nodes[a].r - nodes[b].r; }),
+      idx.slice().sort(function (a, b) { return nodes[a].r - nodes[b].r; }),
+      idx.slice().sort(function (a, b) { return nodes[a].x - nodes[b].x; })
+    ];
+    var win = null, winT = Infinity;
+    orders.forEach(function (ord) {
+      boxes = new Array(N);
+      ord.forEach(function (k) { boxes[k] = bestFor(k); });
+      /* a few rounds of re-placing each label against all the others */
+      for (var pass = 0; pass < 4; pass++) { var moved = false; ord.forEach(function (k) { var b = bestFor(k); if (b !== boxes[k]) { boxes[k] = b; moved = true; } }); if (!moved) break; }
+      var t = total(); if (t < winT) { winT = t; win = boxes.slice(); }
+    });
+    nodes.forEach(function (n, k) {
+      var best = win[k];
       n.t.setAttribute('x', best[0].toFixed(1)); n.t.setAttribute('y', best[1].toFixed(1)); n.t.setAttribute('text-anchor', best[2]); n.t.style.opacity = '';
-      placed.push(best[3]);
     });
   }
 
@@ -296,7 +356,7 @@
       var bar = document.createElement('span'); bar.className = 'tt-bar'; var fill = document.createElement('i'); bar.appendChild(fill);
       btn.appendChild(nm); btn.appendChild(v); btn.appendChild(bar); li.appendChild(btn); ol.appendChild(li);
       btn.addEventListener('click', function () { select(b.id, true); });
-      tt[b.id] = { li: li, v: v, fill: fill, sm: sm };
+      tt[b.id] = { li: li, v: v, fill: fill, sm: sm, node: nodeKey(b) };
     });
   }
   function drawList() {
@@ -307,7 +367,7 @@
       t.v.textContent = Math.round(n.m.tension);
       t.fill.style.transform = 'scaleX(' + clamp(n.m.tension, 0, 100) / 100 + ')';
       t.sm.textContent = (n.m.flow > 12 ? 'inflow' : n.m.flow < -12 ? 'outflow' : 'neutral') + ' \u00b7 priced-in ' + Math.round(n.m.heat);
-      t.li.className = (n.b.id === selected ? 'is-sel' : '') + (n.m.heat >= 80 || n.m.tension >= 75 ? ' warn' : '');
+      t.li.className = 'n-' + t.node + (n.b.id === selected ? ' is-sel' : '') + (n.m.heat >= 80 || n.m.tension >= 75 ? ' warn' : '');
       ol.appendChild(t.li);
     });
   }
@@ -323,6 +383,8 @@
     if (!n || !n.m) return;
     var m = n.m;
     $('ap-name').textContent = n.b.label; $('ap-group').textContent = n.b.group;
+    var ap = $('asset-panel'); if (ap) ap.setAttribute('data-node', nodeKey(n.b));
+    $('ap-group').setAttribute('title', NODE_NAMES[nodeKey(n.b)] || '');
     $('ap-ex').hidden = !n.b.example;
     var src = $('ap-src'); src.textContent = '';
     if (n.b.metric_value != null) {
@@ -408,7 +470,7 @@
     bubbles = (reg.bubble_map && reg.bubble_map.bubbles) || [];
     selected = (reg.bubble_map && reg.bubble_map.default_selected) || (bubbles[0] && bubbles[0].id);
     if (reg.bubble_map && reg.bubble_map.example) { var mt = $('map-tag'); if (mt) { mt.textContent = 'Example data'; mt.className = 'ck-tag ex'; } }
-    buildCompass(); drawGhost(); buildControls(); buildBubbles(); buildList();
+    buildCompass(); drawGhost(); buildControls(); buildNodeLegend(); buildBubbles(); buildList();
     $('ghost-note').textContent = ghost ? 'rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
