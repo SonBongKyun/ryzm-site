@@ -168,7 +168,7 @@
     var svg = $('bubble-svg'); svg.textContent = '';
     var w = Math.max(280, Math.round(svg.parentNode.clientWidth || 520));
     var narrow = w < 460;
-    W = w; H = narrow ? Math.round(clamp(w * 1.0, 300, 420)) : Math.round(clamp(parseFloat(getComputedStyle(svg.parentNode).getPropertyValue('--bm-h')) || 300, 240, 420));
+    W = w; H = narrow ? Math.round(clamp(w * 1.0, 300, 420)) : Math.round(clamp(parseFloat(getComputedStyle(svg.parentNode).getPropertyValue('--bm-h')) || 300, 180, 420));
     PAD = narrow ? { l: 26, r: 8, t: 14, b: 32 } : { l: 40, r: 12, t: 14, b: 34 };
     svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.setAttribute('height', H); svg.setAttribute('width', W);
     var defs = el('defs', {}, svg);

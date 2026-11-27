@@ -290,9 +290,48 @@
 .ryzm-dash .tt-name small { display: block; margin: 1px 0 0; }
 .ryzm-dash .tt-list button { grid-template-rows: auto auto; align-items: center; }
 
-/* ---- subscribe call to action under the dashboard ---- */
-.ryzm-dash .ck-cta { display: flex; align-items: center; gap: 10px 16px; flex-wrap: wrap; margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--rd-hair); }
-.ryzm-dash .ck-cta p { flex: 1 1 280px; margin: 0; font-family: var(--rd-serif); font-size: 14.5px; color: var(--rd-ink); }
-.ryzm-dash .ck-cta-btn { min-height: 32px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--rd-ink); color: var(--rd-surface); font-size: 13px; font-weight: 600; text-decoration: none; }
+/* ---- compact first screen (2026-11-27 b): pills in the title row, sliders + note in one row,
+   Subscribe / Membership folded into the footnote line ---- */
+.ryzm-dash .ck-head { align-items: center; row-gap: 6px; }
+.ryzm-dash .ck-head .sc-row { flex-wrap: wrap; justify-content: flex-end; }
+.ryzm-dash .ck-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 0.8fr); }
+.ryzm-dash .ck-controls .sc-note { font-size: 11px; line-height: 1.35; color: var(--rd-text-muted); margin: 0; }
+.ryzm-dash .ck-fine { align-items: center; flex-wrap: nowrap; }
+.ryzm-dash .ck-fine-txt { min-width: 0; }
+.ryzm-dash .ck-fine-txt .ck-tag { font-size: 9px; padding: 1px 6px; margin-right: 4px; vertical-align: 1px; }
+.ryzm-dash .ck-fine-cta { display: inline-flex; align-items: center; gap: 12px; flex: none; }
+.ryzm-dash .ck-cta-btn { min-height: 28px; display: inline-flex; align-items: center; padding: 0 14px; border-radius: 999px; background: var(--rd-ink); color: var(--rd-surface) !important; font-size: 12.5px; font-weight: 600; text-decoration: none !important; white-space: nowrap; }
 .ryzm-dash .ck-cta-btn:hover { background: var(--rd-terra-ink); }
-.ryzm-dash .ck-cta-link { font-size: 13px; color: var(--rd-terra-ink); text-decoration: underline; text-underline-offset: 3px; }
+.ryzm-dash .ck-cta-link { font-size: 12.5px; font-weight: 600; color: var(--rd-terra-ink); white-space: nowrap; }
+@media (min-width: 981px) {
+  .ryzm-dash .ck-kicker { display: none; }
+  .ryzm-dash .ck-head { flex-wrap: nowrap; padding-bottom: 6px; }
+  .ryzm-dash .ck-head > div:first-child { flex: 0 1 auto; }
+  .ryzm-dash .ck-head .ck-subtitle { display: block; font-size: 11px; }
+  .ryzm-dash .sc-pill { min-height: 28px; }
+  .ryzm-dash .ck-grid { grid-template-columns: 214px minmax(0, 1fr) 292px; padding-top: 6px; }
+  .ryzm-dash #compass-svg { max-width: 200px; }
+  .ryzm-dash .ck-map { --bm-h: 196; }
+  .ryzm-dash #compass-svg { max-width: 172px; }
+  .ryzm-dash .ck-side { gap: 5px; }
+  .ryzm-dash .rg-note, .ryzm-dash .ap-read { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .ryzm-dash .ap-name-row { flex-wrap: nowrap; min-width: 0; }
+  .ryzm-dash .ap-name-row .ap-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  /* home hero kept at about 240px so the dashboard and the BREAKING heading share the first screen */
+  .intro { padding: 26px 28px 22px; }
+  .intro::after { margin-bottom: 14px; }
+  .intro h1 { font-size: 44px; line-height: 1.1; }
+  .intro-lead { margin-top: 12px; font-size: 17px; }
+  .ryzm-dash { margin-bottom: 10px; }
+}
+@media (max-width: 980px) {
+  .ryzm-dash .ck-head .sc-row { flex: 1 1 100%; justify-content: flex-start; }
+  .ryzm-dash .ck-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .ryzm-dash .ck-controls .sc-note { grid-column: 1 / -1; }
+  .ryzm-dash .ck-fine { flex-wrap: wrap; }
+}
+@media (max-width: 640px) {
+  .ryzm-dash .ck-controls { grid-template-columns: minmax(0, 1fr); }
+  .ryzm-dash .ck-head .sc-row { flex-wrap: nowrap; justify-content: flex-start; }
+  .ryzm-dash .ck-fine-cta { width: 100%; justify-content: flex-start; }
+}

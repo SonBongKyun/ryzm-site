@@ -906,14 +906,10 @@
 <section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
   <div class="ck-head">
     <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><span class="ck-subtitle">Computed from the market snapshot above.</span></div>
-    <div class="ck-tags"><span class="ck-tag ex">Simulation prototype</span></div>
+    <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
   </div>
 
   <div class="ck-controls">
-    <div class="sc-wrap">
-      <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
-      <div class="sc-note" id="scenario-note" aria-live="polite"></div>
-    </div>
     <div class="ck-slider">
       <label class="sl-lab" for="sl-rates">Rates / Tightening Pressure</label><output class="sl-out" id="sl-rates-v" for="sl-rates">0</output>
       <input type="range" id="sl-rates" min="-50" max="50" step="1" value="0" disabled aria-describedby="sl-rates-scale">
@@ -924,6 +920,7 @@
       <input type="range" id="sl-liq" min="-50" max="50" step="1" value="0" disabled aria-describedby="sl-liq-scale">
       <div class="sl-scale" id="sl-liq-scale"><span>Contraction</span><span>Neutral</span><span>Expansion</span></div>
     </div>
+    <div class="sc-note" id="scenario-note" aria-live="polite"></div>
   </div>
 
   <div class="ck-grid">
@@ -1009,13 +1006,8 @@
 
   <p class="ck-error" id="cockpit-error" hidden>Live dashboard data could not load; the reading shown is the last published one.</p>
   <div class="ck-fine">
-    <span>Reads market structure. Not a forecast, signal or investment advice.</span>
-    <span><span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
-  </div>
-  <div class="ck-cta">
-    <p>Get the weekly brief: new frameworks and the week&rsquo;s key changes, free.</p>
-    <a class="ck-cta-btn" href="/subscribe/">Subscribe</a>
-    <a class="ck-cta-link" href="/membership/">Membership plans</a>
+    <span class="ck-fine-txt"><span class="ck-tag ex">Simulation prototype</span> Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
+    <span class="ck-fine-cta"><a class="ck-cta-btn" href="/subscribe/">Subscribe free</a><a class="ck-cta-link" href="/membership/">Membership</a></span>
   </div>
 </section>
 <!-- /ryzm-dash -->
