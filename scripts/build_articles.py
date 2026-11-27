@@ -864,25 +864,78 @@ HEADER = """<header>
   </div>
 </header>"""
 
+# Social and related links shown in every footer. Only verified accounts.
+# X (@Goeun_6121) is intentionally absent: the account is suspended.
+# No RYZM YouTube channel URL has been verified yet; add it here when it is.
+SOCIAL_LINKS = [
+    ("Instagram", "https://www.instagram.com/ryzm_6121/"),
+]
+
 FOOTER = """<footer>
-  <div class="footer-inner">
-    <div>RYZM · frameworks, not forecasts</div>
-    <div class="footer-links">
+  <div class="footer-inner footer-v2">
+    <div class="footer-brand">
+      <div class="footer-logo">RYZM</div>
+      <p>Frameworks, not forecasts. How US rates, dollar funding and FX reach Korean markets.</p>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Read">
+      <div class="footer-h">Read</div>
+      <a href="/notes/">Daily Briefs</a>
+      <a href="/closes/">Market Closes</a>
+      <a href="/articles/frameworks/">Frameworks</a>
+      <a href="/articles/">All articles</a>
+      <a href="/archive/">Archive</a>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Site">
+      <div class="footer-h">Site</div>
       <a href="/about/">About</a>
-      <a href="/subscribe/">Subscribe</a>
+      <a href="/subscribe/">Free weekly brief</a>
+      <a href="/membership/">Membership</a>
+      <a href="/community-guidelines/">Community guidelines</a>
+      <a href="/search/">Search</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="/data/frameworks.json">Frameworks API</a>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Follow">
+      <div class="footer-h">Follow</div>
+%s
     </div>
   </div>
-</footer>"""
+  <div class="footer-fine">Market data is delayed and may be revised. RYZM reads market structure; nothing here is a forecast or investment advice.</div>
+</footer>""" % "\n".join('      <a href="%s" rel="noopener" target="_blank">%s</a>' % (u, n) for n, u in SOCIAL_LINKS)
+
+# Email provider endpoint for the in-site form. Empty = provider not chosen yet:
+# the form renders disabled and says so. Set to the provider's form action URL
+# (for example a Buttondown, MailerLite or Kit embed endpoint) to switch it on.
+SUBSCRIBE_ACTION = ""
+
+
+def subscribe_form(uid, big=False):
+    live = bool(SUBSCRIBE_ACTION)
+    attrs = (' action="%s" method="post" target="_blank"' % esc(SUBSCRIBE_ACTION)) if live else ""
+    dis = "" if live else " disabled"
+    status = ("One email a week. Unsubscribe any time." if live else
+              "Sign-up opens soon. We are setting up the email service, so no address is collected yet.")
+    return """<form class="sub-form%s" data-provider="%s"%s>
+      <label class="sr-only" for="%s">Email address</label>
+      <input type="email" id="%s" name="email" placeholder="you@example.com" autocomplete="email" required%s>
+      <button type="submit"%s>Get the free weekly brief</button>
+    </form>
+    <p class="sub-status">%s</p>""" % (" sub-form-lg" if big else "", "live" if live else "pending",
+                                        attrs, uid, uid, dis, dis, status)
+
 
 SUBSCRIBE = """<aside class="subscribe" aria-label="Email subscription">
   <div class="subscribe-inner">
     <div>
+      <div class="sub-kicker">Free weekly brief</div>
       <h2>Get the weekly RYZM brief</h2>
-      <p>New frameworks and the week’s key changes, by email. Free.</p>
+      <p>New frameworks and the week’s key changes in US rates, dollar funding, FX and Korea. One email a week. Free.</p>
     </div>
-    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+    <div class="sub-box">
+    %s
+    </div>
   </div>
-</aside>"""
+</aside>""" % subscribe_form("sub-email")
 
 
 def korea_based(text):
@@ -1010,8 +1063,8 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
 </html>
 """.format(title=esc(title), desc=esc(desc), canonical=canonical, og_type=og_type,
            extra_meta=extra_meta, favicons=FAVICON_LINKS, og_tags=og_tags, ld=ld, css=CSS,
-           header=HEADER.format(act_articles=' class="active"' if active == "articles" else "",
-                                act_notes=' class="active"' if active == "notes" else ""),
+           header=HEADER.format(**{"act_" + k: (' class="active"' if active == k else "")
+                                   for k in ("articles", "notes", "closes", "frameworks", "archive", "search")}),
            body=body, footer=FOOTER)
 
 
@@ -1064,6 +1117,10 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
     }
     if from_wp:
         ld_obj["isBasedOn"] = wp_url
+    if "Frameworks" in (a.get("categories") or []):
+        ld_obj["genre"] = "Framework Note"
+        ld_obj["about"] = [{"@type": "Thing", "name": c} for c in a.get("categories") or [] if c != "Frameworks"]
+    ld_obj["isAccessibleForFree"] = True
     og_image = None
     if a.get("image"):
         img = a["image"]
@@ -1091,6 +1148,7 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
 {content}
     </div>
   </article>
+{discussion}
   </div>{related}
   {subscribe}
   <div class="origin">
@@ -1102,7 +1160,8 @@ def render_article(a, back_href="/articles/", back_short="All articles", back_lo
                   title=esc(a["title"]), content=fix_wp_link_text(a["html"]),
                   cat=('<a class="cat-label" href="%s">%s</a>' % (cat_href(a["category"]), esc(a["category"]))
                        if a.get("category") else ""),
-                  related=render_related(related), subscribe=SUBSCRIBE)
+                  related=render_related(related), subscribe=SUBSCRIBE,
+                  discussion=discussion_block(a.get("slug") or "", a.get("type") or ""))
     return page("%s · RYZM" % a["title"], a["desc"], url, "article", extra, ld, body, active,
                 og_image=og_image)
 
@@ -1491,6 +1550,9 @@ def write_sitemap(arts, briefs=(), about_lastmod=None):
         if any(c in a.get("categories", []) for a in arts):
             cat_mod = max(a["modified"][:10] for a in arts if c in a.get("categories", []))
             urls.append((SITE + cat_href(c), cat_mod, "weekly"))
+    urls += [(SITE + "/closes/", newest, "daily"), (SITE + "/archive/", newest, "daily"),
+             (SITE + "/search/", today, None), (SITE + "/membership/", today, None),
+             (SITE + "/community-guidelines/", today, None)]
     urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None)]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
@@ -1625,7 +1687,7 @@ def write_rss(arts, briefs):
 
 
 def write_subscribe():
-    """In-site subscribe page; the email form itself stays on WordPress."""
+    """In-site subscribe page with the pluggable email form (see SUBSCRIBE_ACTION)."""
     url = SITE + "/subscribe/"
     title = "Subscribe · RYZM"
     desc = "Get the weekly RYZM brief by email. New frameworks and the week's key changes. Free."
@@ -1637,12 +1699,19 @@ def write_subscribe():
     body = """<main>
   <div class="page-head subscribe-page">
     <div class="section-title">Subscribe</div>
-    <h1 class="page-title">Get the weekly RYZM brief</h1>
-    <p class="page-lead">New frameworks and the week’s key changes, by email. Free.</p>
-    <p class="page-lead">The sign-up form is hosted on WordPress. RYZM does not collect email addresses on this site.</p>
-    <a class="btn-subscribe" href="{wp}" target="_blank" rel="noopener">Subscribe by email</a>
+    <h1 class="page-title">The free weekly RYZM brief</h1>
+    <p class="page-lead">One email a week with new frameworks and the week’s key changes in US rates, dollar funding, FX and Korean markets. Free, no forecasts.</p>
+    <div class="sub-page-box">
+    %s
+    </div>
+    <ul class="sub-points">
+      <li><strong>Structure, not calls.</strong> How the week’s moves connect, from the Fed and Treasuries to the won and the KOSPI.</li>
+      <li><strong>New frameworks.</strong> Reusable notes for reading rates, funding and FX.</li>
+      <li><strong>Sourced numbers.</strong> Every figure comes with its source and date.</li>
+    </ul>
+    <p class="page-lead small">Until sign-up opens, follow along with the <a href="/notes/">Daily Briefs</a>, <a href="/closes/">Market Closes</a> or the <a href="/rss.xml">RSS feed</a>.</p>
   </div>
-</main>""".format(wp=WP_SUBSCRIBE)
+</main>""" % subscribe_form("sub-email-page", big=True)
     out_dir = os.path.join(ROOT, "subscribe")
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "index.html"), "w", encoding="utf-8") as f:
@@ -1720,6 +1789,470 @@ def update_home_panels(arts, briefs, path=None):
     if s != open(path, encoding="utf-8").read():
         return write_index_html(path, s)
     return False
+
+
+# ---------------------------------------------------------------- local closes
+# Daily Korea/US Close posts are written on the box by X Ryzm, not WordPress.
+# Ingest a folder with --local-close / --local-closes-dir; persist under
+# sources/closes/ so later WordPress-driven runs keep the pages.
+
+# ---------------------------------------------------------------- v2 archives, search, data
+# Added 2026-11-27 (v2 redesign): /closes/, /archive/, /search/, /search-index.json,
+# /data/frameworks.json. All generated from the same article and brief records.
+
+V2_CSS = """
+  /* ---------- v2 shared (2026-11-27) ---------- */
+  .prose p, .prose li, .prose a, .prose td { overflow-wrap: anywhere; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  nav a.active { color: var(--surface); background: var(--text); font-weight: 600; }
+  .footer-v2 { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 28px 40px; align-items: start; }
+  .footer-brand .footer-logo { font-family: var(--serif); font-size: 22px; color: #fffdf9; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .footer-brand p { font-size: 13.5px; line-height: 1.6; max-width: 32em; color: var(--ink-band-text); }
+  .footer-v2 > div:first-child { font-family: var(--sans); font-size: 13px; color: inherit; }
+  .footer-col { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; }
+  .footer-col a { color: var(--ink-band-text); padding: 4px 0; min-height: 32px; display: inline-flex; align-items: center; }
+  .footer-col a:hover { color: #fffdf9; }
+  .footer-h { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #fffdf9; opacity: 0.7; margin-bottom: 6px; }
+  .footer-fine { max-width: var(--wrap); margin: 28px auto 0; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: var(--ink-band-text); opacity: 0.75; }
+  .sub-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px; }
+  .sub-box, .sub-page-box { flex: 1 1 340px; max-width: 460px; }
+  .sub-form { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sub-form input { flex: 1 1 200px; min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: inherit; font-size: 15px; }
+  .sub-form input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .sub-form button { min-height: 46px; padding: 0 20px; border-radius: 999px; background: var(--accent); color: #fffdf9; font-weight: 600; font-size: 14.5px; }
+  .sub-form button:hover { background: var(--accent-ink); }
+  .sub-form [disabled] { opacity: 0.55; cursor: not-allowed; }
+  .sub-status { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
+  .sub-page-box { margin: 28px 0 8px; max-width: 560px; }
+  .sub-points { list-style: none; margin: 28px 0; display: grid; gap: 12px; max-width: 640px; }
+  .sub-points li { padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; color: var(--text-2); }
+  .sub-points strong { color: var(--text); }
+  .page-lead.small { font-size: 14.5px; }
+  .page-lead a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .arch-grid { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .arch-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px 18px; display: flex; flex-direction: column; min-width: 0; }
+  .arch-card h2 { font-family: var(--serif); font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+  .arch-card h2 a:hover { color: var(--accent-ink); }
+  .arch-card .arch-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin: 4px 0 10px; }
+  .arch-card > p { font-size: 14.5px; color: var(--text-2); margin-bottom: 12px; }
+  .arch-card ul { list-style: none; border-top: 1px solid var(--border); margin-bottom: 8px; }
+  .arch-card li a { display: block; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--serif); font-size: 16.5px; line-height: 1.3; }
+  .arch-card li a:hover { color: var(--accent-ink); }
+  .arch-card li time { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); margin-bottom: 2px; }
+  .arch-card .panel-more { margin-top: auto; }
+  .arch-search { max-width: 1040px; margin: -12px auto 24px; }
+  .arch-search form { display: flex; gap: 8px; }
+  .arch-search input, .search-box input { flex: 1; min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; font-size: 16px; }
+  .arch-search button { min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--text); color: var(--surface); font-weight: 600; }
+  .search-box { max-width: 920px; margin: -12px auto 14px; display: flex; flex-direction: column; gap: 12px; }
+  .search-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); max-width: 920px; margin: 0 auto 8px; }
+  .item mark { background: var(--accent-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  /* discussion placeholder, guidelines, membership */
+  .discussion { max-width: 720px; margin: 40px auto 0; padding: 20px 22px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); }
+  .disc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .disc-title { font-family: var(--serif); font-size: 22px; font-weight: 500; margin: 0; }
+  .disc-badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 3px 9px; }
+  .disc-lead, .disc-rule { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
+  .disc-cats { margin: 10px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.55; color: var(--text-2); }
+  .disc-cats li { margin: 4px 0; }
+  .disc-list:empty { display: none; }
+  .disc-rule a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .tiers { max-width: 880px; margin: 8px auto 0; padding: 0 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .tier { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .tier-pro { border-color: var(--accent); }
+  .tier-name { font-family: var(--serif); font-size: 24px; font-weight: 500; }
+  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
+  .tier-price { font-family: var(--mono); font-size: 18px; color: var(--text); }
+  .tier-price.soon { font-size: 14px; color: var(--accent-ink); }
+  .tier ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); flex: 1; }
+  .tier-cta { align-self: flex-start; min-height: 38px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--text); color: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tier-cta.disabled { background: transparent; color: var(--text-muted); border: 1px dashed var(--border-strong); }
+  .tiers-note { max-width: 880px; margin: 14px auto 0; padding: 0 28px; }
+  .guide-prose { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+  @media (max-width: 900px) {
+    .tiers { grid-template-columns: 1fr; }
+    .footer-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer-brand { grid-column: 1 / -1; }
+    .arch-grid { grid-template-columns: 1fr; }
+  }
+"""
+CSS = CSS + V2_CSS
+
+CLOSE_SLUG_RE = re.compile(r"^(korea|us)-(market-)?close")
+
+
+def close_kind(a):
+    """'Korea Close', 'US Close', or None, from the slug (covers WordPress and local Closes)."""
+    m = CLOSE_SLUG_RE.match(a.get("slug") or "")
+    if not m:
+        return None
+    return "Korea Close" if m.group(1) == "korea" else "US Close"
+
+
+def content_kind(a):
+    if a.get("type") == "Daily Brief" or (a.get("path") or "").startswith("/notes/"):
+        return "Daily Brief"
+    if "Frameworks" in (a.get("categories") or []):
+        return "Framework"
+    return close_kind(a) or "Article"
+
+
+def _item_rows(items, kind_attr=False):
+    rows, month = [], None
+    for a in items:
+        m = datetime.fromisoformat(a["date"]).strftime("%B %Y")
+        if m != month:
+            rows.append('    <div class="month">%s</div>' % m)
+            month = m
+        kind = content_kind(a)
+        rows.append("""    <a class="item" href="{path}"{ka}>
+      <div class="meta"><time datetime="{iso}">{date}</time><span class="tag">{kind}</span></div>
+      <h2>{title}</h2>
+      <p>{desc}</p>
+    </a>""".format(path=a["path"], ka=(' data-kind="%s"' % esc(kind)) if kind_attr else "",
+                   iso=a["date"], date=fmt_date(a["date"]), kind=esc(kind),
+                   title=esc(a["title"]), desc=esc(a.get("desc") or "")))
+    return "\n".join(rows)
+
+
+CLOSES_JS = r"""(function(){
+  var pills=[].slice.call(document.querySelectorAll('#close-pills .pill'));
+  var list=document.getElementById('close-list');if(!list||!pills.length)return;
+  var kids=[].slice.call(list.children),count=document.getElementById('close-count');
+  function apply(k){
+    var shown=0,month=null,mShown=0;
+    function close(){if(month)month.hidden=mShown===0;}
+    kids.forEach(function(el){
+      if(el.classList.contains('month')){close();month=el;mShown=0;return;}
+      var ok=k==='All'||el.getAttribute('data-kind')===k;el.hidden=!ok;if(ok){shown++;mShown++;}
+    });close();
+    pills.forEach(function(p){p.setAttribute('aria-pressed',p.getAttribute('data-kind')===k?'true':'false');});
+    count.textContent=shown+(shown===1?' close':' closes');
+  }
+  pills.forEach(function(p){p.addEventListener('click',function(){apply(p.getAttribute('data-kind'));
+    if(history.replaceState)history.replaceState(null,'',location.pathname+(p.getAttribute('data-kind')==='All'?'':'?kind='+encodeURIComponent(p.getAttribute('data-kind'))));});});
+  var m=/[?&]kind=([^&]+)/.exec(location.search);apply(m?decodeURIComponent(m[1].replace(/\+/g,' ')):'All');
+})();"""
+
+
+def render_closes(arts):
+    closes = sorted([a for a in arts if close_kind(a)], key=lambda a: a["date"], reverse=True)
+    url = SITE + "/closes/"
+    desc = "RYZM Market Closes: Korea Close and US Close session recaps, read through rates, funding and FX."
+    nk = sum(1 for a in closes if close_kind(a) == "Korea Close")
+    nu = len(closes) - nk
+    ld = jsonld({
+        "@context": "https://schema.org", "@type": "CollectionPage", "@id": url, "url": url,
+        "name": "RYZM Market Closes", "description": desc, "inLanguage": "en-US",
+        "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG,
+        "mainEntity": {"@type": "ItemList", "itemListElement": [
+            {"@type": "ListItem", "position": i + 1, "url": SITE + a["path"], "name": a["title"]}
+            for i, a in enumerate(closes)]},
+    })
+    body = """<main>
+  <div class="page-head">
+    <div class="section-title">Market Closes</div>
+    <h1 class="page-title">Korea Close and US Close</h1>
+    <p class="page-lead">Each session, read through US rates, dollar funding and FX. Dated and sourced.</p>
+    <div class="page-count" id="close-count" aria-live="polite">%d closes</div>
+  </div>
+  <div class="lib-tools">
+    <div class="lib-pills" id="close-pills" role="group" aria-label="Filter closes">
+      <button type="button" class="pill" data-kind="All" aria-pressed="true">All <span class="n">%d</span></button>
+      <button type="button" class="pill" data-kind="Korea Close" aria-pressed="false">Korea Close <span class="n">%d</span></button>
+      <button type="button" class="pill" data-kind="US Close" aria-pressed="false">US Close <span class="n">%d</span></button>
+    </div>
+  </div>
+  <div class="list" id="close-list">
+%s
+  </div>
+</main>
+<script>
+%s
+</script>""" % (len(closes), len(closes), nk, nu, _item_rows(closes, kind_attr=True), CLOSES_JS)
+    return page("Market Closes · RYZM", desc, url, "website", "", ld, body, "closes")
+
+
+def render_archive(arts, briefs):
+    url = SITE + "/archive/"
+    desc = "The RYZM archive: framework notes, Korea and US market closes, daily briefs and research articles."
+    arts = sorted(arts, key=lambda a: a["date"], reverse=True)
+    briefs = sorted(briefs, key=lambda a: a["date"], reverse=True)
+    fws = [a for a in arts if "Frameworks" in (a.get("categories") or [])]
+    closes = [a for a in arts if close_kind(a)]
+    others = [a for a in arts if not close_kind(a) and "Frameworks" not in (a.get("categories") or [])]
+
+    def card(title, href, count_label, lead, items, more):
+        lis = "\n".join('        <li><a href="%s"><time datetime="%s">%s</time>%s</a></li>' % (
+            a["path"], a["date"], fmt_date(a["date"]), esc(short_brief_title(a["title"])
+                                                           if a in briefs else a["title"])) for a in items[:4])
+        return """    <section class="arch-card">
+      <h2><a href="%s">%s</a></h2>
+      <div class="arch-count">%s</div>
+      <p>%s</p>
+      <ul>
+%s
+      </ul>
+      <a class="panel-more" href="%s">%s</a>
+    </section>""" % (href, title, count_label, lead, lis, href, more)
+
+    cats = " · ".join('<a href="%s">%s</a>' % (cat_href(c), c) for c in CATEGORY_ORDER
+                      if any(c in a.get("categories", []) for a in arts))
+    cards = "\n".join([
+        card("Frameworks", "/articles/frameworks/", "%d framework notes" % len(fws),
+             "Reusable ways to read rates, funding and FX, and how they reach Korea.", fws, "All framework notes"),
+        card("Market Closes", "/closes/", "%d closes (Korea and US)" % len(closes),
+             "Session recaps for Seoul and New York, read through the same structure.", closes, "All closes"),
+        card("Daily Briefs", "/notes/", "%d briefs" % len(briefs),
+             "Dated, sourced morning notes on what changed overnight.", briefs, "All briefs"),
+        card("Articles", "/articles/", "%d articles" % len(arts),
+             "Research summaries and analysis. By topic: " + cats + ".", others, "All articles"),
+    ])
+    ld = jsonld({
+        "@context": "https://schema.org", "@type": "CollectionPage", "@id": url, "url": url,
+        "name": "RYZM Archive", "description": desc, "inLanguage": "en-US",
+        "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG,
+        "hasPart": [{"@type": "CollectionPage", "url": SITE + h, "name": n} for h, n in (
+            ("/articles/frameworks/", "Frameworks"), ("/closes/", "Market Closes"),
+            ("/notes/", "Daily Briefs"), ("/articles/", "Articles"))],
+    })
+    body = """<main>
+  <div class="page-head">
+    <div class="section-title">Archive</div>
+    <h1 class="page-title">Everything RYZM has published</h1>
+    <p class="page-lead">Four shelves: frameworks, market closes, daily briefs and research articles.</p>
+  </div>
+  <div class="arch-search">
+    <form action="/search/" method="get" role="search">
+      <label class="sr-only" for="arch-q">Search RYZM</label>
+      <input type="search" id="arch-q" name="q" placeholder="Search briefs, closes and frameworks" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+  </div>
+  <div class="arch-grid">
+%s
+  </div>
+  <!-- ad-slot: archive-footer. Reserved for a future, clearly labeled sponsor unit below the archive only.
+       Not active: no ad code, no tracking. Home, briefs and notes carry no ad slots. -->
+</main>""" % cards
+    return page("Archive · RYZM", desc, url, "website", "", ld, body, "archive")
+
+
+SEARCH_JS = r"""(function(){
+  var q=document.getElementById('s-q'),list=document.getElementById('s-list'),count=document.getElementById('s-count');
+  var pills=[].slice.call(document.querySelectorAll('#s-pills .pill'));if(!q||!list)return;
+  var data=[],kind='All';
+  function norm(v){return (v||'').toLowerCase().replace(/\u2019/g,"'").replace(/\s+/g,' ').trim();}
+  function esc(v){return String(v).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function hl(t,words){var h=esc(t);words.forEach(function(w){if(w.length<2)return;var re=new RegExp('('+w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','ig');h=h.replace(re,'<mark>$1</mark>');});return h;}
+  function run(){
+    var words=norm(q.value).split(' ').filter(Boolean),out=[];
+    data.forEach(function(d){
+      if(kind!=='All'&&d.kind!==kind)return;
+      var hay=d._h;if(!words.every(function(w){return hay.indexOf(w)!==-1;}))return;
+      var sc=0;words.forEach(function(w){if(norm(d.title).indexOf(w)!==-1)sc+=3;if((d.tags||[]).join(' ').toLowerCase().indexOf(w)!==-1)sc+=1;});
+      out.push([sc,d]);
+    });
+    out.sort(function(a,b){return b[0]-a[0]||(a[1].date<b[1].date?1:-1);});
+    list.innerHTML=out.slice(0,60).map(function(r){var d=r[1];
+      return '<a class="item" href="'+esc(d.url)+'"><div class="meta"><time datetime="'+esc(d.date)+'">'+esc(d.date_label)+'</time><span class="tag">'+esc(d.kind)+'</span></div><h2>'+hl(d.title,words)+'</h2><p>'+hl(d.summary||'',words)+'</p></a>';}).join('');
+    count.textContent=(words.length||kind!=='All'?out.length+' result'+(out.length===1?'':'s'):data.length+' items')+(out.length>60?' (showing 60)':'');
+    if(history.replaceState){var ps=[];if(q.value.trim())ps.push('q='+encodeURIComponent(q.value.trim()));if(kind!=='All')ps.push('type='+encodeURIComponent(kind));history.replaceState(null,'',location.pathname+(ps.length?'?'+ps.join('&'):''));}
+  }
+  function param(n){var m=new RegExp('[?&]'+n+'=([^&]*)').exec(location.search);try{return m?decodeURIComponent(m[1].replace(/\+/g,' ')):'';}catch(e){return '';}}
+  pills.forEach(function(p){p.addEventListener('click',function(){kind=p.getAttribute('data-kind');pills.forEach(function(x){x.setAttribute('aria-pressed',x===p?'true':'false');});run();});});
+  q.value=param('q');var t=param('type');if(t){kind=t;pills.forEach(function(x){x.setAttribute('aria-pressed',x.getAttribute('data-kind')===t?'true':'false');});}
+  q.addEventListener('input',run);
+  count.textContent='Loading index…';
+  fetch('/search-index.json').then(function(r){return r.json();}).then(function(j){
+    data=(j.items||[]).map(function(d){d._h=norm([d.title,d.summary,d.kind,(d.tags||[]).join(' '),(d.categories||[]).join(' ')].join(' '));return d;});run();
+  }).catch(function(){count.textContent='Search index could not load. Try the archive instead.';});
+})();"""
+
+
+def render_search():
+    url = SITE + "/search/"
+    desc = "Search RYZM daily briefs, market closes, framework notes and articles."
+    ld = jsonld({"@context": "https://schema.org", "@type": "SearchResultsPage", "@id": url, "url": url,
+                 "name": "Search RYZM", "description": desc, "inLanguage": "en-US",
+                 "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG})
+    kinds = ["All", "Framework", "Korea Close", "US Close", "Daily Brief", "Article"]
+    pills = "\n      ".join('<button type="button" class="pill" data-kind="%s" aria-pressed="%s">%s</button>' % (
+        k, "true" if k == "All" else "false", k) for k in kinds)
+    body = """<main>
+  <div class="page-head">
+    <div class="section-title">Search</div>
+    <h1 class="page-title">Search RYZM</h1>
+    <p class="page-lead">Briefs, closes, frameworks and articles. Runs in your browser from a static index.</p>
+  </div>
+  <div class="search-box">
+    <form action="/search/" method="get" role="search" class="lib-search">
+      <label class="sr-only" for="s-q">Search</label>
+      <input type="search" id="s-q" name="q" placeholder="Try SOFR, won, BOK, term premium" autocomplete="off" spellcheck="false">
+    </form>
+    <div class="lib-pills" id="s-pills" role="group" aria-label="Filter by type">
+      %s
+    </div>
+  </div>
+  <div class="search-count" id="s-count" aria-live="polite">Search needs JavaScript. You can also browse the <a href="/archive/">archive</a>.</div>
+  <div class="list" id="s-list"></div>
+</main>
+<script>
+%s
+</script>""" % (pills, SEARCH_JS)
+    return page("Search · RYZM", desc, url, "website", "", ld, body, "search")
+
+
+# ---------------------------------------------------------------- discussion, guidelines, membership
+# Added 2026-11-27. Discussion is a placeholder: no backend, no form, no data
+# collection. The markup is structured for future moderation: each comment type
+# has a category tag (data-category), each comment a status and a report slot.
+COMMENT_CATEGORIES = [
+    ("path-check", "Transmission-path check", "Does the chain from US rates or dollar funding to Korean markets hold? Show where it breaks."),
+    ("data", "Additional data", "A dataset, release or chart that tests the note, with its source and date."),
+    ("korea-context", "Korea local context", "Local rules, flows, tax, household or corporate detail the note misses."),
+]
+
+
+def discussion_block(slug, kind=""):
+    cats = "\n".join('          <li data-category="%s"><strong>%s.</strong> %s</li>' % (c, esc(n), esc(d))
+                     for c, n, d in COMMENT_CATEGORIES)
+    return """  <section class="discussion" id="discussion" aria-labelledby="discussion-title" data-thread="%s" data-status="closed">
+    <div class="disc-head">
+      <h2 class="disc-title" id="discussion-title">Discussion</h2>
+      <span class="disc-badge">Discussion opens soon</span>
+    </div>
+    <p class="disc-lead">Comments will open under each brief and note. Nothing is collected yet. Three kinds of comment will be welcome:</p>
+    <ul class="disc-cats">
+%s
+    </ul>
+    <p class="disc-rule">Forecasts, price targets and stock picks are off topic and may be removed. Read the <a href="/community-guidelines/">community guidelines</a>.</p>
+    <div class="disc-list" data-role="comments" aria-live="polite"></div>
+    <template id="comment-template">
+      <article class="comment" data-comment-id="" data-category="" data-status="visible">
+        <header class="comment-meta"><span class="comment-author"></span><span class="comment-cat"></span><time class="comment-time"></time></header>
+        <div class="comment-body"></div>
+        <button type="button" class="comment-report" data-action="report" disabled>Report</button>
+      </article>
+    </template>
+  </section>""" % (esc(slug), cats)
+
+
+def _simple_page(sub, title, desc, h1, lead, inner, name):
+    url = SITE + "/%s/" % sub
+    ld = jsonld({"@context": "https://schema.org", "@type": "WebPage", "@id": url, "url": url,
+                 "name": name, "description": desc, "inLanguage": "en-US",
+                 "isPartOf": {"@id": SITE + "/#website"}, "publisher": ORG})
+    body = """<main>
+  <div class="page-head %s-page">
+    <div class="section-title">%s</div>
+    <h1 class="page-title">%s</h1>
+    <p class="page-lead">%s</p>
+  </div>
+%s
+</main>""" % (sub, esc(name), h1, lead, inner)
+    d = os.path.join(ROOT, sub)
+    os.makedirs(d, exist_ok=True)
+    with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+        f.write(page(title, desc, url, "website", "", ld, body, ""))
+
+
+def write_community_guidelines():
+    cats = "\n".join('      <li data-category="%s"><strong>%s.</strong> %s</li>' % (c, esc(n), esc(d))
+                     for c, n, d in COMMENT_CATEGORIES)
+    inner = """  <div class="prose guide-prose">
+    <h2>What discussion is for</h2>
+    <p>RYZM publishes frameworks, not forecasts. Discussion sits under each brief and note and stays on three topics:</p>
+    <ul>
+%s
+    </ul>
+    <h2>What may be removed</h2>
+    <ul>
+      <li>Forecasts, price targets, buy or sell calls and stock picks.</li>
+      <li>Promotion, referral links, paid groups and signal services.</li>
+      <li>Unsourced numbers. Give the source and the date for any figure.</li>
+      <li>Personal attacks, harassment and anything unlawful.</li>
+    </ul>
+    <h2>How moderation will work</h2>
+    <p>Each comment carries one of the three topic tags above. Readers will be able to report a comment; reported comments are reviewed against these guidelines and may be hidden or removed. Discussion is not open yet, and nothing is collected until it is.</p>
+    <p>Nothing on RYZM or in its discussion is investment advice.</p>
+  </div>""" % cats
+    _simple_page("community-guidelines", "Community guidelines · RYZM",
+                 "How discussion works on RYZM: transmission-path checks, additional data and Korea context. No forecasts or stock picks.",
+                 "Community guidelines", "Discussion under RYZM briefs and notes is for testing frameworks, not for calls.",
+                 inner, "Community guidelines")
+
+
+def write_membership():
+    inner = """  <style>.tiers, .tiers-note { max-width: 920px; padding: 0; }</style>
+  <div class="tiers">
+    <section class="tier" aria-labelledby="tier-free">
+      <div class="tier-name" id="tier-free">Free</div>
+      <div class="tier-price">$0</div>
+      <ul>
+        <li>The weekly RYZM brief by email</li>
+        <li>The live Macro Compass and bubble map</li>
+        <li>Daily briefs, market closes and framework notes</li>
+      </ul>
+      <a class="tier-cta" href="/subscribe/">Get the free brief</a>
+    </section>
+    <section class="tier tier-pro" aria-labelledby="tier-pro">
+      <div class="tier-name" id="tier-pro">Pro <span class="tier-tag">Planned</span></div>
+      <div class="tier-price soon">Pricing coming soon</div>
+      <ul>
+        <li>Dashboard history: past compass readings and bubble maps</li>
+        <li>Deep notes: longer framework work on rates, funding and Korea</li>
+        <li>Alerts when the compass changes regime or tension spikes</li>
+      </ul>
+      <span class="tier-cta disabled" aria-disabled="true">Not available yet</span>
+    </section>
+  </div>
+  <p class="page-lead small tiers-note">No payment is taken on this site yet. Pro is planned; nothing here is a forecast, signal or investment advice.</p>"""
+    _simple_page("membership", "Membership · RYZM",
+                 "RYZM Free and planned Pro membership: weekly brief, dashboard history, deep notes and alerts. Pricing coming soon.",
+                 "Free now, Pro planned", "Start with the free weekly brief. Pro adds dashboard history, deep notes and alerts once it opens.",
+                 inner, "Membership")
+
+
+def write_v2_pages(arts, briefs):
+    """Write /closes/, /archive/, /search/, /search-index.json and /data/frameworks.json."""
+    write_membership()
+    write_community_guidelines()
+    for sub, html_out in (("closes", render_closes(arts)), ("archive", render_archive(arts, briefs)),
+                          ("search", render_search())):
+        d = os.path.join(ROOT, sub)
+        os.makedirs(d, exist_ok=True)
+        with open(os.path.join(d, "index.html"), "w", encoding="utf-8") as f:
+            f.write(html_out)
+    items = []
+    for a in list(arts) + list(briefs):
+        items.append({
+            "kind": content_kind(a), "title": a["title"], "url": a["path"], "date": a["date"],
+            "date_label": fmt_date(a["date"]), "summary": a.get("desc") or "",
+            "tags": a.get("tags") or [], "categories": a.get("categories") or [],
+        })
+    items.sort(key=lambda d: d["date"], reverse=True)
+    with open(os.path.join(ROOT, "search-index.json"), "w", encoding="utf-8") as f:
+        json.dump({"version": 1, "site": SITE, "count": len(items), "items": items}, f,
+                  ensure_ascii=False, separators=(",", ":"))
+        f.write("\n")
+    fws = sorted([a for a in arts if "Frameworks" in (a.get("categories") or [])],
+                 key=lambda a: a["date"], reverse=True)
+    fw_json = {
+        "version": 1, "site": SITE, "name": "RYZM framework notes",
+        "description": "Framework notes on how US rates, dollar funding and FX reach Korean markets. Not forecasts.",
+        "count": len(fws),
+        "items": [{
+            "slug": a["slug"], "title": a["title"], "summary": a.get("desc") or "",
+            "url": SITE + a["path"], "path": a["path"], "date": a["date"], "modified": a.get("modified") or a["date"],
+            "tags": a.get("tags") or [], "topics": [c for c in a.get("categories") or [] if c != "Frameworks"],
+            "type": a.get("type") or "Framework",
+        } for a in fws],
+    }
+    os.makedirs(os.path.join(ROOT, "data"), exist_ok=True)
+    with open(os.path.join(ROOT, "data", "frameworks.json"), "w", encoding="utf-8") as f:
+        json.dump(fw_json, f, ensure_ascii=False, indent=1)
+        f.write("\n")
 
 
 # ---------------------------------------------------------------- local closes
@@ -2214,6 +2747,7 @@ def retemplate():
     else:
         about_lastmod = None
     write_subscribe()
+    write_v2_pages(arts, briefs)
     write_rss(arts, briefs)
     update_llms(arts, url_map_from_existing())
     update_home_panels(arts, briefs)
@@ -2293,6 +2827,7 @@ def main():
     update_index_html(url_map)
     update_home_panels(arts, briefs)
     write_subscribe()
+    write_v2_pages(arts, briefs)
     write_rss(arts, briefs)
     update_llms(arts, url_map)
     write_sitemap(arts, briefs, about.get("modified", "")[:10] if about.get("content") else None)

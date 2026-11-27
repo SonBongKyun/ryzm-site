@@ -1,0 +1,14 @@
+{
+ "version": 1,
+ "note": "One entry per published snapshot; the ghost needle reads the entry about a week back.",
+ "entries": [
+  {
+   "date": "2026-11-27",
+   "snapshot_stamp": "Nov 27 15:40 KST",
+   "x": -22.4,
+   "y": -13.8,
+   "quadrant": "safe_haven",
+   "recorded_at": "2026-11-27T20:38+09:00"
+  }
+ ]
+}

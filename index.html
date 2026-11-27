@@ -863,6 +863,7 @@
   .feed-more:hover { border-color: var(--text); }
   #feed.expanded .feed-more, body.tab-mode .feed-more { display: none; }
 </style>
+<link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body>
 
@@ -900,6 +901,116 @@
   <h1>Frameworks for markets<br><em>Not forecasts</em></h1>
   <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets.</p>
 </section>
+
+<!-- ryzm-dash -->
+<section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
+  <div class="ck-head">
+    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><span class="ck-subtitle">Computed from the market snapshot above.</span></div>
+    <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
+  </div>
+
+  <div class="ck-controls">
+    <div class="ck-slider">
+      <label class="sl-lab" for="sl-rates">Rates / Tightening Pressure</label><output class="sl-out" id="sl-rates-v" for="sl-rates">0</output>
+      <input type="range" id="sl-rates" min="-50" max="50" step="1" value="0" disabled aria-describedby="sl-rates-scale">
+      <div class="sl-scale" id="sl-rates-scale"><span>Easing</span><span>Neutral</span><span>Tightening</span></div>
+    </div>
+    <div class="ck-slider">
+      <label class="sl-lab" for="sl-liq">Global Liquidity / Risk Appetite</label><output class="sl-out" id="sl-liq-v" for="sl-liq">0</output>
+      <input type="range" id="sl-liq" min="-50" max="50" step="1" value="0" disabled aria-describedby="sl-liq-scale">
+      <div class="sl-scale" id="sl-liq-scale"><span>Contraction</span><span>Neutral</span><span>Expansion</span></div>
+    </div>
+    <div class="sc-note" id="scenario-note" aria-live="polite"></div>
+  </div>
+
+  <div class="ck-grid">
+    <div class="ck-compass">
+      <div class="ck-panel-h"><h3>Macro Compass</h3><span class="cap">US rates and funding regime</span></div>
+      <svg id="compass-svg" viewBox="0 0 300 300" role="img" aria-labelledby="regime-name" focusable="false"></svg>
+      <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost" id="ghost-note">1W ago</span></div>
+      <div class="cmp-cap">US rates and funding regime</div>
+    </div>
+    <div class="ck-map">
+      <div class="ck-panel-h"><h3>Priced-In &amp; Tension Map</h3><span class="ck-tag" id="map-tag" title="Positions are deterministic scores computed from sourced price history; they are model proxies, not measured positioning.">Sourced prices &middot; model scores</span></div>
+      <div class="bm-wrap"><svg id="bubble-svg" role="group" aria-label="Priced-in and tension bubble map. Select a bubble for details."></svg></div>
+      <div class="tt-wrap">
+        <div class="tt-head">Top Tension Signals</div>
+        <ol class="tt-list" id="tension-list" aria-label="Top tension signals, ranked"></ol>
+      </div>
+      <div class="bm-legend" aria-hidden="true">
+        <span><i class="in"></i>Inflow</span><span><i class="flat"></i>Neutral</span><span><i class="out"></i>Outflow</span><span><i class="warn"></i>Priced-in 80+ or tension 75+</span><span>Size = tension</span>
+      </div>
+    </div>
+    <div class="ck-side" aria-live="polite">
+      <!-- regime-summary -->
+      <div class="rg-static" id="regime-static" data-x="-22.4" data-y="-13.8">
+        <div class="rg-mode" id="regime-mode">Sourced &middot; snapshot Nov 27 15:40 KST</div>
+        <div class="rg-name" id="regime-name">Safe-Haven Bond Crowding</div>
+        <dl class="rg-nums">
+          <div><dt>Rate pressure</dt><dd id="ro-rates">−13.8</dd></div>
+          <div><dt>Liquidity flow</dt><dd id="ro-liq">−22.4</dd></div>
+        </dl>
+        <ul class="rg-drivers" id="regime-drivers">
+          <li>The dollar index (DXY) +1.6% over 20 sessions tightened dollar liquidity.</li>
+          <li>US 2Y yield −9 bp over 20 sessions eased rate pressure.</li>
+          <li>US 10Y yield −14 bp over 20 sessions eased rate pressure.</li>
+        </ul>
+        <p class="rg-read" id="regime-read">Yields ease while dollar liquidity tightens, so money crowds into bonds. Korean equities lean on domestic buyers, and the won reflects global de-risking.</p>
+        <p class="rg-note" id="regime-note">Highest tension on the map: US 2Y Treasury (tension 67). US2Y at 4.61% on Nov 25; -9 bp over 20 sessions; 80% of its 1-year range.</p>
+        <script type="application/ld+json" id="regime-jsonld">
+{
+ "@context": "https://schema.org",
+ "@type": "Dataset",
+ "name": "RYZM Macro Compass reading",
+ "description": "Safe-Haven Bond Crowding. Rate pressure −13.8 and liquidity flow −22.4 on a -50 to +50 scale, computed from the RYZM market snapshot (Nov 27 15:40 KST). Drivers: The dollar index (DXY) +1.6% over 20 sessions tightened dollar liquidity. US 2Y yield −9 bp over 20 sessions eased rate pressure. US 10Y yield −14 bp over 20 sessions eased rate pressure. Reads market structure; not a forecast.",
+ "url": "https://ryzm.app/#cockpit",
+ "dateModified": "2026-11-27T20:38+09:00",
+ "creator": {
+  "@id": "https://ryzm.app/#org"
+ },
+ "isAccessibleForFree": true,
+ "variableMeasured": [
+  "US 2-year Treasury yield",
+  "US 10-year Treasury yield",
+  "SOFR",
+  "ON RRP",
+  "US dollar index (DXY)"
+ ],
+ "distribution": [
+  {
+   "@type": "DataDownload",
+   "encodingFormat": "application/json",
+   "contentUrl": "https://ryzm.app/data/dashboard_state.json"
+  }
+ ]
+}
+        </script>
+      </div>
+      <!-- /regime-summary -->
+      <div class="asset-panel" id="asset-panel">
+        <div class="ap-kicker">Selected asset</div>
+        <div class="ap-name-row"><span class="ap-name" id="ap-name">Memory chips (Samsung + SK hynix)</span><span class="ap-chip" id="ap-group">Korea</span><span class="ap-chip ex" id="ap-ex" hidden>Example</span><span class="ap-status" id="ap-status" hidden></span></div>
+        <p class="ap-src" id="ap-src"></p>
+        <p class="ap-read" id="ap-read">Select a bubble to read its structure.</p>
+        <div class="ap-bottom">
+          <div class="ap-metrics">
+            <div class="ap-m"><div class="k" title="Priced-in: 1-year range position">Heat</div><div class="v" id="ap-heat">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-heat-bar"></span></div></div>
+            <div class="ap-m"><div class="k">Flow</div><div class="v" id="ap-flow">&middot;</div><div class="ap-track ap-flow-track"><span class="ap-fill ap-flow pos" id="ap-flow-bar"></span></div></div>
+            <div class="ap-m"><div class="k">Tension</div><div class="v" id="ap-tension">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-tension-bar"></span></div></div>
+          </div>
+          <div class="ap-room-row"><button type="button" class="ap-room" id="ap-room">Analysis room</button><span class="ap-room-note" id="ap-room-note">Coming later</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="ck-error" id="cockpit-error" hidden>Live dashboard data could not load; the reading shown is the last published one.</p>
+  <div class="ck-fine">
+    <span class="ck-fine-txt"><span class="ck-tag ex">Simulation prototype</span> Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
+    <span class="ck-fine-cta"><a class="ck-cta-btn" href="/subscribe/">Subscribe free</a><a class="ck-cta-link" href="/membership/">Membership</a></span>
+  </div>
+</section>
+<!-- /ryzm-dash -->
 
 <main id="main">
   <div id="breaking" class="tab-section">
@@ -1367,5 +1478,6 @@ document.querySelectorAll('.filter-btn').forEach(function(btn){
   });
 })();
 </script>
+<script src="/assets/js/dashboard.js" defer></script>
 </body>
 </html>

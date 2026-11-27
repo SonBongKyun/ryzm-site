@@ -56,7 +56,23 @@
   "name": "RYZM",
   "url": "https://ryzm.app/"
  },
- "isBasedOn": "https://ryzm9.wordpress.com/2026/10/11/fx-hedging-costs-korea/"
+ "isBasedOn": "https://ryzm9.wordpress.com/2026/10/11/fx-hedging-costs-korea/",
+ "genre": "Framework Note",
+ "about": [
+  {
+   "@type": "Thing",
+   "name": "Funding"
+  },
+  {
+   "@type": "Thing",
+   "name": "FX"
+  },
+  {
+   "@type": "Thing",
+   "name": "Korea"
+  }
+ ],
+ "isAccessibleForFree": true
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -506,6 +522,81 @@
     .meta a.cat-label { display: inline-block; padding: 12px 0; margin: -12px 0; }
   }
 
+  /* ---------- v2 shared (2026-11-27) ---------- */
+  .prose p, .prose li, .prose a, .prose td { overflow-wrap: anywhere; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  nav a.active { color: var(--surface); background: var(--text); font-weight: 600; }
+  .footer-v2 { display: grid; grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr)); gap: 28px 40px; align-items: start; }
+  .footer-brand .footer-logo { font-family: var(--serif); font-size: 22px; color: #fffdf9; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .footer-brand p { font-size: 13.5px; line-height: 1.6; max-width: 32em; color: var(--ink-band-text); }
+  .footer-v2 > div:first-child { font-family: var(--sans); font-size: 13px; color: inherit; }
+  .footer-col { display: flex; flex-direction: column; gap: 4px; font-size: 13.5px; }
+  .footer-col a { color: var(--ink-band-text); padding: 4px 0; min-height: 32px; display: inline-flex; align-items: center; }
+  .footer-col a:hover { color: #fffdf9; }
+  .footer-h { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: #fffdf9; opacity: 0.7; margin-bottom: 6px; }
+  .footer-fine { max-width: var(--wrap); margin: 28px auto 0; padding-top: 18px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 12px; color: var(--ink-band-text); opacity: 0.75; }
+  .sub-kicker { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent-ink); margin-bottom: 8px; }
+  .sub-box, .sub-page-box { flex: 1 1 340px; max-width: 460px; }
+  .sub-form { display: flex; gap: 8px; flex-wrap: wrap; }
+  .sub-form input { flex: 1 1 200px; min-height: 46px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--bg); color: var(--text); font: inherit; font-size: 15px; }
+  .sub-form input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .sub-form button { min-height: 46px; padding: 0 20px; border-radius: 999px; background: var(--accent); color: #fffdf9; font-weight: 600; font-size: 14.5px; }
+  .sub-form button:hover { background: var(--accent-ink); }
+  .sub-form [disabled] { opacity: 0.55; cursor: not-allowed; }
+  .sub-status { font-size: 12.5px; color: var(--text-muted); margin-top: 10px; }
+  .sub-page-box { margin: 28px 0 8px; max-width: 560px; }
+  .sub-points { list-style: none; margin: 28px 0; display: grid; gap: 12px; max-width: 640px; }
+  .sub-points li { padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); font-size: 15px; color: var(--text-2); }
+  .sub-points strong { color: var(--text); }
+  .page-lead.small { font-size: 14.5px; }
+  .page-lead a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .arch-grid { max-width: 1040px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .arch-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px 24px 18px; display: flex; flex-direction: column; min-width: 0; }
+  .arch-card h2 { font-family: var(--serif); font-size: 26px; font-weight: 500; letter-spacing: -0.02em; }
+  .arch-card h2 a:hover { color: var(--accent-ink); }
+  .arch-card .arch-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); margin: 4px 0 10px; }
+  .arch-card > p { font-size: 14.5px; color: var(--text-2); margin-bottom: 12px; }
+  .arch-card ul { list-style: none; border-top: 1px solid var(--border); margin-bottom: 8px; }
+  .arch-card li a { display: block; padding: 10px 0; border-bottom: 1px solid var(--border); font-family: var(--serif); font-size: 16.5px; line-height: 1.3; }
+  .arch-card li a:hover { color: var(--accent-ink); }
+  .arch-card li time { display: block; font-family: var(--mono); font-size: 11.5px; color: var(--text-muted); margin-bottom: 2px; }
+  .arch-card .panel-more { margin-top: auto; }
+  .arch-search { max-width: 1040px; margin: -12px auto 24px; }
+  .arch-search form { display: flex; gap: 8px; }
+  .arch-search input, .search-box input { flex: 1; min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; font-size: 16px; }
+  .arch-search button { min-height: 48px; padding: 0 20px; border-radius: 999px; background: var(--text); color: var(--surface); font-weight: 600; }
+  .search-box { max-width: 920px; margin: -12px auto 14px; display: flex; flex-direction: column; gap: 12px; }
+  .search-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); max-width: 920px; margin: 0 auto 8px; }
+  .item mark { background: var(--accent-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  /* discussion placeholder, guidelines, membership */
+  .discussion { max-width: 720px; margin: 40px auto 0; padding: 20px 22px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); }
+  .disc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .disc-title { font-family: var(--serif); font-size: 22px; font-weight: 500; margin: 0; }
+  .disc-badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 3px 9px; }
+  .disc-lead, .disc-rule { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
+  .disc-cats { margin: 10px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.55; color: var(--text-2); }
+  .disc-cats li { margin: 4px 0; }
+  .disc-list:empty { display: none; }
+  .disc-rule a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .tiers { max-width: 880px; margin: 8px auto 0; padding: 0 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .tier { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .tier-pro { border-color: var(--accent); }
+  .tier-name { font-family: var(--serif); font-size: 24px; font-weight: 500; }
+  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
+  .tier-price { font-family: var(--mono); font-size: 18px; color: var(--text); }
+  .tier-price.soon { font-size: 14px; color: var(--accent-ink); }
+  .tier ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); flex: 1; }
+  .tier-cta { align-self: flex-start; min-height: 38px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--text); color: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tier-cta.disabled { background: transparent; color: var(--text-muted); border: 1px dashed var(--border-strong); }
+  .tiers-note { max-width: 880px; margin: 14px auto 0; padding: 0 28px; }
+  .guide-prose { max-width: 720px; margin: 0 auto; padding: 0 28px; }
+  @media (max-width: 900px) {
+    .tiers { grid-template-columns: 1fr; }
+    .footer-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .footer-brand { grid-column: 1 / -1; }
+    .arch-grid { grid-template-columns: 1fr; }
+  }
+
   /* ---------- design pass 2 (2026-11-24) ---------- */
   .b-time, .cal-time, .card-meta .time, .ticker-inner { font-family: var(--mono); letter-spacing: 0; }
   .prose { letter-spacing: 0; }
@@ -612,6 +703,27 @@
 <p><a href="https://ryzm9.wordpress.com/#subscribe" target="_blank" rel="noopener">Subscribe to new WordPress notes</a>. Independent market commentary, not personalized investment advice.</p>
     </div>
   </article>
+  <section class="discussion" id="discussion" aria-labelledby="discussion-title" data-thread="fx-hedging-costs-korea" data-status="closed">
+    <div class="disc-head">
+      <h2 class="disc-title" id="discussion-title">Discussion</h2>
+      <span class="disc-badge">Discussion opens soon</span>
+    </div>
+    <p class="disc-lead">Comments will open under each brief and note. Nothing is collected yet. Three kinds of comment will be welcome:</p>
+    <ul class="disc-cats">
+          <li data-category="path-check"><strong>Transmission-path check.</strong> Does the chain from US rates or dollar funding to Korean markets hold? Show where it breaks.</li>
+          <li data-category="data"><strong>Additional data.</strong> A dataset, release or chart that tests the note, with its source and date.</li>
+          <li data-category="korea-context"><strong>Korea local context.</strong> Local rules, flows, tax, household or corporate detail the note misses.</li>
+    </ul>
+    <p class="disc-rule">Forecasts, price targets and stock picks are off topic and may be removed. Read the <a href="/community-guidelines/">community guidelines</a>.</p>
+    <div class="disc-list" data-role="comments" aria-live="polite"></div>
+    <template id="comment-template">
+      <article class="comment" data-comment-id="" data-category="" data-status="visible">
+        <header class="comment-meta"><span class="comment-author"></span><span class="comment-cat"></span><time class="comment-time"></time></header>
+        <div class="comment-body"></div>
+        <button type="button" class="comment-report" data-action="report" disabled>Report</button>
+      </article>
+    </template>
+  </section>
   </div>
   <aside class="related" aria-label="Related articles">
     <div class="section-title">Related articles</div>
@@ -631,10 +743,18 @@
   <aside class="subscribe" aria-label="Email subscription">
   <div class="subscribe-inner">
     <div>
+      <div class="sub-kicker">Free weekly brief</div>
       <h2>Get the weekly RYZM brief</h2>
-      <p>New frameworks and the week’s key changes, by email. Free.</p>
+      <p>New frameworks and the week’s key changes in US rates, dollar funding, FX and Korea. One email a week. Free.</p>
     </div>
-    <a class="btn-subscribe" href="/subscribe/">Subscribe</a>
+    <div class="sub-box">
+    <form class="sub-form" data-provider="pending">
+      <label class="sr-only" for="sub-email">Email address</label>
+      <input type="email" id="sub-email" name="email" placeholder="you@example.com" autocomplete="email" required disabled>
+      <button type="submit" disabled>Get the free weekly brief</button>
+    </form>
+    <p class="sub-status">Sign-up opens soon. We are setting up the email service, so no address is collected yet.</p>
+    </div>
   </div>
 </aside>
   <div class="origin">
@@ -644,13 +764,35 @@
 </main>
 
 <footer>
-  <div class="footer-inner">
-    <div>RYZM · frameworks, not forecasts</div>
-    <div class="footer-links">
+  <div class="footer-inner footer-v2">
+    <div class="footer-brand">
+      <div class="footer-logo">RYZM</div>
+      <p>Frameworks, not forecasts. How US rates, dollar funding and FX reach Korean markets.</p>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Read">
+      <div class="footer-h">Read</div>
+      <a href="/notes/">Daily Briefs</a>
+      <a href="/closes/">Market Closes</a>
+      <a href="/articles/frameworks/">Frameworks</a>
+      <a href="/articles/">All articles</a>
+      <a href="/archive/">Archive</a>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Site">
+      <div class="footer-h">Site</div>
       <a href="/about/">About</a>
-      <a href="/subscribe/">Subscribe</a>
+      <a href="/subscribe/">Free weekly brief</a>
+      <a href="/membership/">Membership</a>
+      <a href="/community-guidelines/">Community guidelines</a>
+      <a href="/search/">Search</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="/data/frameworks.json">Frameworks API</a>
+    </div>
+    <div class="footer-col" role="navigation" aria-label="Follow">
+      <div class="footer-h">Follow</div>
+      <a href="https://www.instagram.com/ryzm_6121/" rel="noopener" target="_blank">Instagram</a>
     </div>
   </div>
+  <div class="footer-fine">Market data is delayed and may be revised. RYZM reads market structure; nothing here is a forecast or investment advice.</div>
 </footer>
 </body>
 </html>

@@ -4,6 +4,13 @@
 Usage (from the repo root):
   python3 scripts/update_ticker.py            # fetch and write
   python3 scripts/update_ticker.py --dry-run  # print the new block only
+  python3 scripts/update_ticker.py --json     # also write data/snapshot.json and
+                                              # refresh data/snapshot_history.json
+  python3 scripts/update_ticker.py --json-only  # no ticker fetch; rebuild the JSON
+                                              # from the ticker already in index.html
+
+The ticker HTML is written exactly as before; --json only adds the JSON files
+(scripts/pipeline/snapshot.py). If the JSON step fails, the ticker still updates.
 
 Sources (no API keys):
   US 2Y / 10Y   US Treasury daily par yield curve (CSV)
@@ -118,8 +125,24 @@ def render(items, nl):
     return nl + nl.join(lines)
 
 
+def write_json_snapshot():
+    """data/snapshot.json + history, parsed from the ticker now in index.html."""
+    try:
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from pipeline import snapshot
+        r = snapshot.refresh(fetch=True)
+        for e in r.get("errors", []):
+            print("history source error:", e, file=sys.stderr)
+        print("SNAPSHOT_JSON_%s" % ("OK" if r["ok"] else "FAILED"))
+    except Exception as e:  # the ticker must never fail because of the JSON step
+        print("SNAPSHOT_JSON_FAILED", str(e)[:160], file=sys.stderr)
+
+
 def main():
     dry = "--dry-run" in sys.argv
+    if "--json-only" in sys.argv:
+        write_json_snapshot()
+        return 0
     items, errors = collect()
     for e in errors:
         print("source error:", e, file=sys.stderr)
@@ -141,6 +164,8 @@ def main():
         print("TICKER_UPDATED %d items" % len(items))
     else:
         print("TICKER_UNCHANGED")
+    if "--json" in sys.argv:
+        write_json_snapshot()
     return 0
 
 

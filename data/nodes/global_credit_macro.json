@@ -1,0 +1,69 @@
+{
+ "node_id": "global_credit_macro",
+ "run_id": "20261127T2030",
+ "generated_at": "2026-11-27T20:30+09:00",
+ "producer": "code",
+ "status": "ok",
+ "items": [
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US high-yield credit",
+   "metric_value": "3.72%",
+   "delta": "+54 bp (20 sessions)",
+   "priced_in_score": 3.4,
+   "momentum_score": -41.0,
+   "tension_score": 47.8,
+   "claim": "US high-yield OAS at 3.72% on Nov 24; +54 bp over 20 sessions; 97% of its 1-year range.",
+   "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
+   "published_at": "2026-11-24",
+   "id": "hy",
+   "series_key": "HYOAS",
+   "group": "Credit",
+   "orientation": -1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "FRED (BAMLH0A0HYM2, ICE BofA)",
+   "z20": 2.31,
+   "z5": 2.38,
+   "delta_value": 54.0,
+   "delta_unit": "bp",
+   "sens": {
+    "priced_in_x": 0.25,
+    "priced_in_y": -0.1,
+    "flow_x": 0.3,
+    "flow_y": -0.15
+   },
+   "read": "Tight high-yield spreads mean credit risk is priced for calm; widening is an early stress read."
+  },
+  {
+   "node_id": "global_credit_macro",
+   "asset_or_theme": "US investment-grade credit",
+   "metric_value": "0.98%",
+   "delta": "+10 bp (20 sessions)",
+   "priced_in_score": 0.0,
+   "momentum_score": -35.3,
+   "tension_score": 44.9,
+   "claim": "US investment-grade OAS at 0.98% on Nov 24; +10 bp over 20 sessions; 100% of its 1-year range.",
+   "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
+   "published_at": "2026-11-24",
+   "id": "ig",
+   "series_key": "IGOAS",
+   "group": "Credit",
+   "orientation": -1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "FRED (BAMLC0A0CM, ICE BofA)",
+   "z20": 1.76,
+   "z5": 2.07,
+   "delta_value": 10.0,
+   "delta_unit": "bp",
+   "sens": {
+    "priced_in_x": 0.15,
+    "priced_in_y": -0.1,
+    "flow_x": 0.2,
+    "flow_y": -0.1
+   },
+   "read": "Investment-grade spreads show how easily large borrowers fund themselves."
+  }
+ ]
+}

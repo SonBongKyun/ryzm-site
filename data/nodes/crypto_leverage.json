@@ -1,0 +1,69 @@
+{
+ "node_id": "crypto_leverage",
+ "run_id": "20261127T2030",
+ "generated_at": "2026-11-27T20:30+09:00",
+ "producer": "code",
+ "status": "ok",
+ "items": [
+  {
+   "node_id": "crypto_leverage",
+   "asset_or_theme": "BTC leverage (perp funding)",
+   "metric_value": "0.74 bp/8h",
+   "delta": "+0.32 bp/8h (20 sessions)",
+   "priced_in_score": 81.9,
+   "momentum_score": 17.3,
+   "tension_score": 43.8,
+   "claim": "BTC perp funding at 0.74 bp/8h on Nov 27; +0.32 bp/8h over 20 sessions; 82% of its 1-year range.",
+   "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
+   "published_at": "2026-11-27",
+   "id": "btc_lev",
+   "series_key": "BTCFUND",
+   "group": "Crypto",
+   "orientation": 1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "Binance USD-M futures funding history",
+   "z20": 0.72,
+   "z5": 1.96,
+   "delta_value": 0.323,
+   "delta_unit": "level",
+   "sens": {
+    "priced_in_x": 0.35,
+    "priced_in_y": -0.1,
+    "flow_x": 0.4,
+    "flow_y": -0.1
+   },
+   "read": "Positive perpetual funding means longs pay shorts; elevated funding is crowded leverage."
+  },
+  {
+   "node_id": "crypto_leverage",
+   "asset_or_theme": "ETH leverage (perp funding)",
+   "metric_value": "0.79 bp/8h",
+   "delta": "+0.06 bp/8h (20 sessions)",
+   "priced_in_score": 89.0,
+   "momentum_score": 3.0,
+   "tension_score": 38.2,
+   "claim": "ETH perp funding at 0.79 bp/8h on Nov 27; +0.06 bp/8h over 20 sessions; 89% of its 1-year range.",
+   "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
+   "published_at": "2026-11-27",
+   "id": "eth_lev",
+   "series_key": "ETHFUND",
+   "group": "Crypto",
+   "orientation": 1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "Binance USD-M futures funding history",
+   "z20": 0.12,
+   "z5": 1.52,
+   "delta_value": 0.061,
+   "delta_unit": "level",
+   "sens": {
+    "priced_in_x": 0.35,
+    "priced_in_y": -0.1,
+    "flow_x": 0.4,
+    "flow_y": -0.1
+   },
+   "read": "ETH funding is the higher-beta read on crypto leverage."
+  }
+ ]
+}
