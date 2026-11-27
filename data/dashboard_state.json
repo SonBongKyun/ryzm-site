@@ -1,8 +1,8 @@
 {
  "version": 3,
- "generated_at": "2026-11-27T20:38+09:00",
- "run_id": "20261127T2030",
- "as_of": "Nov 27 15:40 KST",
+ "generated_at": "2026-11-27T22:41+09:00",
+ "run_id": "20261127T2241",
+ "as_of": "Nov 27 22:40 KST",
  "disclaimer": "Reads recent market structure. Not a forecast, signal or investment advice.",
  "axes": {
   "x": {
@@ -69,12 +69,12 @@
   }
  ],
  "compass": {
-  "x": -22.4,
-  "y": -13.8,
-  "rate_pressure": -13.8,
-  "liquidity_flow": -22.4,
-  "angle": -148.4,
-  "magnitude": 26.3,
+  "x": -25.8,
+  "y": -14.1,
+  "rate_pressure": -14.1,
+  "liquidity_flow": -25.8,
+  "angle": -151.3,
+  "magnitude": 29.4,
   "quadrant": "safe_haven",
   "quadrant_label": "Safe-Haven Bond Crowding",
   "as_of_data": "2026-11-27",
@@ -98,12 +98,12 @@
     "end_from_snapshot": true
    },
    "SOFR": {
-    "change": 1.0,
+    "change": 0.0,
     "unit": "bp",
-    "end": 3.94,
-    "end_date": "2026-11-24",
-    "base": 3.93,
-    "base_date": "2026-10-26",
+    "end": 3.95,
+    "end_date": "2026-11-25",
+    "base": 3.95,
+    "base_date": "2026-10-27",
     "end_from_snapshot": true
    },
    "ONRRP": {
@@ -116,9 +116,9 @@
     "end_from_snapshot": true
    },
    "DXY": {
-    "change": 1.607,
+    "change": 1.901,
     "unit": "pct",
-    "end": 103.68,
+    "end": 103.98,
     "end_date": "2026-11-27",
     "base": 102.04,
     "base_date": "2026-10-28",
@@ -128,14 +128,14 @@
   "contributions": {
    "US2Y": -0.15,
    "US10Y": -0.14,
-   "SOFR": 0.0067,
-   "DXY": -0.4821,
+   "SOFR": 0.0,
+   "DXY": -0.5703,
    "ONRRP": -0.0006
   },
-  "snapshot_stamp": "Nov 27 15:40 KST",
+  "snapshot_stamp": "Nov 27 22:40 KST",
   "prev_needle": {
    "x": -29.5,
-   "y": 0.0,
+   "y": -1.0,
    "as_of": "2026-11-19",
    "source": "recomputed_5_sessions_back"
   },
@@ -161,11 +161,11 @@
    {
     "key": "DXY",
     "axis": "dollar liquidity",
-    "change": 1.607,
+    "change": 1.901,
     "unit": "pct",
     "from_date": "2026-10-28",
     "to_date": "2026-11-27",
-    "text": "The dollar index (DXY) +1.6% over 20 sessions tightened dollar liquidity."
+    "text": "The dollar index (DXY) +1.9% over 20 sessions tightened dollar liquidity."
    },
    {
     "key": "US2Y",
@@ -187,9 +187,9 @@
    }
   ],
   "note": {
-   "text": "Highest tension on the map: US 2Y Treasury (tension 67). US2Y at 4.61% on Nov 25; -9 bp over 20 sessions; 80% of its 1-year range.",
-   "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
-   "kind": "highest_tension"
+   "text": "The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.",
+   "source_url": "https://en.yna.co.kr/view/AEN20261127006000320",
+   "kind": "verified_claim"
   }
  },
  "bubble_map": {
@@ -210,17 +210,17 @@
     "label": "Korean won (USD/KRW)",
     "group": "Korea",
     "node_id": "asia_early_signal",
-    "metric_value": "1,337.10",
-    "delta": "-0.1% (20 sessions)",
-    "priced_in": 93.4,
-    "flow": 0.6,
-    "tension": 4.8,
-    "priced_in_score": 93.4,
-    "momentum_score": 0.6,
-    "tension_score": 4.8,
-    "concentration": 4.8,
-    "disagreement": 4.8,
-    "claim": "USD/KRW at 1,337.10 on Nov 27; -0.1% over 20 sessions; 7% of its 1-year range.",
+    "metric_value": "1,335.70",
+    "delta": "-0.2% (20 sessions)",
+    "priced_in": 94.0,
+    "flow": 1.5,
+    "tension": 2.4,
+    "priced_in_score": 94.0,
+    "momentum_score": 1.5,
+    "tension_score": 2.4,
+    "concentration": 2.4,
+    "disagreement": 2.4,
+    "claim": "USD/KRW at 1,335.70 on Nov 27; -0.2% over 20 sessions; 6% of its 1-year range.",
     "read": "The won is where US rates and dollar funding meet Korean flows; a higher USD/KRW reads as outflow.",
     "notes": [],
     "source": "Yahoo Finance (KRW=X)",
@@ -243,19 +243,25 @@
     "label": "KOSPI",
     "group": "Korea",
     "node_id": "asia_early_signal",
-    "metric_value": "4,907.11",
-    "delta": "-14.4% (20 sessions)",
-    "priced_in": 19.0,
-    "flow": -21.3,
-    "tension": 27.3,
-    "priced_in_score": 19.0,
-    "momentum_score": -21.3,
-    "tension_score": 27.3,
-    "concentration": 27.3,
-    "disagreement": 27.3,
-    "claim": "KOSPI at 4,907.11 on Nov 27; -14.4% over 20 sessions; 19% of its 1-year range.",
+    "metric_value": "4,915.68",
+    "delta": "-14.2% (20 sessions)",
+    "priced_in": 19.2,
+    "flow": -21.1,
+    "tension": 27.1,
+    "priced_in_score": 19.2,
+    "momentum_score": -21.1,
+    "tension_score": 27.1,
+    "concentration": 27.1,
+    "disagreement": 27.1,
+    "claim": "KOSPI at 4,915.68 on Nov 27; -14.2% over 20 sessions; 19% of its 1-year range.",
     "read": "Foreign equity flow sets the index, so it reacts first when global liquidity turns.",
-    "notes": [],
+    "notes": [
+     {
+      "claim": "The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.",
+      "source_url": "https://en.yna.co.kr/view/AEN20261127006000320",
+      "published_at": "2026-11-27"
+     }
+    ],
     "source": "Yahoo Finance (^KS11)",
     "source_url": "https://finance.yahoo.com/quote/%5EKS11/",
     "published_at": "2026-11-27",
@@ -288,7 +294,13 @@
     "disagreement": 25.8,
     "claim": "Samsung + SK hynix at 188.5 (1y ago = 100) on Nov 27; -21.1% over 20 sessions; 26% of its 1-year range.",
     "read": "Index weight and narrative are concentrated in AI memory, so the pair reacts to any change in US tech funding.",
-    "notes": [],
+    "notes": [
+     {
+      "claim": "South Korea's chip exports nearly quadrupled from a year earlier to $38.5 billion in November 1-20, 2026, a record for the 20-day period, according to Korea Customs Service data.",
+      "source_url": "https://en.yna.co.kr/view/AEN20261123002551320",
+      "published_at": "2026-11-23"
+     }
+    ],
     "source": "Yahoo Finance (005930.KS, 000660.KS)",
     "source_url": "https://finance.yahoo.com/quote/000660.KS/",
     "published_at": "2026-11-27",
@@ -302,6 +314,39 @@
      "flow_y": -0.05
     },
     "slot": "analysis:memory",
+    "detail_url": null
+   },
+   {
+    "id": "llm_82818f283a49",
+    "label": "Spot bitcoin ETF flows",
+    "group": "Theme",
+    "node_id": "crypto_leverage",
+    "metric_value": "-$5.39bn (Nov MTD)",
+    "delta": "largest monthly outflow on record",
+    "priced_in": 60,
+    "flow": -35,
+    "tension": 75,
+    "priced_in_score": 60,
+    "momentum_score": -35,
+    "tension_score": 75,
+    "concentration": 75,
+    "disagreement": 75,
+    "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
+    "read": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
+    "notes": [],
+    "source": null,
+    "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
+    "published_at": "2026-11-26",
+    "score_method": "llm",
+    "stale": false,
+    "example": false,
+    "sens": {
+     "priced_in_x": 0.2,
+     "priced_in_y": -0.1,
+     "flow_x": 0.25,
+     "flow_y": -0.1
+    },
+    "slot": "analysis:llm_82818f283a49",
     "detail_url": null
    },
    {
@@ -387,7 +432,13 @@
     "disagreement": 43.8,
     "claim": "BTC perp funding at 0.74 bp/8h on Nov 27; +0.32 bp/8h over 20 sessions; 82% of its 1-year range.",
     "read": "Positive perpetual funding means longs pay shorts; elevated funding is crowded leverage.",
-    "notes": [],
+    "notes": [
+     {
+      "claim": "Bitcoin futures open interest rose 5.1% over 24 hours to Nov. 26, 2026, and perpetual funding was positive on Binance, OKX, Bybit and Hyperliquid, CoinDesk reported.",
+      "source_url": "https://www.coindesk.com/markets/2026/11/26/bitcoin-little-changed-defi-tokens-lead-the-bounce-as-u-s-marks-thanksgiving",
+      "published_at": "2026-11-26"
+     }
+    ],
     "source": "Binance USD-M futures funding history",
     "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
     "published_at": "2026-11-27",
@@ -402,47 +453,14 @@
     },
     "slot": "analysis:btc_lev",
     "detail_url": null
-   },
-   {
-    "id": "sox",
-    "label": "US semiconductors (SOX)",
-    "group": "Equities",
-    "node_id": "asia_early_signal",
-    "metric_value": "8,774.86",
-    "delta": "-24.9% (20 sessions)",
-    "priced_in": 26.2,
-    "flow": -35.2,
-    "tension": 41.3,
-    "priced_in_score": 26.2,
-    "momentum_score": -35.2,
-    "tension_score": 41.3,
-    "concentration": 41.3,
-    "disagreement": 41.3,
-    "claim": "PHLX Semiconductor at 8,774.86 on Nov 25; -24.9% over 20 sessions; 26% of its 1-year range.",
-    "read": "The US chip index is the funding-sensitive end of tech and leads Korean chip flows.",
-    "notes": [],
-    "source": "Yahoo Finance (^SOX)",
-    "source_url": "https://finance.yahoo.com/quote/%5ESOX/",
-    "published_at": "2026-11-25",
-    "score_method": "deterministic",
-    "stale": false,
-    "example": false,
-    "sens": {
-     "priced_in_x": 0.3,
-     "priced_in_y": -0.1,
-     "flow_x": 0.35,
-     "flow_y": -0.1
-    },
-    "slot": "analysis:sox",
-    "detail_url": null
    }
   ]
  },
  "top_tension": [
+  "llm_82818f283a49",
   "us2y",
   "hy",
   "btc_lev",
-  "sox",
   "kospi",
   "memory",
   "krw"
@@ -451,8 +469,8 @@
   {
    "id": "current",
    "label": "Current Balance",
-   "x": -22.4,
-   "y": -13.8,
+   "x": -25.8,
+   "y": -14.1,
    "note": "Position from the latest sourced snapshot.",
    "illustrative": false
   },
@@ -487,30 +505,30 @@
    "rates_funding": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-27T20:30+09:00",
+    "generated_at": "2026-11-27T22:41+09:00",
     "items": 3
    },
    "global_credit_macro": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-27T20:30+09:00",
+    "generated_at": "2026-11-27T22:41+09:00",
     "items": 2
    },
    "asia_early_signal": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-27T20:30+09:00",
+    "generated_at": "2026-11-27T22:41+09:00",
     "items": 5
    },
    "crypto_leverage": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-27T20:30+09:00",
+    "generated_at": "2026-11-27T22:41+09:00",
     "items": 2
    }
   },
   "warnings": [],
-  "claims_kept": 0,
+  "claims_kept": 11,
   "claims_dropped": 0,
   "claims_rejected": 0,
   "stale_series": []
