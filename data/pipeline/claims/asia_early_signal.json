@@ -1,19 +1,7 @@
 {
  "node_id": "asia_early_signal",
- "generated_at": "2026-11-27T22:55+09:00",
+ "generated_at": "2026-11-28T08:50+09:00",
  "items": [
-  {
-   "node_id": "asia_early_signal",
-   "asset_or_theme": "Bank of Korea base rate",
-   "metric_value": "3.25%",
-   "delta": "+25 bp",
-   "priced_in_score": 80,
-   "momentum_score": 10,
-   "tension_score": 45,
-   "claim": "The Bank of Korea raised its Base Rate by 25 basis points to 3.25% on November 26, 2026, citing stronger growth, above-target inflation and financial stability risks.",
-   "source_url": "https://www.bok.or.kr/eng/bbs/E0000634/view.do?menuNo=400069&nttId=11067086",
-   "published_at": "2026-11-26"
-  },
   {
    "node_id": "asia_early_signal",
    "asset_or_theme": "KOSPI",
@@ -28,15 +16,27 @@
   },
   {
    "node_id": "asia_early_signal",
-   "asset_or_theme": "Memory chips (Samsung + SK hynix)",
-   "metric_value": "$38.5bn",
-   "delta": "chips 49.7% of exports",
-   "priced_in_score": 55,
-   "momentum_score": 30,
-   "tension_score": 50,
-   "claim": "South Korea's chip exports nearly quadrupled from a year earlier to $38.5 billion in November 1-20, 2026, a record for the 20-day period, according to Korea Customs Service data.",
-   "source_url": "https://en.yna.co.kr/view/AEN20261123002551320",
-   "published_at": "2026-11-23"
+   "asset_or_theme": "Bank of Korea base rate",
+   "metric_value": "3.25%",
+   "delta": "+25 bp",
+   "priced_in_score": 80,
+   "momentum_score": 10,
+   "tension_score": 45,
+   "claim": "The Bank of Korea raised its Base Rate by 25 basis points to 3.25% on November 26, 2026, citing stronger growth, above-target inflation and financial stability risks.",
+   "source_url": "https://www.bok.or.kr/eng/bbs/E0000634/view.do?menuNo=400069&nttId=11067086",
+   "published_at": "2026-11-26"
+  },
+  {
+   "node_id": "asia_early_signal",
+   "asset_or_theme": "Tokyo core CPI (BOJ)",
+   "metric_value": "2.9%",
+   "delta": "+0.3 pt vs Oct",
+   "priced_in_score": 60,
+   "momentum_score": 10,
+   "tension_score": 45,
+   "claim": "Tokyo's core CPI excluding fresh food rose 2.9% from a year earlier in mid-November 2026, up from 2.6% in October, while headline CPI rose 2.8%, according to Japan's Statistics Bureau.",
+   "source_url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000040525998",
+   "published_at": "2026-11-27"
   }
  ]
 }

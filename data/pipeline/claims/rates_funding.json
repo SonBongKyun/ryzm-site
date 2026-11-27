@@ -1,42 +1,42 @@
 {
  "node_id": "rates_funding",
- "generated_at": "2026-11-27T22:55+09:00",
+ "generated_at": "2026-11-28T08:50+09:00",
  "items": [
   {
    "node_id": "rates_funding",
-   "asset_or_theme": "US 7-year Treasury auction",
-   "metric_value": "4.708%",
-   "delta": "-18.6 bp vs Oct 29 auction (4.894%)",
+   "asset_or_theme": "US 10Y Treasury",
+   "metric_value": "4.94%",
+   "delta": "+9 bp vs Nov 25",
    "priced_in_score": 60,
-   "momentum_score": -15,
-   "tension_score": 35,
-   "claim": "Treasury sold $44 billion of 7-year notes on November 25, 2026 at a high yield of 4.708%, with a 4-5/8% coupon.",
-   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_3.pdf",
+   "momentum_score": 15,
+   "tension_score": 55,
+   "claim": "The 10-year Treasury par yield rose to 4.94% on November 27, 2026 from 4.85% on November 25, while the 2-year yield rose to 4.69% from 4.61%, according to Treasury daily yield curve data.",
+   "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve&field_tdr_date_value_month=202611",
+   "published_at": "2026-11-27"
+  },
+  {
+   "node_id": "rates_funding",
+   "asset_or_theme": "SOFR repo funding",
+   "metric_value": "3.95%",
+   "delta": "+3 bp vs Nov 20",
+   "priced_in_score": 70,
+   "momentum_score": 5,
+   "tension_score": 30,
+   "claim": "The Secured Overnight Financing Rate was 3.95% on November 25, 2026, up from 3.92% on November 20, on volume of $3.145 trillion, according to the New York Fed.",
+   "source_url": "https://markets.newyorkfed.org/api/rates/secured/sofr/last/5.json",
    "published_at": "2026-11-25"
   },
   {
    "node_id": "rates_funding",
-   "asset_or_theme": "US 2-year Treasury auction",
-   "metric_value": "4.700%",
-   "delta": null,
+   "asset_or_theme": "US 7-year Treasury auction",
+   "metric_value": "4.708%",
+   "delta": "$44bn sold",
    "priced_in_score": 65,
-   "momentum_score": -10,
+   "momentum_score": 5,
    "tension_score": 40,
-   "claim": "Treasury sold $69 billion of 2-year notes on November 23, 2026 at a high yield of 4.700%.",
-   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261123_3.pdf",
-   "published_at": "2026-11-23"
-  },
-  {
-   "node_id": "rates_funding",
-   "asset_or_theme": "US 5-year Treasury auction",
-   "metric_value": "4.719%",
-   "delta": null,
-   "priced_in_score": 60,
-   "momentum_score": -10,
-   "tension_score": 35,
-   "claim": "Treasury sold $70 billion of 5-year notes on November 24, 2026 at a high yield of 4.719%.",
-   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261124_3.pdf",
-   "published_at": "2026-11-24"
+   "claim": "Treasury sold $44 billion of 7-year notes on November 25, 2026 at a high yield of 4.708%, with a bid-to-cover ratio of 2.43.",
+   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_3.pdf",
+   "published_at": "2026-11-25"
   }
  ]
 }

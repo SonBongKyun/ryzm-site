@@ -1,30 +1,42 @@
 {
  "node_id": "crypto_leverage",
- "generated_at": "2026-11-27T22:55+09:00",
+ "generated_at": "2026-11-28T08:50+09:00",
  "items": [
   {
    "node_id": "crypto_leverage",
+   "asset_or_theme": "BTC leverage (perp funding)",
+   "metric_value": "OI little changed",
+   "delta": "BTC +1.3% d/d",
+   "priced_in_score": 45,
+   "momentum_score": 5,
+   "tension_score": 35,
+   "claim": "Bitcoin gained 1.3% with futures open interest little changed in the 24 hours to Nov. 27, 2026, and funding cooled to roughly neutral on Binance, OKX and Bybit, CoinDesk reported.",
+   "source_url": "https://www.coindesk.com/markets/2026/11/27/bitcoin-on-course-to-end-seven-week-losing-streak-while-trailing-stock-rebound",
+   "published_at": "2026-11-27"
+  },
+  {
+   "node_id": "crypto_leverage",
    "asset_or_theme": "Spot bitcoin ETF flows",
-   "metric_value": "-$5.39bn (Nov MTD)",
-   "delta": "largest monthly outflow on record",
-   "priced_in_score": 60,
-   "momentum_score": -35,
-   "tension_score": 75,
+   "metric_value": "-$5.39bn",
+   "delta": "Nov MTD to Nov 25",
+   "priced_in_score": 70,
+   "momentum_score": -30,
+   "tension_score": 70,
    "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
    "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
    "published_at": "2026-11-26"
   },
   {
    "node_id": "crypto_leverage",
-   "asset_or_theme": "BTC leverage (perp funding)",
-   "metric_value": "BTC futures OI +5.1% (24h)",
-   "delta": null,
-   "priced_in_score": 45,
-   "momentum_score": 10,
+   "asset_or_theme": "Bitcoin trend (50/200-day SMA)",
+   "metric_value": "+3.45% gap",
+   "delta": "vs 12% a month ago",
+   "priced_in_score": 55,
+   "momentum_score": -20,
    "tension_score": 55,
-   "claim": "Bitcoin futures open interest rose 5.1% over 24 hours to Nov. 26, 2026, and perpetual funding was positive on Binance, OKX, Bybit and Hyperliquid, CoinDesk reported.",
-   "source_url": "https://www.coindesk.com/markets/2026/11/26/bitcoin-little-changed-defi-tokens-lead-the-bounce-as-u-s-marks-thanksgiving",
-   "published_at": "2026-11-26"
+   "claim": "As of Nov. 27, 2026, bitcoin's 50-day simple moving average was about 3.45% above its 200-day average, down from a 12% gap a month earlier, CoinDesk reported.",
+   "source_url": "https://www.coindesk.com/daybook-us/2026/11/27/bitcoin-death-cross-is-coming-here-s-what-happened-after-previous-13",
+   "published_at": "2026-11-27"
   }
  ]
 }
