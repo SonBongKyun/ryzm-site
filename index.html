@@ -3,14 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
+<meta name="description" content="RYZM maps how rates, dollar funding and FX move through global markets, with Korea as the early signal. Frameworks, not forecasts.">
 <title>RYZM · Frameworks for markets</title>
 <link rel="canonical" href="https://ryzm.app/">
 <meta name="robots" content="index, follow, max-snippet:-1">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="RYZM">
 <meta property="og:title" content="RYZM · Frameworks for markets">
-<meta property="og:description" content="RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.">
+<meta property="og:description" content="RYZM maps how rates, dollar funding and FX move through global markets, with Korea as the early signal. Frameworks, not forecasts.">
 <meta property="og:url" content="https://ryzm.app/">
 <meta property="og:image" content="https://ryzm.app/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -40,7 +40,7 @@
    "@id": "https://ryzm.app/#website",
    "url": "https://ryzm.app/",
    "name": "RYZM · Frameworks for markets",
-   "description": "RYZM maps how US rates, dollar funding and FX move into Korean markets. Frameworks, not forecasts.",
+   "description": "RYZM maps how rates, dollar funding and FX move through global markets, with Korea as the early signal. Frameworks, not forecasts.",
    "inLanguage": "en-US",
    "publisher": {
     "@id": "https://ryzm.app/#org"
@@ -468,7 +468,7 @@
     pointer-events: none;
   }
   .intro::after {
-    content: "Rates \00B7  Funding \00B7  FX \00B7  Korea";
+    content: "Global funding transmission";
     order: -1;
     margin-bottom: 28px;
     font-size: 12px;
@@ -899,14 +899,18 @@
 
 <section class="intro">
   <h1>Frameworks for markets<br><em>Not forecasts</em></h1>
-  <p class="intro-lead">RYZM maps how US rates, dollar funding and FX move into Korean markets.</p>
+  <div class="intro-row">
+    <p class="intro-lead">How rates, dollar funding and FX move through global markets, with Korea as the early signal.</p>
+    <p class="intro-cta"><a class="intro-sub" href="/subscribe/">Subscribe free</a><a class="intro-mem" href="/membership/">Membership</a></p>
+  </div>
 </section>
 
 <!-- ryzm-dash -->
 <section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
   <div class="ck-head">
-    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><span class="ck-subtitle">Computed from the market snapshot above.</span></div>
+    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Live snapshot</span></div></div>
     <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
+    <button type="button" class="ck-reset" id="ck-reset" hidden>Reset to Live</button>
   </div>
 
   <div class="ck-controls">
@@ -927,7 +931,7 @@
     <div class="ck-compass">
       <div class="ck-panel-h"><h3>Macro Compass</h3><span class="cap">US rates and funding regime</span></div>
       <svg id="compass-svg" viewBox="0 0 300 300" role="img" aria-labelledby="regime-name" focusable="false"></svg>
-      <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost" id="ghost-note">1W ago</span></div>
+      <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost">1W ago</span><span class="lg-vals" id="ghost-note"></span></div>
       <div class="cmp-cap">US rates and funding regime</div>
     </div>
     <div class="ck-map">
@@ -938,7 +942,7 @@
         <ol class="tt-list" id="tension-list" aria-label="Top tension signals, ranked"></ol>
       </div>
       <div class="bm-legend" aria-hidden="true">
-        <span><i class="in"></i>Inflow</span><span><i class="flat"></i>Neutral</span><span><i class="out"></i>Outflow</span><span><i class="warn"></i>Priced-in 80+ or tension 75+</span><span>Size = tension</span>
+        <span><i class="in"></i>Inflow</span><span><i class="flat"></i>Neutral</span><span><i class="out"></i>Outflow</span><span><i class="warn"></i>Pulse: priced-in 80+ or tension 75+</span><span><i class="size"></i>Size: tension</span>
       </div>
     </div>
     <div class="ck-side" aria-live="polite">
@@ -951,20 +955,20 @@
           <div><dt>Liquidity flow</dt><dd id="ro-liq">−25.8</dd></div>
         </dl>
         <ul class="rg-drivers" id="regime-drivers">
-          <li>The dollar index (DXY) +1.9% over 20 sessions tightened dollar liquidity.</li>
-          <li>US 2Y yield −9 bp over 20 sessions eased rate pressure.</li>
-          <li>US 10Y yield −14 bp over 20 sessions eased rate pressure.</li>
+          <li>DXY +1.9% in 20 sessions: tighter dollar liquidity.</li>
+          <li>US 2Y −9 bp in 20 sessions: less rate pressure.</li>
+          <li>US 10Y −14 bp in 20 sessions: less rate pressure.</li>
         </ul>
-        <p class="rg-read" id="regime-read">Yields ease while dollar liquidity tightens, so money crowds into bonds. Korean equities lean on domestic buyers, and the won reflects global de-risking.</p>
+        <p class="rg-read" id="regime-read">Yields ease while dollar liquidity tightens, so money crowds into bonds.</p>
         <p class="rg-note" id="regime-note">The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.</p>
         <script type="application/ld+json" id="regime-jsonld">
 {
  "@context": "https://schema.org",
  "@type": "Dataset",
  "name": "RYZM Macro Compass reading",
- "description": "Safe-Haven Bond Crowding. Rate pressure −14.1 and liquidity flow −25.8 on a -50 to +50 scale, computed from the RYZM market snapshot (Nov 27 22:40 KST). Drivers: The dollar index (DXY) +1.9% over 20 sessions tightened dollar liquidity. US 2Y yield −9 bp over 20 sessions eased rate pressure. US 10Y yield −14 bp over 20 sessions eased rate pressure. Reads market structure; not a forecast.",
+ "description": "Safe-Haven Bond Crowding. Rate pressure −14.1 and liquidity flow −25.8 on a -50 to +50 scale, computed from the RYZM market snapshot (Nov 27 22:40 KST). Drivers: DXY +1.9% in 20 sessions: tighter dollar liquidity. US 2Y −9 bp in 20 sessions: less rate pressure. US 10Y −14 bp in 20 sessions: less rate pressure. Reads market structure; not a forecast.",
  "url": "https://ryzm.app/#cockpit",
- "dateModified": "2026-11-27T22:41+09:00",
+ "dateModified": "2026-11-28T03:02+09:00",
  "creator": {
   "@id": "https://ryzm.app/#org"
  },
@@ -989,16 +993,16 @@
       <!-- /regime-summary -->
       <div class="asset-panel" id="asset-panel">
         <div class="ap-kicker">Selected asset</div>
-        <div class="ap-name-row"><span class="ap-name" id="ap-name">Memory chips (Samsung + SK hynix)</span><span class="ap-chip" id="ap-group">Korea</span><span class="ap-chip ex" id="ap-ex" hidden>Example</span><span class="ap-status" id="ap-status" hidden></span></div>
+        <div class="ap-name-row"><span class="ap-name" id="ap-name">Memory chips (Samsung, SK hynix)</span><span class="ap-chip" id="ap-group">Korea</span><span class="ap-chip ex" id="ap-ex" hidden>Example</span><span class="ap-status" id="ap-status" hidden></span></div>
         <p class="ap-src" id="ap-src"></p>
         <p class="ap-read" id="ap-read">Select a bubble to read its structure.</p>
         <div class="ap-bottom">
           <div class="ap-metrics">
             <div class="ap-m"><div class="k" title="Priced-in: 1-year range position">Heat</div><div class="v" id="ap-heat">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-heat-bar"></span></div></div>
-            <div class="ap-m"><div class="k">Flow</div><div class="v" id="ap-flow">&middot;</div><div class="ap-track ap-flow-track"><span class="ap-fill ap-flow pos" id="ap-flow-bar"></span></div></div>
+            <div class="ap-m"><div class="k" title="Flow momentum: 20-session move, scaled">Momentum</div><div class="v" id="ap-flow">&middot;</div><div class="ap-track ap-flow-track"><span class="ap-fill ap-flow pos" id="ap-flow-bar"></span></div></div>
             <div class="ap-m"><div class="k">Tension</div><div class="v" id="ap-tension">&middot;</div><div class="ap-track"><span class="ap-fill" id="ap-tension-bar"></span></div></div>
           </div>
-          <div class="ap-room-row"><button type="button" class="ap-room" id="ap-room">Analysis room</button><span class="ap-room-note" id="ap-room-note">Coming later</span></div>
+          <div class="ap-room-row"><button type="button" class="ap-room" id="ap-room" title="Analysis room: coming later">Analysis room</button><span class="ap-room-note" id="ap-room-note">Coming later</span></div>
         </div>
       </div>
     </div>
@@ -1006,8 +1010,7 @@
 
   <p class="ck-error" id="cockpit-error" hidden>Live dashboard data could not load; the reading shown is the last published one.</p>
   <div class="ck-fine">
-    <span class="ck-fine-txt"><span class="ck-tag ex">Simulation prototype</span> Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
-    <span class="ck-fine-cta"><a class="ck-cta-btn" href="/subscribe/">Subscribe free</a><a class="ck-cta-link" href="/membership/">Membership</a></span>
+    <span class="ck-fine-txt">Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
   </div>
 </section>
 <!-- /ryzm-dash -->
@@ -1715,7 +1718,7 @@
 
 <footer>
   <div class="footer-inner">
-    <div>RYZM · frameworks, not forecasts</div>
+    <div class="footer-brand-line">RYZM · frameworks, not forecasts<span class="footer-tag">How rates, dollar funding and FX move through global markets, with Korea as the early signal.</span></div>
     <div class="footer-links">
       <a href="/about/">About</a>
       <a href="/subscribe/">Subscribe</a>
