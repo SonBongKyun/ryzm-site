@@ -1,21 +1,21 @@
 {
  "node_id": "global_credit_macro",
- "run_id": "20261127T2241",
- "generated_at": "2026-11-27T22:41+09:00",
+ "run_id": "20261128T0841",
+ "generated_at": "2026-11-28T08:41+09:00",
  "producer": "code",
  "status": "ok",
  "items": [
   {
    "node_id": "global_credit_macro",
    "asset_or_theme": "US high-yield credit",
-   "metric_value": "3.72%",
-   "delta": "+54 bp (20 sessions)",
-   "priced_in_score": 3.4,
-   "momentum_score": -41.0,
-   "tension_score": 47.8,
-   "claim": "US high-yield OAS at 3.72% on Nov 24; +54 bp over 20 sessions; 97% of its 1-year range.",
+   "metric_value": "3.77%",
+   "delta": "+51 bp (20 sessions)",
+   "priced_in_score": 0.0,
+   "momentum_score": -39.5,
+   "tension_score": 45.6,
+   "claim": "US high-yield OAS at 3.77% on Nov 26; +51 bp over 20 sessions; 100% of its 1-year range.",
    "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
-   "published_at": "2026-11-24",
+   "published_at": "2026-11-26",
    "id": "hy",
    "series_key": "HYOAS",
    "group": "Credit",
@@ -23,9 +23,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "FRED (BAMLH0A0HYM2, ICE BofA)",
-   "z20": 2.31,
-   "z5": 2.38,
-   "delta_value": 54.0,
+   "z20": 2.14,
+   "z5": 2.02,
+   "delta_value": 51.0,
    "delta_unit": "bp",
    "sens": {
     "priced_in_x": 0.25,
@@ -33,19 +33,21 @@
     "flow_x": 0.3,
     "flow_y": -0.15
    },
-   "read": "Tight high-yield spreads mean credit risk is priced for calm; widening is an early stress read."
+   "read": "Tight spreads price credit for calm. Widening is an early stress signal.",
+   "short": "HY Credit",
+   "range_pct": 100
   },
   {
    "node_id": "global_credit_macro",
    "asset_or_theme": "US investment-grade credit",
-   "metric_value": "0.98%",
+   "metric_value": "0.99%",
    "delta": "+10 bp (20 sessions)",
    "priced_in_score": 0.0,
-   "momentum_score": -35.3,
-   "tension_score": 44.9,
-   "claim": "US investment-grade OAS at 0.98% on Nov 24; +10 bp over 20 sessions; 100% of its 1-year range.",
+   "momentum_score": -35.0,
+   "tension_score": 41.1,
+   "claim": "US investment-grade OAS at 0.99% on Nov 26; +10 bp over 20 sessions; 100% of its 1-year range.",
    "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
-   "published_at": "2026-11-24",
+   "published_at": "2026-11-26",
    "id": "ig",
    "series_key": "IGOAS",
    "group": "Credit",
@@ -53,8 +55,8 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "FRED (BAMLC0A0CM, ICE BofA)",
-   "z20": 1.76,
-   "z5": 2.07,
+   "z20": 1.74,
+   "z5": 1.7,
    "delta_value": 10.0,
    "delta_unit": "bp",
    "sens": {
@@ -63,7 +65,9 @@
     "flow_x": 0.2,
     "flow_y": -0.1
    },
-   "read": "Investment-grade spreads show how easily large borrowers fund themselves."
+   "read": "Shows how easily large borrowers fund themselves.",
+   "short": "IG Credit",
+   "range_pct": 100
   }
  ]
 }
