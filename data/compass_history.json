@@ -9,6 +9,14 @@
    "y": -13.8,
    "quadrant": "safe_haven",
    "recorded_at": "2026-11-27T20:38+09:00"
+  },
+  {
+   "date": "2026-11-27",
+   "snapshot_stamp": "Nov 27 22:40 KST",
+   "x": -25.8,
+   "y": -14.1,
+   "quadrant": "safe_haven",
+   "recorded_at": "2026-11-27T22:41+09:00"
   }
  ]
 }

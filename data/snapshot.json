@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated_at": "2026-11-27T20:27+09:00",
- "snapshot_stamp": "Nov 27 15:40 KST",
+ "generated_at": "2026-11-27T22:41+09:00",
+ "snapshot_stamp": "Nov 27 22:40 KST",
  "origin": "index.html MARKET SNAPSHOT block (written by scripts/update_ticker.py)",
  "items": {
   "US2Y": {
@@ -26,11 +26,11 @@
   },
   "SOFR": {
    "label": "SOFR",
-   "display": "3.94%",
-   "value": 3.94,
+   "display": "3.95%",
+   "value": 3.95,
    "unit": "percent",
-   "date_label": "Nov 24",
-   "date": "2026-11-24",
+   "date_label": "Nov 25",
+   "date": "2026-11-25",
    "source": "Federal Reserve Bank of New York",
    "source_url": "https://www.newyorkfed.org/markets/reference-rates/sofr"
   },
@@ -46,8 +46,8 @@
   },
   "USDKRW": {
    "label": "USD/KRW",
-   "display": "1,337.1",
-   "value": 1337.1,
+   "display": "1,335.7",
+   "value": 1335.7,
    "unit": "index",
    "date_label": "Nov 27",
    "date": "2026-11-27",
@@ -56,8 +56,8 @@
   },
   "KOSPI": {
    "label": "KOSPI",
-   "display": "4,907.11 +4.2%",
-   "value": 4907.11,
+   "display": "4,915.68 +4.3%",
+   "value": 4915.68,
    "unit": "index",
    "date_label": "Nov 27",
    "date": "2026-11-27",
@@ -66,8 +66,8 @@
   },
   "DXY": {
    "label": "DXY",
-   "display": "103.68",
-   "value": 103.68,
+   "display": "103.98",
+   "value": 103.98,
    "unit": "index",
    "date_label": "Nov 27",
    "date": "2026-11-27",

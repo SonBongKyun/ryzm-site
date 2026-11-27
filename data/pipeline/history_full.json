@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated_at": "2026-11-27T20:27+09:00",
- "snapshot_stamp": "Nov 27 15:40 KST",
+ "generated_at": "2026-11-27T22:41+09:00",
+ "snapshot_stamp": "Nov 27 22:40 KST",
  "errors": [],
  "stale_series": [],
  "series": [
@@ -14,7 +14,7 @@
    "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-12",
@@ -1067,7 +1067,7 @@
    "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-12",
@@ -2120,12 +2120,8 @@
    "source_url": "https://www.newyorkfed.org/markets/reference-rates/sofr",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
-    {
-     "date": "2025-11-07",
-     "value": 3.93
-    },
     {
      "date": "2025-11-10",
      "value": 3.95
@@ -3161,6 +3157,10 @@
     {
      "date": "2026-11-24",
      "value": 3.94
+    },
+    {
+     "date": "2026-11-25",
+     "value": 3.95
     }
    ]
   },
@@ -3173,7 +3173,7 @@
    "source_url": "https://www.newyorkfed.org/markets/desk-operations/reverse-repo",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-12",
@@ -4222,7 +4222,7 @@
    "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-26",
@@ -5230,7 +5230,7 @@
     },
     {
      "date": "2026-11-27",
-     "value": 103.821
+     "value": 103.966
     }
    ]
   },
@@ -5243,7 +5243,7 @@
    "source_url": "https://finance.yahoo.com/quote/KRW%3DX/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-27",
@@ -6283,7 +6283,7 @@
     },
     {
      "date": "2026-11-27",
-     "value": 1333.57996
+     "value": 1335.71997
     }
    ]
   },
@@ -6296,7 +6296,7 @@
    "source_url": "https://finance.yahoo.com/quote/%5EKS11/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-27",
@@ -7289,7 +7289,7 @@
    "source_url": "https://finance.yahoo.com/quote/JPY%3DX/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-27",
@@ -8329,7 +8329,7 @@
     },
     {
      "date": "2026-11-27",
-     "value": 159.452
+     "value": 159.552
     }
    ]
   },
@@ -8342,7 +8342,7 @@
    "source_url": "https://finance.yahoo.com/quote/000660.KS/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-27",
@@ -9335,7 +9335,7 @@
    "source_url": "https://finance.yahoo.com/quote/%5ESOX/",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-26",
@@ -10352,7 +10352,7 @@
    "source_url": "https://fred.stlouisfed.org/series/BAMLH0A0HYM2",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-28",
@@ -11405,7 +11405,7 @@
    "source_url": "https://fred.stlouisfed.org/series/BAMLC0A0CM",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2025-11-28",
@@ -12458,7 +12458,7 @@
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2026-06-14",
@@ -13139,7 +13139,7 @@
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "available": true,
    "stale": false,
-   "last_success": "2026-11-27T20:27+09:00",
+   "last_success": "2026-11-27T22:41+09:00",
    "history": [
     {
      "date": "2026-06-14",
