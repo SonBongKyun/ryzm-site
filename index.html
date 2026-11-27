@@ -856,12 +856,18 @@
   .ticker-label { padding: 0 18px 0 10px; color: var(--ink-band-text); opacity: 0.75; font-family: var(--sans); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
   #feed:not(.expanded) .feed > .card:nth-of-type(n+8) { display: none; }
   body.tab-mode #feed .feed > .card:nth-of-type(n+8) { display: block; }
+  #breaking:not(.expanded) .breaking-list > li:nth-child(n+7) { display: none; }
+  body.tab-mode #breaking .breaking-list > li:nth-child(n+7) { display: flex; }
+  @media (max-width: 900px) {
+    #breaking:not(.expanded) .breaking-list > li:nth-child(n+5) { display: none; }
+    body.tab-mode #breaking .breaking-list > li:nth-child(n+5) { display: flex; }
+  }
   .feed-more {
     margin-top: 20px; padding: 10px 18px; border: 1px solid var(--border-strong); border-radius: 999px;
     background: var(--surface); color: var(--text); font-size: 14px; font-weight: 600; min-height: 44px;
   }
   .feed-more:hover { border-color: var(--text); }
-  #feed.expanded .feed-more, body.tab-mode .feed-more { display: none; }
+  #feed.expanded .feed-more, #breaking.expanded .feed-more, body.tab-mode .feed-more { display: none; }
 </style>
 <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
@@ -1063,6 +1069,7 @@
       <li data-src="https://apnews.com/article/stocks-markets-rates-technology-ai-anthropic-49ba1beba78fa4ed2bd5898029f79c91"><span class="b-time">Nov 23, 16:38 KST</span><span class="tag green">Korea</span><details class="b-more"><summary>Kospi drops 3.3% as chipmakers slide, even as U.S. stock futures bounce</summary><p class="b-sum">Asian markets mostly fell on Monday after Friday's AI-led selloff took the S&amp;P 500 down 3.7%. South Korea's Kospi lost 3.3% to close at 4,708.54, with Samsung Electronics down 3.1% and SK Hynix down 2.5%, even though both had recovered from steeper intraday losses. In early Monday trading, S&amp;P 500 futures were up 2.1%.</p></details><span class="b-src">AP</span></li>
       <li data-src="https://thehill.com/policy/international/6236693-donald-trump-iran-strikes-new-year/"><span class="b-time">Nov 23, 02:39 KST</span><span class="tag blue">FX</span><span class="b-head">Trump says indirect talks with Iran continue but he is inclined to resume strikes after the new year if no deal is reached</span><span class="b-src">The Hill</span></li>
     </ul>
+    <button type="button" class="feed-more" id="breaking-more">Show all headlines</button>
   </div>
 
   <div class="home-panels-wrap">
@@ -1757,6 +1764,18 @@ document.querySelectorAll('.filter-btn').forEach(function(btn){
   document.querySelectorAll('.filter-btn').forEach(function (b) {
     b.addEventListener('click', function () { feed.classList.add('expanded'); });
   });
+})();
+</script>
+<script>
+(function () {
+  var breaking = document.getElementById('breaking');
+  var more = document.getElementById('breaking-more');
+  if (!breaking || !more) return;
+  var total = breaking.querySelectorAll('.breaking-list > li').length;
+  var limit = window.matchMedia('(max-width: 900px)').matches ? 4 : 6;
+  if (total <= limit) { more.hidden = true; return; }
+  more.textContent = 'Show all ' + total + ' headlines';
+  more.addEventListener('click', function () { breaking.classList.add('expanded'); });
 })();
 </script>
 <script src="/assets/js/dashboard.js" defer></script>
