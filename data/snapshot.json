@@ -1,0 +1,78 @@
+{
+ "version": 1,
+ "generated_at": "2026-11-27T20:27+09:00",
+ "snapshot_stamp": "Nov 27 15:40 KST",
+ "origin": "index.html MARKET SNAPSHOT block (written by scripts/update_ticker.py)",
+ "items": {
+  "US2Y": {
+   "label": "US2Y",
+   "display": "4.61%",
+   "value": 4.61,
+   "unit": "percent",
+   "date_label": "Nov 25",
+   "date": "2026-11-25",
+   "source": "US Treasury daily par yield curve",
+   "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"
+  },
+  "US10Y": {
+   "label": "US10Y",
+   "display": "4.85%",
+   "value": 4.85,
+   "unit": "percent",
+   "date_label": "Nov 25",
+   "date": "2026-11-25",
+   "source": "US Treasury daily par yield curve",
+   "source_url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_yield_curve"
+  },
+  "SOFR": {
+   "label": "SOFR",
+   "display": "3.94%",
+   "value": 3.94,
+   "unit": "percent",
+   "date_label": "Nov 24",
+   "date": "2026-11-24",
+   "source": "Federal Reserve Bank of New York",
+   "source_url": "https://www.newyorkfed.org/markets/reference-rates/sofr"
+  },
+  "ONRRP": {
+   "label": "ON RRP",
+   "display": "$0.30bn",
+   "value": 0.3,
+   "unit": "usd_bn",
+   "date_label": "Nov 25",
+   "date": "2026-11-25",
+   "source": "Federal Reserve Bank of New York",
+   "source_url": "https://www.newyorkfed.org/markets/desk-operations/reverse-repo"
+  },
+  "USDKRW": {
+   "label": "USD/KRW",
+   "display": "1,337.1",
+   "value": 1337.1,
+   "unit": "index",
+   "date_label": "Nov 27",
+   "date": "2026-11-27",
+   "source": "Yahoo Finance (KRW=X)",
+   "source_url": "https://finance.yahoo.com/quote/KRW%3DX/"
+  },
+  "KOSPI": {
+   "label": "KOSPI",
+   "display": "4,907.11 +4.2%",
+   "value": 4907.11,
+   "unit": "index",
+   "date_label": "Nov 27",
+   "date": "2026-11-27",
+   "source": "Yahoo Finance (^KS11)",
+   "source_url": "https://finance.yahoo.com/quote/%5EKS11/"
+  },
+  "DXY": {
+   "label": "DXY",
+   "display": "103.68",
+   "value": 103.68,
+   "unit": "index",
+   "date_label": "Nov 27",
+   "date": "2026-11-27",
+   "source": "Yahoo Finance (DX-Y.NYB)",
+   "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/"
+  }
+ }
+}
