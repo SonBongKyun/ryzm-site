@@ -565,7 +565,30 @@
   .search-box { max-width: 920px; margin: -12px auto 14px; display: flex; flex-direction: column; gap: 12px; }
   .search-count { font-family: var(--mono); font-size: 12px; color: var(--text-muted); max-width: 920px; margin: 0 auto 8px; }
   .item mark { background: var(--accent-soft); color: inherit; border-radius: 3px; padding: 0 2px; }
+  /* discussion placeholder, guidelines, membership */
+  .discussion { max-width: 720px; margin: 40px auto 0; padding: 20px 22px; border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); }
+  .disc-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .disc-title { font-family: var(--serif); font-size: 22px; font-weight: 500; margin: 0; }
+  .disc-badge { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 3px 9px; }
+  .disc-lead, .disc-rule { font-size: 14.5px; line-height: 1.55; color: var(--text-2); margin: 10px 0 0; }
+  .disc-cats { margin: 10px 0 0; padding-left: 18px; font-size: 14px; line-height: 1.55; color: var(--text-2); }
+  .disc-cats li { margin: 4px 0; }
+  .disc-list:empty { display: none; }
+  .disc-rule a { color: var(--accent-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .tiers { max-width: 880px; margin: 8px auto 0; padding: 0 28px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .tier { border: 1px solid var(--border-strong); border-radius: 12px; background: var(--surface); padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+  .tier-pro { border-color: var(--accent); }
+  .tier-name { font-family: var(--serif); font-size: 24px; font-weight: 500; }
+  .tier-tag { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent-ink); border: 1px dashed var(--accent); border-radius: 999px; padding: 2px 8px; vertical-align: middle; }
+  .tier-price { font-family: var(--mono); font-size: 18px; color: var(--text); }
+  .tier-price.soon { font-size: 14px; color: var(--accent-ink); }
+  .tier ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.6; color: var(--text-2); flex: 1; }
+  .tier-cta { align-self: flex-start; min-height: 38px; display: inline-flex; align-items: center; padding: 0 16px; border-radius: 999px; background: var(--text); color: var(--surface); text-decoration: none; font-size: 14px; font-weight: 600; }
+  .tier-cta.disabled { background: transparent; color: var(--text-muted); border: 1px dashed var(--border-strong); }
+  .tiers-note { max-width: 880px; margin: 14px auto 0; padding: 0 28px; }
+  .guide-prose { max-width: 720px; margin: 0 auto; padding: 0 28px; }
   @media (max-width: 900px) {
+    .tiers { grid-template-columns: 1fr; }
     .footer-v2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .footer-brand { grid-column: 1 / -1; }
     .arch-grid { grid-template-columns: 1fr; }
@@ -706,6 +729,27 @@
 <p><em>RYZM Framework. Independent market commentary, not personalized investment advice. No trade signals.</em></p>
     </div>
   </article>
+  <section class="discussion" id="discussion" aria-labelledby="discussion-title" data-thread="how-to-read-a-bank-of-korea-decision-rates-financial-stability-won" data-status="closed">
+    <div class="disc-head">
+      <h2 class="disc-title" id="discussion-title">Discussion</h2>
+      <span class="disc-badge">Discussion opens soon</span>
+    </div>
+    <p class="disc-lead">Comments will open under each brief and note. Nothing is collected yet. Three kinds of comment will be welcome:</p>
+    <ul class="disc-cats">
+          <li data-category="path-check"><strong>Transmission-path check.</strong> Does the chain from US rates or dollar funding to Korean markets hold? Show where it breaks.</li>
+          <li data-category="data"><strong>Additional data.</strong> A dataset, release or chart that tests the note, with its source and date.</li>
+          <li data-category="korea-context"><strong>Korea local context.</strong> Local rules, flows, tax, household or corporate detail the note misses.</li>
+    </ul>
+    <p class="disc-rule">Forecasts, price targets and stock picks are off topic and may be removed. Read the <a href="/community-guidelines/">community guidelines</a>.</p>
+    <div class="disc-list" data-role="comments" aria-live="polite"></div>
+    <template id="comment-template">
+      <article class="comment" data-comment-id="" data-category="" data-status="visible">
+        <header class="comment-meta"><span class="comment-author"></span><span class="comment-cat"></span><time class="comment-time"></time></header>
+        <div class="comment-body"></div>
+        <button type="button" class="comment-report" data-action="report" disabled>Report</button>
+      </article>
+    </template>
+  </section>
   </div>
   <aside class="related" aria-label="Related articles">
     <div class="section-title">Related articles</div>
@@ -763,6 +807,8 @@
       <div class="footer-h">Site</div>
       <a href="/about/">About</a>
       <a href="/subscribe/">Free weekly brief</a>
+      <a href="/membership/">Membership</a>
+      <a href="/community-guidelines/">Community guidelines</a>
       <a href="/search/">Search</a>
       <a href="/rss.xml">RSS</a>
       <a href="/data/frameworks.json">Frameworks API</a>
