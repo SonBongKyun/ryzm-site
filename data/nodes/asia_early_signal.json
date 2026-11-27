@@ -1,21 +1,21 @@
 {
  "node_id": "asia_early_signal",
- "run_id": "20261127T2241",
- "generated_at": "2026-11-27T22:41+09:00",
+ "run_id": "20261128T0841",
+ "generated_at": "2026-11-28T08:41+09:00",
  "producer": "code",
  "status": "ok",
  "items": [
   {
    "node_id": "asia_early_signal",
    "asset_or_theme": "Korean won (USD/KRW)",
-   "metric_value": "1,335.70",
-   "delta": "-0.2% (20 sessions)",
-   "priced_in_score": 94.0,
-   "momentum_score": 1.5,
-   "tension_score": 2.4,
-   "claim": "USD/KRW at 1,335.70 on Nov 27; -0.2% over 20 sessions; 6% of its 1-year range.",
+   "metric_value": "1,333.00",
+   "delta": "+0.6% (20 sessions)",
+   "priced_in_score": 95.2,
+   "momentum_score": -5.1,
+   "tension_score": 56.0,
+   "claim": "USD/KRW at 1,333.00 on Nov 28; +0.6% over 20 sessions; 5% of its 1-year range.",
    "source_url": "https://finance.yahoo.com/quote/KRW%3DX/",
-   "published_at": "2026-11-27",
+   "published_at": "2026-11-28",
    "id": "krw",
    "series_key": "USDKRW",
    "group": "Korea",
@@ -23,9 +23,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "Yahoo Finance (KRW=X)",
-   "z20": -0.06,
-   "z5": 0.05,
-   "delta_value": -0.17,
+   "z20": 0.2,
+   "z5": -0.6,
+   "delta_value": 0.564,
    "delta_unit": "pct",
    "sens": {
     "priced_in_x": 0.3,
@@ -33,7 +33,9 @@
     "flow_x": 0.35,
     "flow_y": -0.15
    },
-   "read": "The won is where US rates and dollar funding meet Korean flows; a higher USD/KRW reads as outflow."
+   "read": "Where US rates and dollar funding meet Korean flows. A higher USD/KRW reads as outflow.",
+   "short": "KRW",
+   "range_pct": 5
   },
   {
    "node_id": "asia_early_signal",
@@ -63,11 +65,13 @@
     "flow_x": 0.4,
     "flow_y": -0.15
    },
-   "read": "Foreign equity flow sets the index, so it reacts first when global liquidity turns."
+   "read": "Foreign equity flow sets the index, so it turns first when global liquidity does.",
+   "short": "KOSPI",
+   "range_pct": 19
   },
   {
    "node_id": "asia_early_signal",
-   "asset_or_theme": "Memory chips (Samsung + SK hynix)",
+   "asset_or_theme": "Memory chips (Samsung, SK hynix)",
    "metric_value": "188.5 (1y ago = 100)",
    "delta": "-21.1% (20 sessions)",
    "priced_in_score": 26.5,
@@ -93,17 +97,19 @@
     "flow_x": 0.35,
     "flow_y": -0.05
    },
-   "read": "Index weight and narrative are concentrated in AI memory, so the pair reacts to any change in US tech funding."
+   "read": "AI memory dominates index weight, so the pair moves with US tech funding.",
+   "short": "KR Memory",
+   "range_pct": 26
   },
   {
    "node_id": "asia_early_signal",
    "asset_or_theme": "Yen carry (USD/JPY)",
-   "metric_value": "159.55",
+   "metric_value": "159.51",
    "delta": "+1.1% (20 sessions)",
-   "priced_in_score": 62.2,
-   "momentum_score": 15.6,
-   "tension_score": 20.9,
-   "claim": "USD/JPY at 159.55 on Nov 27; +1.1% over 20 sessions; 62% of its 1-year range.",
+   "priced_in_score": 61.9,
+   "momentum_score": 15.2,
+   "tension_score": 20.6,
+   "claim": "USD/JPY at 159.51 on Nov 27; +1.1% over 20 sessions; 62% of its 1-year range.",
    "source_url": "https://finance.yahoo.com/quote/JPY%3DX/",
    "published_at": "2026-11-27",
    "id": "yen_carry",
@@ -113,9 +119,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "Yahoo Finance (JPY=X)",
-   "z20": 0.64,
-   "z5": -0.09,
-   "delta_value": 1.108,
+   "z20": 0.63,
+   "z5": -0.11,
+   "delta_value": 1.084,
    "delta_unit": "pct",
    "sens": {
     "priced_in_x": 0.25,
@@ -123,19 +129,21 @@
     "flow_x": 0.3,
     "flow_y": 0.1
    },
-   "read": "A higher USD/JPY rewards borrowing in yen; a sharp drop is the classic carry-unwind signal."
+   "read": "A higher USD/JPY rewards yen borrowing. A sharp drop signals a carry unwind.",
+   "short": "Yen Carry",
+   "range_pct": 62
   },
   {
    "node_id": "asia_early_signal",
    "asset_or_theme": "US semiconductors (SOX)",
-   "metric_value": "8,774.86",
-   "delta": "-24.9% (20 sessions)",
-   "priced_in_score": 26.2,
-   "momentum_score": -35.2,
-   "tension_score": 41.3,
-   "claim": "PHLX Semiconductor at 8,774.86 on Nov 25; -24.9% over 20 sessions; 26% of its 1-year range.",
+   "metric_value": "9,186.71",
+   "delta": "-20.2% (20 sessions)",
+   "priced_in_score": 31.4,
+   "momentum_score": -30.4,
+   "tension_score": 36.6,
+   "claim": "PHLX Semiconductor at 9,186.71 on Nov 27; -20.2% over 20 sessions; 31% of its 1-year range.",
    "source_url": "https://finance.yahoo.com/quote/%5ESOX/",
-   "published_at": "2026-11-25",
+   "published_at": "2026-11-27",
    "id": "sox",
    "series_key": "SOX",
    "group": "Equities",
@@ -143,9 +151,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "Yahoo Finance (^SOX)",
-   "z20": -1.75,
-   "z5": -1.39,
-   "delta_value": -24.898,
+   "z20": -1.41,
+   "z5": -0.38,
+   "delta_value": -20.242,
    "delta_unit": "pct",
    "sens": {
     "priced_in_x": 0.3,
@@ -153,7 +161,9 @@
     "flow_x": 0.35,
     "flow_y": -0.1
    },
-   "read": "The US chip index is the funding-sensitive end of tech and leads Korean chip flows."
+   "read": "The funding-sensitive end of US tech. It leads Korean chip flows.",
+   "short": "US Semis",
+   "range_pct": 31
   }
  ]
 }
