@@ -1,0 +1,131 @@
+{
+ "version": 1,
+ "site": "https://ryzm.app",
+ "name": "RYZM framework notes",
+ "description": "Framework notes on how US rates, dollar funding and FX reach Korean markets. Not forecasts.",
+ "count": 6,
+ "items": [
+  {
+   "slug": "how-to-read-a-bank-of-korea-decision-rates-financial-stability-won",
+   "title": "How to Read a Bank of Korea Decision: Policy Rates, Financial Stability, and the Won",
+   "summary": "A Bank of Korea (BOK) rate decision is rarely a single-variable call on headline inflation. The Monetary Policy Board weighs price stability against financial stability, mainly household leverage…",
+   "url": "https://ryzm.app/articles/how-to-read-a-bank-of-korea-decision-rates-financial-stability-won/",
+   "path": "/articles/how-to-read-a-bank-of-korea-decision-rates-financial-stability-won/",
+   "date": "2026-11-25T09:00:00+09:00",
+   "modified": "2026-11-25T09:00:00+09:00",
+   "tags": [],
+   "topics": [
+    "Rates",
+    "FX",
+    "Korea"
+   ],
+   "type": "Framework"
+  },
+  {
+   "slug": "how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw",
+   "title": "How Does US Dollar Liquidity (SOFR and the Fed’s Reverse Repo) Move USD/KRW?",
+   "summary": "US dollar liquidity reaches the Korean won through the price of borrowing dollars. With the Fed’s overnight reverse repo facility nearly empty, shifts in Treasury cash and bill supply now hit bank…",
+   "url": "https://ryzm.app/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
+   "path": "/articles/how-us-dollar-liquidity-sofr-reverse-repo-moves-usd-krw/",
+   "date": "2026-11-21T23:26:09+09:00",
+   "modified": "2026-11-21T23:26:09+09:00",
+   "tags": [
+    "BOK",
+    "Current Account",
+    "Fed",
+    "FX Swap & Basis",
+    "SOFR & Repo",
+    "USD/KRW"
+   ],
+   "topics": [
+    "Rates",
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "type": "Framework"
+  },
+  {
+   "slug": "ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026",
+   "title": "RYZM Framework Note | How US rates and dollar funding reach Korea | November 20, 2026",
+   "summary": "This note maps how four things connect: US rates, dollar funding, the won and Korean assets. It is a reading framework. It is not a forecast, a trade signal or a view on where any price goes next.",
+   "url": "https://ryzm.app/articles/ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026/",
+   "path": "/articles/ryzm-framework-note-how-us-rates-and-dollar-funding-reach-korea-november-20-2026/",
+   "date": "2026-11-20T20:20:02+09:00",
+   "modified": "2026-11-20T20:20:02+09:00",
+   "tags": [
+    "BOK",
+    "Current Account",
+    "Fed",
+    "Foreign Flows",
+    "FX Reserves",
+    "FX Swap & Basis",
+    "KOSPI",
+    "KTB",
+    "SOFR & Repo",
+    "USD/KRW"
+   ],
+   "topics": [
+    "Rates",
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "type": "Framework"
+  },
+  {
+   "slug": "fx-hedging-costs-korea",
+   "title": "FX Hedging Costs: Why Dollar Funding Matters for Korea",
+   "summary": "A dollar asset yielding 5% is not automatically a 5% investment for a won-based investor. The cash flows arrive in one currency and the investor’s spending or liabilities may sit in another. The…",
+   "url": "https://ryzm.app/articles/fx-hedging-costs-korea/",
+   "path": "/articles/fx-hedging-costs-korea/",
+   "date": "2026-10-11T18:46:46+09:00",
+   "modified": "2026-11-20T20:19:33+09:00",
+   "tags": [
+    "FX Swap & Basis",
+    "USD/KRW"
+   ],
+   "topics": [
+    "Funding",
+    "FX",
+    "Korea"
+   ],
+   "type": "Framework"
+  },
+  {
+   "slug": "sofr-vs-iorb-dollar-funding",
+   "title": "SOFR vs IORB: Reading Dollar Funding Pressure",
+   "summary": "The level of SOFR tells you what overnight Treasury financing costs. Its relationship to IORB helps frame why. The spread is useful, but calling every positive reading a dollar shortage turns a…",
+   "url": "https://ryzm.app/articles/sofr-vs-iorb-dollar-funding/",
+   "path": "/articles/sofr-vs-iorb-dollar-funding/",
+   "date": "2026-10-11T18:46:32+09:00",
+   "modified": "2026-11-20T20:19:36+09:00",
+   "tags": [
+    "Fed",
+    "SOFR & Repo"
+   ],
+   "topics": [
+    "Funding",
+    "FX"
+   ],
+   "type": "Framework"
+  },
+  {
+   "slug": "treasury-term-premium-explained",
+   "title": "What Is the Treasury Term Premium? Reading a Bond Selloff",
+   "summary": "A higher Treasury yield does not, by itself, mean the market expects a more hawkish Federal Reserve. First separate the expected path of short rates from the price investors place on carrying…",
+   "url": "https://ryzm.app/articles/treasury-term-premium-explained/",
+   "path": "/articles/treasury-term-premium-explained/",
+   "date": "2026-10-11T18:46:14+09:00",
+   "modified": "2026-11-20T20:19:36+09:00",
+   "tags": [
+    "Fed",
+    "Treasuries"
+   ],
+   "topics": [
+    "Rates"
+   ],
+   "type": "Framework"
+  }
+ ]
+}

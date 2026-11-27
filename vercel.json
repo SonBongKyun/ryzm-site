@@ -3,5 +3,30 @@
   "framework": null,
   "installCommand": "",
   "buildCommand": "base64 -d assets/og-image.png.b64 > og-image.png && base64 -d assets/favicon-32.png.b64 > favicon-32.png && base64 -d assets/apple-touch-icon.png.b64 > apple-touch-icon.png && find assets -name '*.b64' -exec sh -c 'base64 -d \"$1\" > \"${1%.b64}\"' _ {} \\;",
-  "outputDirectory": "."
+  "outputDirectory": ".",
+  "rewrites": [
+    {
+      "source": "/api/dashboard_state.json",
+      "destination": "/data/dashboard_state.json"
+    },
+    {
+      "source": "/api/snapshot.json",
+      "destination": "/data/snapshot.json"
+    },
+    {
+      "source": "/api/frameworks.json",
+      "destination": "/data/frameworks.json"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ]
 }
