@@ -618,3 +618,91 @@
   .ryzm-dash .ck-grid { grid-template-columns: 220px minmax(0, 1fr) 360px; }
   .ryzm-dash .rg-note { font-size: 11px; line-height: 1.38; }
 }
+
+/* ---- color round (2026-11-28): a small set of muted print inks. Terracotta stays the primary accent
+   (needle tip, Korea / Asia early signal, simulation). Every color is paired with a label or shape. ---- */
+.ryzm-dash[data-theme="paper"] {
+  --ink-terra: #c47b4a; --ink-terra-d: #9c5729;
+  --ink-teal: #4a7d8c;  --ink-teal-d: #2f5d6b;
+  --ink-plum: #8a6283;  --ink-plum-d: #6b4466;
+  --ink-ochre: #c49a3a; --ink-ochre-d: #7a5a12;
+  --ink-sage: #7d9a68;  --ink-sage-d: #4a6440;
+}
+/* compass zones: very light flat tints, colored zone names */
+.ryzm-dash .cmp-q.q-liquidity_rally     { --qc: var(--ink-sage);  --qd: var(--ink-sage-d); }
+.ryzm-dash .cmp-q.q-selective_growth    { --qc: var(--ink-ochre); --qd: var(--ink-ochre-d); }
+.ryzm-dash .cmp-q.q-stagflation_defense { --qc: var(--ink-plum);  --qd: var(--ink-plum-d); }
+.ryzm-dash .cmp-q.q-safe_haven          { --qc: var(--ink-teal);  --qd: var(--ink-teal-d); }
+.ryzm-dash .cmp-q { fill: color-mix(in srgb, var(--qc) 5%, transparent); }
+.ryzm-dash .cmp-q.on { fill: color-mix(in srgb, var(--qc) 13%, transparent); }
+.ryzm-dash .cmp-ql.q-liquidity_rally     { fill: var(--ink-sage-d); }
+.ryzm-dash .cmp-ql.q-selective_growth    { fill: var(--ink-ochre-d); }
+.ryzm-dash .cmp-ql.q-stagflation_defense { fill: var(--ink-plum-d); }
+.ryzm-dash .cmp-ql.q-safe_haven          { fill: var(--ink-teal-d); }
+.ryzm-dash .cmp-ql { font-weight: 500; opacity: 0.92; }
+.ryzm-dash .cmp-ql.on { opacity: 1; font-weight: 700; }
+.ryzm-dash .cmp-ql.q-liquidity_rally     { stroke: color-mix(in srgb, var(--ink-sage) 5%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.q-selective_growth    { stroke: color-mix(in srgb, var(--ink-ochre) 5%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.q-stagflation_defense { stroke: color-mix(in srgb, var(--ink-plum) 5%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.q-safe_haven          { stroke: color-mix(in srgb, var(--ink-teal) 5%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.on.q-liquidity_rally     { stroke: color-mix(in srgb, var(--ink-sage) 13%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.on.q-selective_growth    { stroke: color-mix(in srgb, var(--ink-ochre) 13%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.on.q-stagflation_defense { stroke: color-mix(in srgb, var(--ink-plum) 13%, var(--rd-bg)); }
+.ryzm-dash .cmp-ql.on.q-safe_haven          { stroke: color-mix(in srgb, var(--ink-teal) 13%, var(--rd-bg)); }
+.ryzm-dash .cmp-tip { fill: var(--ink-terra); }
+
+/* bubble map: color = signal group; fill style = flow (solid inflow, light neutral, hatched outflow) */
+.ryzm-dash .n-rates  { --nc: var(--ink-teal);  --nd: var(--ink-teal-d); }
+.ryzm-dash .n-credit { --nc: var(--ink-plum);  --nd: var(--ink-plum-d); }
+.ryzm-dash .n-asia   { --nc: var(--ink-terra); --nd: var(--ink-terra-d); }
+.ryzm-dash .n-crypto { --nc: var(--ink-ochre); --nd: var(--ink-ochre-d); }
+.ryzm-dash .bm-b .bm-c { stroke: var(--nd); stroke-opacity: 1; }
+.ryzm-dash .bm-b.tone-in .bm-c   { fill: var(--nc); fill-opacity: 0.42; }
+.ryzm-dash .bm-b.tone-flat .bm-c { fill: var(--nc); fill-opacity: 0.12; stroke-opacity: 0.85; }
+.ryzm-dash .bm-b.n-rates.tone-out .bm-c  { fill: url(#bm-hatch-rates); fill-opacity: 1; }
+.ryzm-dash .bm-b.n-credit.tone-out .bm-c { fill: url(#bm-hatch-credit); fill-opacity: 1; }
+.ryzm-dash .bm-b.n-asia.tone-out .bm-c   { fill: url(#bm-hatch-asia); fill-opacity: 1; }
+.ryzm-dash .bm-b.n-crypto.tone-out .bm-c { fill: url(#bm-hatch-crypto); fill-opacity: 1; }
+.ryzm-dash .bm-hatch-bg { fill: var(--nc); fill-opacity: 0.1; }
+.ryzm-dash .bm-hatch-line.n-rates, .ryzm-dash .bm-hatch-line.n-credit, .ryzm-dash .bm-hatch-line.n-asia, .ryzm-dash .bm-hatch-line.n-crypto { stroke: var(--nd); stroke-opacity: 0.7; stroke-width: 1.3; }
+.ryzm-dash .bm-b.tone-in:hover .bm-c { fill-opacity: 0.55; }
+.ryzm-dash .bm-b.warn .bm-ring { stroke: var(--nd); }
+.ryzm-dash .bm-b:not(.is-sel):not(.is-hover) .bm-label { fill: var(--rd-text-2); }
+.ryzm-dash .bm-b.is-sel .bm-label, .ryzm-dash .bm-b.is-hover .bm-label { fill: var(--nd); }
+/* legends: group colors on top, flow styles in neutral ink below */
+.ryzm-dash .bm-nodes { display: flex; flex-wrap: wrap; gap: 2px 14px; margin-top: 4px; font-size: 10.5px; color: var(--rd-text-2); }
+.ryzm-dash .bm-nodes span { display: inline-flex; align-items: center; gap: 6px; }
+.ryzm-dash .bm-nodes i { width: 10px; height: 10px; border-radius: 50%; background: color-mix(in srgb, var(--nc) 42%, transparent); border: 1.2px solid var(--nd); }
+.ryzm-dash .bm-legend { margin-top: 2px; }
+.ryzm-dash .bm-legend .in { background: color-mix(in srgb, var(--rd-ink) 30%, transparent); border-color: var(--rd-ink); }
+.ryzm-dash .bm-legend .flat { background: color-mix(in srgb, var(--rd-ink) 6%, transparent); opacity: 1; }
+.ryzm-dash .bm-legend .out { background-color: transparent; }
+/* ranked list (phones): bar in the group color */
+.ryzm-dash .tt-list li .tt-bar i { background: var(--nc, var(--rd-accent)); }
+.ryzm-dash .tt-list li button { border-left: 3px solid transparent; padding-left: 6px; }
+.ryzm-dash .tt-list li[class*="n-"] button { border-left-color: var(--nc); }
+
+/* inspector: group accent + colored metric bars (heat terracotta, momentum teal, tension ochre) */
+.ryzm-dash .asset-panel[data-node="rates"]  { --nc: var(--ink-teal);  --nd: var(--ink-teal-d); }
+.ryzm-dash .asset-panel[data-node="credit"] { --nc: var(--ink-plum);  --nd: var(--ink-plum-d); }
+.ryzm-dash .asset-panel[data-node="asia"]   { --nc: var(--ink-terra); --nd: var(--ink-terra-d); }
+.ryzm-dash .asset-panel[data-node="crypto"] { --nc: var(--ink-ochre); --nd: var(--ink-ochre-d); }
+.ryzm-dash .asset-panel { border-left: 3px solid var(--nc, transparent); padding-left: 10px; transition: border-color 0.2s ease; }
+.ryzm-dash .asset-panel #ap-group { color: var(--nd, var(--rd-text-2)); border-color: var(--nc, var(--rd-rule-strong)); background: color-mix(in srgb, var(--nc, transparent) 10%, var(--rd-surface)); }
+.ryzm-dash #ap-heat-bar { background: var(--ink-terra); }
+.ryzm-dash .ap-flow.pos, .ryzm-dash .ap-flow.neg { background: var(--ink-teal); }
+.ryzm-dash .ap-flow.neg { opacity: 0.75; }
+.ryzm-dash #ap-tension-bar { background: var(--ink-ochre); }
+.ryzm-dash .ap-m:nth-child(1) .k { color: var(--ink-terra-d); }
+.ryzm-dash .ap-m:nth-child(2) .k { color: var(--ink-teal-d); }
+.ryzm-dash .ap-m:nth-child(3) .k { color: var(--ink-ochre-d); }
+
+/* badge + scenario dots */
+.ryzm-dash .ck-mode.live::before { background: var(--ink-sage); box-shadow: 0 0 0 2px color-mix(in srgb, var(--ink-sage) 25%, transparent); }
+.ryzm-dash .sc-pill[data-id="current"]          { --sc: var(--ink-sage); }
+.ryzm-dash .sc-pill[data-id="inflation_shock"]  { --sc: var(--ink-terra); }
+.ryzm-dash .sc-pill[data-id="yen_carry_unwind"] { --sc: var(--ink-plum); }
+.ryzm-dash .sc-pill[data-id="rate_cuts"]        { --sc: var(--ink-teal); }
+.ryzm-dash .sc-pill[aria-pressed="true"]::before { background: var(--sc, var(--rd-terra)); box-shadow: 0 0 0 1.5px var(--rd-surface); }
+.ryzm-dash .sc-pill:hover:not([aria-pressed="true"]) { border-color: var(--sc, var(--rd-ink)); }
+@media (prefers-reduced-motion: reduce) { .ryzm-dash .asset-panel { transition: none; } }

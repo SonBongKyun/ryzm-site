@@ -108,7 +108,7 @@
     var q = el('g', { 'clip-path': 'url(#cmp-clip)' }, svg);
     var quads = { selective_growth: [C, C - R], stagflation_defense: [C - R, C - R], safe_haven: [C - R, C], liquidity_rally: [C, C] };
     cmp.quad = {};
-    for (var id in quads) cmp.quad[id] = el('rect', { x: quads[id][0], y: quads[id][1], width: R, height: R, class: 'cmp-q' }, q);
+    for (var id in quads) cmp.quad[id] = el('rect', { x: quads[id][0], y: quads[id][1], width: R, height: R, class: 'cmp-q q-' + id }, q);
     [R / 3, 2 * R / 3].forEach(function (r) { el('circle', { cx: C, cy: C, r: r, class: 'cmp-ring' }, svg); });
     el('line', { x1: C - R, y1: C, x2: C + R, y2: C, class: 'cmp-axis' }, svg);
     el('line', { x1: C, y1: C - R, x2: C, y2: C + R, class: 'cmp-axis' }, svg);
@@ -128,7 +128,7 @@
     (data.quadrants || []).forEach(function (qq) {
       var p = ql[qq.id]; if (!p) return;
       var w = qq.label.split(' '), lines = w.length > 1 ? [w.slice(0, Math.ceil(w.length / 2)).join(' '), w.slice(Math.ceil(w.length / 2)).join(' ')] : [qq.label];
-      var t = el('text', { x: p[0], y: p[1] - (lines.length - 1) * 7 + 4, class: 'cmp-ql', 'text-anchor': 'middle' }, svg);
+      var t = el('text', { x: p[0], y: p[1] - (lines.length - 1) * 7 + 4, class: 'cmp-ql q-' + qq.id, 'text-anchor': 'middle' }, svg);
       lines.forEach(function (ln, i) { var s = el('tspan', { x: p[0], dy: i ? 14 : 0 }, t); s.textContent = ln; });
       cmp.qlabel[qq.id] = t;
     });
@@ -190,6 +190,21 @@
   var SHORT = { us2y: 'US 2Y', us10y: 'US 10Y', usd: 'DXY', krw: 'KRW', kospi: 'KOSPI', memory: 'KR Memory', yen_carry: 'Yen Carry',
     sox: 'US Semis', hy: 'HY Credit', ig: 'IG Credit', btc_lev: 'BTC Lev', eth_lev: 'ETH Lev' };
   function shortOf(b) { return b.short && b.short !== b.label ? b.short : SHORT[b.id] || b.label.replace(/\s*\(.*\)\s*$/, ''); }
+  /* signal groups (pipeline nodes): color is a second cue; labels, the inspector chip and the legend text carry the same information */
+  var NODE_KEYS = { rates_funding: 'rates', global_credit_macro: 'credit', asia_early_signal: 'asia', crypto_leverage: 'crypto' };
+  var NODE_NAMES = { rates: 'Rates & funding', credit: 'Credit & macro', asia: 'Asia early signal', crypto: 'Crypto leverage' };
+  function nodeKey(b) { return NODE_KEYS[b.node_id] || 'asia'; }
+  function buildNodeLegend() {
+    var lg = root.querySelector('.bm-legend'); if (!lg) return;
+    var old = root.querySelector('.bm-nodes'); if (old) old.parentNode.removeChild(old);
+    var seen = {}, box = document.createElement('div'); box.className = 'bm-nodes'; box.setAttribute('aria-label', 'Signal groups');
+    ['rates', 'credit', 'asia', 'crypto'].forEach(function (k) {
+      if (!bubbles.some(function (b) { return nodeKey(b) === k; }) || seen[k]) return; seen[k] = 1;
+      var sp = document.createElement('span'); sp.className = 'n-' + k; var i = document.createElement('i'); sp.appendChild(i);
+      sp.appendChild(document.createTextNode(NODE_NAMES[k])); box.appendChild(sp);
+    });
+    lg.parentNode.insertBefore(box, lg);
+  }
   function buildBubbles() {
     var svg = $('bubble-svg'); svg.textContent = '';
     var w = Math.max(280, Math.round(svg.parentNode.clientWidth || 520));
@@ -200,6 +215,12 @@
     var defs = el('defs', {}, svg);
     var pat = el('pattern', { id: 'bm-hatch', width: 5, height: 5, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
     el('line', { x1: 0, y1: 0, x2: 0, y2: 5, class: 'bm-hatch-line' }, pat);
+    /* one hatch per signal group, drawn in that group's ink (outflow = hatched, inflow = solid tint, neutral = light tint) */
+    Object.keys(NODE_KEYS).forEach(function (nid) {
+      var k = NODE_KEYS[nid], hp = el('pattern', { id: 'bm-hatch-' + k, width: 5, height: 5, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' }, defs);
+      el('rect', { x: 0, y: 0, width: 5, height: 5, class: 'bm-hatch-bg n-' + k }, hp);
+      el('line', { x1: 0, y1: 0, x2: 0, y2: 5, class: 'bm-hatch-line n-' + k }, hp);
+    });
     var g = el('g', { class: 'bm-grid' }, svg);
     [25, 50, 75, 100].forEach(function (v) { el('line', { x1: sx(v), y1: PAD.t, x2: sx(v), y2: H - PAD.b }, g); });
     [-60, -30, 30].forEach(function (v) { el('line', { x1: PAD.l, y1: sy(v), x2: W - PAD.r, y2: sy(v) }, g); });
@@ -243,7 +264,7 @@
       n.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
       n.c.setAttribute('r', r.toFixed(1)); n.sel.setAttribute('r', (r + 3.5).toFixed(1)); n.ring.setAttribute('r', (r + 3.5).toFixed(1));
       var tone = m.flow > 12 ? 'in' : m.flow < -12 ? 'out' : 'flat';
-      n.g.setAttribute('class', 'bm-b tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : ''));
+      n.g.setAttribute('class', 'bm-b n-' + nodeKey(n.b) + ' tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : ''));
       n.m = m; n.x = x; n.y = y; n.r = r; n.below = y + r + 13 < H - PAD.b;
     });
     declutter();
@@ -296,7 +317,7 @@
       var bar = document.createElement('span'); bar.className = 'tt-bar'; var fill = document.createElement('i'); bar.appendChild(fill);
       btn.appendChild(nm); btn.appendChild(v); btn.appendChild(bar); li.appendChild(btn); ol.appendChild(li);
       btn.addEventListener('click', function () { select(b.id, true); });
-      tt[b.id] = { li: li, v: v, fill: fill, sm: sm };
+      tt[b.id] = { li: li, v: v, fill: fill, sm: sm, node: nodeKey(b) };
     });
   }
   function drawList() {
@@ -307,7 +328,7 @@
       t.v.textContent = Math.round(n.m.tension);
       t.fill.style.transform = 'scaleX(' + clamp(n.m.tension, 0, 100) / 100 + ')';
       t.sm.textContent = (n.m.flow > 12 ? 'inflow' : n.m.flow < -12 ? 'outflow' : 'neutral') + ' \u00b7 priced-in ' + Math.round(n.m.heat);
-      t.li.className = (n.b.id === selected ? 'is-sel' : '') + (n.m.heat >= 80 || n.m.tension >= 75 ? ' warn' : '');
+      t.li.className = 'n-' + t.node + (n.b.id === selected ? ' is-sel' : '') + (n.m.heat >= 80 || n.m.tension >= 75 ? ' warn' : '');
       ol.appendChild(t.li);
     });
   }
@@ -323,6 +344,8 @@
     if (!n || !n.m) return;
     var m = n.m;
     $('ap-name').textContent = n.b.label; $('ap-group').textContent = n.b.group;
+    var ap = $('asset-panel'); if (ap) ap.setAttribute('data-node', nodeKey(n.b));
+    $('ap-group').setAttribute('title', NODE_NAMES[nodeKey(n.b)] || '');
     $('ap-ex').hidden = !n.b.example;
     var src = $('ap-src'); src.textContent = '';
     if (n.b.metric_value != null) {
@@ -408,7 +431,7 @@
     bubbles = (reg.bubble_map && reg.bubble_map.bubbles) || [];
     selected = (reg.bubble_map && reg.bubble_map.default_selected) || (bubbles[0] && bubbles[0].id);
     if (reg.bubble_map && reg.bubble_map.example) { var mt = $('map-tag'); if (mt) { mt.textContent = 'Example data'; mt.className = 'ck-tag ex'; } }
-    buildCompass(); drawGhost(); buildControls(); buildBubbles(); buildList();
+    buildCompass(); drawGhost(); buildControls(); buildNodeLegend(); buildBubbles(); buildList();
     $('ghost-note').textContent = ghost ? 'rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
