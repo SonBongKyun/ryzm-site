@@ -20,6 +20,7 @@
 
 Full text on ryzm.app. Index: https://ryzm.app/articles/
 
+- [Korea Close | November 27, 2026](https://ryzm.app/articles/korea-close-november-27-2026/) (Nov 27, 2026, Market Close): Foreign buying of 1.13 trillion won and hopes for a market stabilization fund lifted the KOSPI 4.34 percent to 4,915.68 as the KOSDAQ jumped 8.13 percent and the won firmed to 1,337.9 per dollar.
 - [Korea Close | November 26, 2026](https://ryzm.app/articles/korea-close-november-26-2026/) (Nov 26, 2026, Market Close): The Bank of Korea raised its policy rate to 3.25 percent with a dot plot leaning toward more hikes, lifting short-dated bond yields as the KOSPI's rebound faded to a 0.29 percent gain at 4,711.21.
 - [Korea Close | November 25, 2026](https://ryzm.app/articles/korea-close-november-25-2026/) (Nov 25, 2026, Market Close): The KOSPI fell 6.16 percent to 4,697.51 as Samsung Electronics and SK hynix slid on memory oversupply worries, while Korean bond yields dropped before the Bank of Korea decision.
 - [How to Read a Bank of Korea Decision: Policy Rates, Financial Stability, and the Won](https://ryzm.app/articles/how-to-read-a-bank-of-korea-decision-rates-financial-stability-won/) (Nov 25, 2026, Framework): A Bank of Korea (BOK) rate decision is rarely a single-variable call on headline inflation. The Monetary Policy Board weighs price stability against financial stability, mainly household leverage…
