@@ -1,0 +1,51 @@
+{
+ "version": 1,
+ "description": "Every published RYZM Regime Dial reading, newest first: the regime, rate pressure and liquidity flow, the drivers and the highest-tension signals. A record of readings, not forecasts.",
+ "entries": [
+  {
+   "date": "2026-11-28",
+   "snapshot_stamp": "Nov 28 08:40 KST",
+   "recorded_at": "2026-11-28T13:24+09:00",
+   "regime": "Safe-Haven Bond Crowding",
+   "quadrant": "safe_haven",
+   "x": -26.2,
+   "y": -3.8,
+   "stale": false,
+   "drivers": [
+    "DXY +1.9% in 20 sessions: tighter dollar liquidity.",
+    "US 10Y −11 bp in 20 sessions: less rate pressure.",
+    "US 2Y +2 bp in 20 sessions: more rate pressure."
+   ],
+   "top_tension": [
+    {
+     "label": "US 10Y Treasury",
+     "short": "US 10Y",
+     "tension": 48,
+     "priced_in": 28,
+     "flow": 14,
+     "delta": "-11 bp (20 sessions)"
+    },
+    {
+     "label": "ETH leverage (perp funding)",
+     "short": "ETH Lev",
+     "tension": 47,
+     "priced_in": 75,
+     "flow": -11,
+     "delta": "-0.21 bp/8h (20 sessions)"
+    },
+    {
+     "label": "US high-yield credit",
+     "short": "HY Credit",
+     "tension": 46,
+     "priced_in": 0,
+     "flow": -40,
+     "delta": "+51 bp (20 sessions)"
+    }
+   ],
+   "note": {
+    "text": "The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.",
+    "source_url": "https://en.yna.co.kr/view/AEN20261127006000320"
+   }
+  }
+ ]
+}

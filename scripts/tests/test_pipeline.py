@@ -134,5 +134,20 @@ class TickerSession(unittest.TestCase):
         self.assertEqual(range_label([("2025-11-27", 1), ("2026-11-27", 2)]), "1-year")
         self.assertEqual(range_label([("2026-06-14", 1), ("2026-11-27", 2)]), "166-day")
 
+
+class Ledger(unittest.TestCase):
+    def test_entry_from_state(self):
+        from pipeline.ledger import entry_from_state
+        st = {"generated_at": "2026-11-28T08:41+09:00",
+              "compass": {"x": -26.2, "y": -3.8, "snapshot_stamp": "Nov 28 08:40 KST", "as_of_data": "2026-11-27"},
+              "regime": {"label": "Safe-Haven Bond Crowding", "quadrant": "safe_haven", "drivers": [{"text": "a"}, {"text": "b"}],
+                         "note": {"text": "n", "source_url": "https://example.com"}},
+              "bubble_map": {"bubbles": [{"label": "A", "short": "A", "tension": 10, "priced_in": 1, "flow": 2},
+                                         {"label": "B", "short": "B", "tension": 50, "priced_in": 3, "flow": 4}]}}
+        e = entry_from_state(st)
+        self.assertEqual(e["snapshot_stamp"], "Nov 28 08:40 KST")
+        self.assertEqual([t["short"] for t in e["top_tension"]], ["B", "A"])
+        self.assertEqual(e["drivers"], ["a", "b"])
+
 if __name__ == "__main__":
     unittest.main()

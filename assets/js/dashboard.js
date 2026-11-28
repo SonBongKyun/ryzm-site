@@ -1,4 +1,4 @@
-/* RYZM Macro Compass & Priced-In / Tension Map (v3.1, motion pass 2026-11-28).
+/* RYZM Regime Dial (formerly Macro Compass) & Priced-In / Tension Map (v3.1, motion pass 2026-11-28).
    Vanilla JS + SVG, editorial palette (ink + terracotta via CSS variables).
    Data flow:
      1. Endpoints = the MARKET SNAPSHOT values in this page's ticker block.
