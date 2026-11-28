@@ -195,8 +195,8 @@
   /* move a published score v by a simulated shift d, saturating smoothly at [lo, hi]:
      d = 0 returns v exactly, so the current reading and a 1-tick slider move never jump */
   function push(v, d, lo, hi) {
-    if (d >= 0) { var up = Math.max(hi - v, 1); return v + up * Math.tanh(d / up); }
-    var dn = Math.max(v - lo, 1); return v - dn * Math.tanh(-d / dn);
+    if (d >= 0) { var up = Math.max(hi - v, 1); return clamp(v + up * Math.tanh(d / up), lo, hi); }
+    var dn = Math.max(v - lo, 1); return clamp(v - dn * Math.tanh(-d / dn), lo, hi);
   }
   /* keep a bubble of radius r inside the plot so 0 and 100 never cross the axis lines */
   function bx(heat, r) { return clamp(sx(heat), sx(0) + r + 2, sx(100) - r - 2); }
