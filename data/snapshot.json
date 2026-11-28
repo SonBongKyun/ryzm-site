@@ -1,7 +1,7 @@
 {
  "version": 1,
- "generated_at": "2026-11-28T08:41+09:00",
- "snapshot_stamp": "Nov 28 08:40 KST",
+ "generated_at": "2026-11-28T15:31+09:00",
+ "snapshot_stamp": "Nov 28 15:30 KST",
  "origin": "index.html MARKET SNAPSHOT block (written by scripts/update_ticker.py)",
  "items": {
   "US2Y": {
@@ -46,8 +46,8 @@
   },
   "USDKRW": {
    "label": "USD/KRW",
-   "display": "1,333.0",
-   "value": 1333.0,
+   "display": "1,333.9",
+   "value": 1333.9,
    "unit": "index",
    "date_label": "Nov 28",
    "date": "2026-11-28",
@@ -69,8 +69,8 @@
    "display": "104.01",
    "value": 104.01,
    "unit": "index",
-   "date_label": "Nov 28",
-   "date": "2026-11-28",
+   "date_label": "Nov 27",
+   "date": "2026-11-27",
    "source": "Yahoo Finance (DX-Y.NYB)",
    "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/"
   }
