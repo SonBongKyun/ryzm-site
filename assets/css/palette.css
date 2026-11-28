@@ -1,0 +1,59 @@
+/* RYZM palette: Hanji & Celadon (2026-11-28)
+   Hanji paper, celadon accent, ink black, and a cinnabar seal dot used sparingly.
+   Loaded last on every page; it only sets color tokens and a few accent details. */
+:root {
+  --bg: #f3f0e8;
+  --surface: #fbfaf6;
+  --surface-2: #ebe7dc;
+  --border: #dfdace;
+  --border-strong: #c9c2b2;
+  --text: #1c1f1d;
+  --text-2: #3c423e;
+  --text-muted: #686d67;
+  --accent: #2f6f62;
+  --accent-ink: #245a4f;
+  --accent-soft: rgba(47, 111, 98, 0.10);
+  --seal: #b23a2e;
+  --ink-band: #1c1f1d;
+  --ink-band-text: #d6dbd6;
+  --green: #2f6f62;
+  --red: #b23a2e;
+  --amber: #96690f;
+  --blue: #3a5f7d;
+  --purple: #6a5a86;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1211;
+    --surface: #151917;
+    --surface-2: #1c211f;
+    --border: #29302d;
+    --border-strong: #3a423e;
+    --text: #ecefe9;
+    --text-2: #c9cfc9;
+    --text-muted: #959c96;
+    --accent: #7fb9a9;
+    --accent-ink: #9fd0c2;
+    --accent-soft: rgba(127, 185, 169, 0.14);
+    --seal: #e07a6b;
+    --ink-band: #0a0c0b;
+    --ink-band-text: #c9cfc9;
+    --green: #7fb9a9;
+    --red: #e07a6b;
+    --amber: #d6aa4a;
+    --blue: #8fb0cc;
+    --purple: #b3a3cf;
+  }
+}
+/* the one warm note: a cinnabar seal dot on the subscribe button, like a stamp on hanji */
+.header-cta { background: var(--text) !important; color: var(--bg) !important; }
+.header-cta::before { background: var(--seal) !important; box-shadow: none !important; }
+.header-cta:hover { background: var(--accent-ink) !important; }
+.ticker-item strong { color: #8fc3b4 !important; }
+::selection { background: color-mix(in srgb, var(--accent) 22%, transparent); }
+/* the home dashboard keeps its paper theme, retinted */
+.ryzm-dash[data-theme="paper"] {
+  --rd-bg: #f3f0e8; --rd-surface: #fbfaf6; --rd-surface-2: #ebe7dc; --rd-border: #dfdace; --rd-border-strong: #c9c2b2;
+  --rd-text: #1c1f1d; --rd-text-2: #3c423e; --rd-text-muted: #686d67; --rd-ink: #1c1f1d; --rd-ink-line: #c9c2b2; --rd-hair: #dfdace;
+  --rd-accent: #2f6f62; --rd-accent-ink: #245a4f; --rd-terra: #2f6f62; --rd-terra-ink: #245a4f;
+}

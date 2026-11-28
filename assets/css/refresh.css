@@ -3,19 +3,7 @@
    Markup contracts used by the publishing tools are unchanged:
    ul.breaking-list > li, div.feed > article.card, the ticker block and #cockpit. */
 
-:root {
-  --bg: #faf8f4;
-  --surface: #ffffff;
-  --surface-2: #f4f0ea;
-  --border: #e9e3da;
-  --border-strong: #d8cfc3;
-  --text-muted: #73685f;
-  --shadow: none;
-  --radius: 10px;
-}
-@media (prefers-color-scheme: dark) {
-  :root { --bg: #12100e; --surface: #171412; --surface-2: #1f1b18; --border: #2c2622; --border-strong: #3d352f; --text-muted: #a1958b; }
-}
+/* colors come from palette.css */
 body { background: var(--bg); }
 
 /* ---------- section titles: one quiet style everywhere ---------- */
@@ -93,7 +81,7 @@ body { background: var(--bg); }
 .fw-card { box-shadow: none !important; background: none !important; }
 
 /* ---------- dashboard: same content, calmer frame ---------- */
-.ryzm-dash[data-theme="paper"] { --rd-surface: #ffffff; --rd-ink-line: #d8cfc3; --rd-hair: #e9e3da; --rd-grid: transparent; }
+.ryzm-dash[data-theme="paper"] { --rd-grid: transparent; }
 .ryzm-dash { background-image: none !important; border-color: var(--border-strong); border-radius: 12px; padding: 20px 24px 14px; }
 .ryzm-dash .ck-kicker { font-size: 11px; }
 .ryzm-dash .ck-title { font-size: 22px; }

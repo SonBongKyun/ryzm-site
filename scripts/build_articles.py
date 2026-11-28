@@ -1051,6 +1051,7 @@ def page(title, desc, canonical, og_type, extra_meta, ld, body, active="articles
     }}
   }}
 </style>
+<link rel="stylesheet" href="/assets/css/palette.css">
 </head>
 <body>
 
