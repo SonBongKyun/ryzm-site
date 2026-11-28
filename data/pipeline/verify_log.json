@@ -1,65 +1,65 @@
 {
- "run_id": "20261128T0841",
+ "run_id": "20261128T1531",
  "verdicts": [
   {
    "claim_id": "65bd4cd6d5d9",
    "verdict": "keep",
-   "reason": "Re-fetched Yonhap article dated Nov 27, 2026: KOSPI up 4.34% to 4,915.68; foreigners net bought 1.13 trillion won."
+   "reason": "Re-fetched en.yna.co.kr source (published within 7 days): found 4.34, 4,915.68, 1.13 trillion as stated."
   },
   {
    "claim_id": "84fb65f5c06e",
    "verdict": "keep",
-   "reason": "Re-fetched BOK release dated Nov 26, 2026: Base Rate raised 25 bp from 3.00% to 3.25%, citing growth, above-target inflation and financial stability risks."
+   "reason": "Re-fetched www.bok.or.kr source (published within 7 days): found 3.25 as stated."
   },
   {
    "claim_id": "ad72eb126bff",
    "verdict": "keep",
-   "reason": "Re-fetched Statistics Bureau PDF dated Nov 27, 2026: Tokyo ku-area core CPI (ex fresh food) +2.9% y/y in Nov (mid-month prelim), Oct 2.6%; headline +2.8%."
+   "reason": "Re-fetched www.e-stat.go.jp source (published within 7 days): found 2.9, 2.8 as stated."
   },
   {
    "claim_id": "18f14ec25423",
    "verdict": "keep",
-   "reason": "Re-fetched CoinDesk Markets article of Nov 27, 2026: BTC gained 1.3% with futures OI little changed; funding cooled to roughly neutral on Binance, OKX and Bybit."
+   "reason": "Re-fetched www.coindesk.com source (published within 7 days): found 1.3%, neutral as stated."
   },
   {
    "claim_id": "82818f283a49",
    "verdict": "keep",
-   "reason": "Re-fetched CoinDesk Daybook of Nov 26, 2026: spot bitcoin ETFs lost a net $5.39 billion in November through Nov 25, largest since January 2024 debut, per SoSoValue."
+   "reason": "Re-fetched www.coindesk.com source (published within 7 days): found 5.39 as stated."
   },
   {
    "claim_id": "1fafa326e44e",
    "verdict": "keep",
-   "reason": "Re-fetched CoinDesk Daybook of Nov 27, 2026: 50-day SMA about 3.45% above the 200-day; gap was 12% a month earlier."
+   "reason": "Re-fetched www.coindesk.com source (published within 7 days): found 3.45, 12% as stated."
   },
   {
    "claim_id": "91d23dd97a4d",
    "verdict": "keep",
-   "reason": "Re-fetched BEA release of Nov 25, 2026: October PCE price index +3.8% y/y, +3.3% excluding food and energy."
+   "reason": "Re-fetched www.bea.gov source (published within 7 days): found 3.8, 3.3 as stated."
   },
   {
    "claim_id": "1e9da14d4855",
    "verdict": "keep",
-   "reason": "Re-fetched BEA release of Nov 25, 2026: Q3 2026 real GDP +4.3% annual rate in second estimate, revised up 0.9 pt from 3.4% advance."
+   "reason": "Re-fetched www.bea.gov source (published within 7 days): found 4.3, 3.4 as stated."
   },
   {
    "claim_id": "eb4b2af01f64",
    "verdict": "keep",
-   "reason": "Re-fetched DOL weekly claims PDF of Nov 25, 2026: SA initial claims 189,000 for week ending Nov 21, down 13,000."
+   "reason": "Re-fetched oui.doleta.gov source (published within 7 days): found 189,000, 13,000 as stated."
   },
   {
    "claim_id": "d0e349cbbfa0",
    "verdict": "keep",
-   "reason": "Re-fetched Treasury daily par yield curve (Nov 2026): 10Y 4.94% on 11/27 vs 4.85% on 11/25; 2Y 4.69% vs 4.61%."
+   "reason": "Re-fetched home.treasury.gov source (published within 7 days): found 4.94, 4.85, 4.69, 4.61 as stated."
   },
   {
    "claim_id": "daca6064d3b9",
    "verdict": "keep",
-   "reason": "Re-fetched New York Fed SOFR API: 3.95% on 2026-11-25 with $3,145bn volume; 3.92% on 2026-11-20."
+   "reason": "Re-fetched markets.newyorkfed.org source (published within 7 days): found 3.95, 3145, 3.92 as stated."
   },
   {
    "claim_id": "62945f9eb236",
    "verdict": "keep",
-   "reason": "Re-fetched TreasuryDirect 7-year auction results of Nov 25, 2026: $44 billion, high yield 4.708%, bid-to-cover 2.43."
+   "reason": "Re-fetched www.treasurydirect.gov source (published within 7 days): found 4.708, 2.43 as stated."
   }
  ]
 }

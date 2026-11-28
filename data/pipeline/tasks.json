@@ -1,6 +1,6 @@
 {
- "run_id": "20261128T0841",
- "generated_at": "2026-11-28T08:41+09:00",
+ "run_id": "20261128T1531",
+ "generated_at": "2026-11-28T15:31+09:00",
  "procedure": "scripts/pipeline/ROUTINE.md",
  "schema": "scripts/pipeline/schema/item.schema.json",
  "verify_log": "data/pipeline/verify_log.json",
@@ -26,8 +26,8 @@
     {
      "asset_or_theme": "US dollar (DXY)",
      "metric_value": "104.01",
-     "delta": "+2.1% (20 sessions)",
-     "published_at": "2026-11-28",
+     "delta": "+1.9% (20 sessions)",
+     "published_at": "2026-11-27",
      "source_url": "https://finance.yahoo.com/quote/DX-Y.NYB/"
     }
    ],
@@ -62,7 +62,7 @@
    "context": [
     {
      "asset_or_theme": "Korean won (USD/KRW)",
-     "metric_value": "1,333.00",
+     "metric_value": "1,333.90",
      "delta": "+0.6% (20 sessions)",
      "published_at": "2026-11-28",
      "source_url": "https://finance.yahoo.com/quote/KRW%3DX/"
@@ -84,8 +84,8 @@
     {
      "asset_or_theme": "Yen carry (USD/JPY)",
      "metric_value": "159.51",
-     "delta": "+1.1% (20 sessions)",
-     "published_at": "2026-11-27",
+     "delta": "+1.2% (20 sessions)",
+     "published_at": "2026-11-28",
      "source_url": "https://finance.yahoo.com/quote/JPY%3DX/"
     },
     {
@@ -105,16 +105,16 @@
    "context": [
     {
      "asset_or_theme": "BTC leverage (perp funding)",
-     "metric_value": "0.53 bp/8h",
-     "delta": "+0.11 bp/8h (20 sessions)",
-     "published_at": "2026-11-27",
+     "metric_value": "0.83 bp/8h",
+     "delta": "+0.30 bp/8h (20 sessions)",
+     "published_at": "2026-11-28",
      "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history"
     },
     {
      "asset_or_theme": "ETH leverage (perp funding)",
-     "metric_value": "0.51 bp/8h",
-     "delta": "-0.21 bp/8h (20 sessions)",
-     "published_at": "2026-11-27",
+     "metric_value": "0.75 bp/8h",
+     "delta": "+0.06 bp/8h (20 sessions)",
+     "published_at": "2026-11-28",
      "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history"
     }
    ],
