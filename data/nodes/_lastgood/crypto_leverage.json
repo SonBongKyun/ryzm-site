@@ -1,7 +1,7 @@
 {
  "node_id": "crypto_leverage",
- "run_id": "20261128T0841",
- "generated_at": "2026-11-28T08:41+09:00",
+ "run_id": "20261128T1319",
+ "generated_at": "2026-11-28T13:19+09:00",
  "producer": "code",
  "status": "ok",
  "items": [
@@ -13,7 +13,7 @@
    "priced_in_score": 66.7,
    "momentum_score": 6.3,
    "tension_score": 36.0,
-   "claim": "BTC perp funding at 0.53 bp/8h on Nov 27; +0.11 bp/8h over 20 sessions; 67% of its 1-year range.",
+   "claim": "BTC perp funding at 0.53 bp/8h on Nov 27; +0.11 bp/8h over 20 sessions; 67% of its 166-day range.",
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "published_at": "2026-11-27",
    "id": "btc_lev",
@@ -35,7 +35,8 @@
    },
    "read": "Positive funding means longs pay shorts. High funding is crowded leverage.",
    "short": "BTC Lev",
-   "range_pct": 67
+   "range_pct": 67,
+   "range_label": "166-day"
   },
   {
    "node_id": "crypto_leverage",
@@ -45,7 +46,7 @@
    "priced_in_score": 74.6,
    "momentum_score": -10.6,
    "tension_score": 47.0,
-   "claim": "ETH perp funding at 0.51 bp/8h on Nov 27; -0.21 bp/8h over 20 sessions; 75% of its 1-year range.",
+   "claim": "ETH perp funding at 0.51 bp/8h on Nov 27; -0.21 bp/8h over 20 sessions; 75% of its 166-day range.",
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "published_at": "2026-11-27",
    "id": "eth_lev",
@@ -67,7 +68,8 @@
    },
    "read": "The higher-beta read on crypto leverage.",
    "short": "ETH Lev",
-   "range_pct": 75
+   "range_pct": 75,
+   "range_label": "166-day"
   }
  ]
 }

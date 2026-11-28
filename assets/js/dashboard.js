@@ -195,6 +195,10 @@
   function soft(v, mid, half) { return mid + half * Math.tanh((v - mid) / half); }
   function model(b, px, py) {
     var dx = (px === undefined ? state.x : px) - base.x, dy = (py === undefined ? state.y : py) - base.y, s = b.sens || {}, K = 0.6;
+    /* the current reading shows the sourced scores as published; the soft limiter only shapes simulated moves */
+    if (Math.abs(dx) < 1e-9 && Math.abs(dy) < 1e-9) {
+      return { heat: clamp(b.priced_in, 0, 100), flow: clamp(b.flow, -58, 58), tension: clamp(b.disagreement, 0, 99), conc: clamp(b.concentration, 10, 100) };
+    }
     var heat = soft(b.priced_in + K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 50, 47);
     var flow = soft(b.flow + K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), 0, 55);
     var tension = clamp(b.disagreement + 0.12 * Math.sqrt(dx * dx + dy * dy), 0, 99);
@@ -508,7 +512,7 @@
     put($('ro-rates'), sgn(state.y, 1)); put($('ro-liq'), sgn(state.x, 1));
     var stEl = $('regime-static'), tag = $('regime-mode'), live = !touched;
     var mode = $('ck-mode'), rs = $('ck-reset');
-    if (mode) { put(mode, live ? 'Live snapshot' : 'Simulation mode'); var mc = 'ck-mode ' + (live ? 'live' : 'sim'); if (mode.className !== mc) mode.className = mc; }
+    if (mode) { put(mode, live ? 'Current reading' : 'Simulation mode'); var mc = 'ck-mode ' + (live ? 'live' : 'sim'); if (mode.className !== mc) mode.className = mc; }
     if (rs) rs.hidden = live;
     root.classList.toggle('is-sim', !live);
     if (stEl) stEl.classList.toggle('is-sim', !live);
@@ -611,10 +615,14 @@
     state.x = tgt.x = base.x; state.y = tgt.y = base.y;
     needle.x = reduce || !ghost ? base.x : ghost.x; needle.y = reduce || !ghost ? base.y : ghost.y;
     buildCompass(); drawGhost(); buildControls(); buildNodeLegend(); buildBubbles(); buildList();
-    $('ghost-note').textContent = ghost ? 'rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
+    $('ghost-note').textContent = ghost ? '1W ago: rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
-    $('data-stamp').textContent = 'Snapshot ' + data.snapshotStamp + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +
+    /* the compass is recomputed from the ticker; the bubbles come from the last pipeline run: show both when they differ */
+    var bubbleStamp = (reg.compass && reg.compass.snapshot_stamp) || reg.as_of || '';
+    var stampText = !bubbleStamp || bubbleStamp === data.snapshotStamp ? 'Snapshot ' + data.snapshotStamp
+      : 'Compass: snapshot ' + data.snapshotStamp + ' \u00b7 Bubbles: snapshot ' + bubbleStamp;
+    $('data-stamp').textContent = stampText + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +
       (nStale ? ' \u00b7 ' + nStale + ' signal group' + (nStale > 1 ? 's' : '') + ' on cached data' : '') + (trends._cached || reg._cached ? ' \u00b7 cached copy' : '');
     render(true);
     root.classList.add('is-ready');
@@ -623,7 +631,7 @@
     if (rmq && rmq.addEventListener) rmq.addEventListener('change', function (e) { reduce = e.matches; if (reduce) settle(); });
     document.addEventListener('click', function (e) { if (bm.tipFor && !(e.target.closest && e.target.closest('.bm-b'))) hideTip(null, true); });
     var rt = null, lw = window.innerWidth; window.addEventListener('resize', function () { if (window.innerWidth === lw) return; lw = window.innerWidth; clearTimeout(rt); rt = setTimeout(function () { buildBubbles(); }, 120); });
-    $('ap-room').addEventListener('click', function () { $('ap-room-note').textContent = 'Not open yet \u00b7 slot ' + ($('ap-room').getAttribute('data-slot') || 'n/a'); });
+    $('ap-room').addEventListener('click', function () { $('ap-room-note').textContent = 'Not open yet'; });
   }
   var hist = load('/data/snapshot_history.json', 'ryzm.hist.v3').catch(function () { return null; });
   Promise.all([load('/data/dashboard_state.json', 'ryzm.state.v3'), hist])

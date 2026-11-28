@@ -1,30 +1,30 @@
 {
- "generated_at": "2026-11-28T08:41+09:00",
+ "generated_at": "2026-11-28T13:19+09:00",
  "snapshot_stamp": "Nov 28 08:40 KST",
  "returned_nodes": 4,
  "nodes": {
   "rates_funding": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T08:41+09:00",
+   "generated_at": "2026-11-28T13:19+09:00",
    "items": 3
   },
   "global_credit_macro": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T08:41+09:00",
+   "generated_at": "2026-11-28T13:19+09:00",
    "items": 2
   },
   "asia_early_signal": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T08:41+09:00",
+   "generated_at": "2026-11-28T13:19+09:00",
    "items": 5
   },
   "crypto_leverage": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T08:41+09:00",
+   "generated_at": "2026-11-28T13:19+09:00",
    "items": 2
   }
  },
@@ -135,13 +135,13 @@
    "node_id": "asia_early_signal",
    "asset_or_theme": "Korean won (USD/KRW)",
    "metric_value": "1,333.00",
-   "delta": "+0.6% (20 sessions)",
+   "delta": "-0.4% (20 sessions)",
    "priced_in_score": 95.2,
-   "momentum_score": -5.1,
-   "tension_score": 56.0,
-   "claim": "USD/KRW at 1,333.00 on Nov 28; +0.6% over 20 sessions; 5% of its 1-year range.",
+   "momentum_score": 3.4,
+   "tension_score": 5.2,
+   "claim": "USD/KRW at 1,333.00 on Nov 27; -0.4% over 20 sessions; 5% of its 1-year range.",
    "source_url": "https://finance.yahoo.com/quote/KRW%3DX/",
-   "published_at": "2026-11-28",
+   "published_at": "2026-11-27",
    "id": "krw",
    "series_key": "USDKRW",
    "group": "Korea",
@@ -149,9 +149,9 @@
    "score_method": "deterministic",
    "stale": false,
    "source": "Yahoo Finance (KRW=X)",
-   "z20": 0.2,
-   "z5": -0.6,
-   "delta_value": 0.564,
+   "z20": -0.13,
+   "z5": -0.1,
+   "delta_value": -0.372,
    "delta_unit": "pct",
    "sens": {
     "priced_in_x": 0.3,
@@ -162,6 +162,7 @@
    "read": "Where US rates and dollar funding meet Korean flows. A higher USD/KRW reads as outflow.",
    "short": "KRW",
    "range_pct": 5,
+   "range_label": "1-year",
    "notes": []
   },
   {
@@ -195,6 +196,7 @@
    "read": "Foreign equity flow sets the index, so it turns first when global liquidity does.",
    "short": "KOSPI",
    "range_pct": 19,
+   "range_label": "1-year",
    "notes": [
     {
      "claim": "The KOSPI rose 4.34% to close at 4,915.68 on November 27, 2026, as foreign investors bought a net 1.13 trillion won of local shares.",
@@ -234,31 +236,7 @@
    "read": "AI memory dominates index weight, so the pair moves with US tech funding.",
    "short": "KR Memory",
    "range_pct": 26,
-   "notes": []
-  },
-  {
-   "node_id": "crypto_leverage",
-   "asset_or_theme": "Spot bitcoin ETF flows",
-   "metric_value": "-$5.39bn",
-   "delta": "Nov MTD to Nov 25",
-   "priced_in_score": 70,
-   "momentum_score": -30,
-   "tension_score": 70,
-   "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
-   "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
-   "published_at": "2026-11-26",
-   "claim_id": "82818f283a49",
-   "score_method": "llm",
-   "verify_reason": "Re-fetched CoinDesk Daybook of Nov 26, 2026: spot bitcoin ETFs lost a net $5.39 billion in November through Nov 25, largest since January 2024 debut, per SoSoValue.",
-   "id": "llm_82818f283a49",
-   "group": "Theme",
-   "read": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
-   "sens": {
-    "priced_in_x": 0.2,
-    "priced_in_y": -0.1,
-    "flow_x": 0.25,
-    "flow_y": -0.1
-   },
+   "range_label": "1-year",
    "notes": []
   },
   {
@@ -292,6 +270,7 @@
    "read": "Long-end yields mix policy, inflation and term premium.",
    "short": "US 10Y",
    "range_pct": 72,
+   "range_label": "1-year",
    "notes": [
     {
      "claim": "The 10-year Treasury par yield rose to 4.94% on November 27, 2026 from 4.85% on November 25, while the 2-year yield rose to 4.69% from 4.61%, according to Treasury daily yield curve data.",
@@ -308,7 +287,7 @@
    "priced_in_score": 74.6,
    "momentum_score": -10.6,
    "tension_score": 47.0,
-   "claim": "ETH perp funding at 0.51 bp/8h on Nov 27; -0.21 bp/8h over 20 sessions; 75% of its 1-year range.",
+   "claim": "ETH perp funding at 0.51 bp/8h on Nov 27; -0.21 bp/8h over 20 sessions; 75% of its 166-day range.",
    "source_url": "https://www.binance.com/en/futures/funding-history/perpetual/funding-fee-history",
    "published_at": "2026-11-27",
    "id": "eth_lev",
@@ -331,6 +310,7 @@
    "read": "The higher-beta read on crypto leverage.",
    "short": "ETH Lev",
    "range_pct": 75,
+   "range_label": "166-day",
    "notes": []
   },
   {
@@ -364,7 +344,107 @@
    "read": "Tight spreads price credit for calm. Widening is an early stress signal.",
    "short": "HY Credit",
    "range_pct": 100,
+   "range_label": "1-year",
    "notes": []
+  },
+  {
+   "node_id": "asia_early_signal",
+   "asset_or_theme": "US semiconductors (SOX)",
+   "metric_value": "9,186.71",
+   "delta": "-20.2% (20 sessions)",
+   "priced_in_score": 31.4,
+   "momentum_score": -30.4,
+   "tension_score": 36.6,
+   "claim": "PHLX Semiconductor at 9,186.71 on Nov 27; -20.2% over 20 sessions; 31% of its 1-year range.",
+   "source_url": "https://finance.yahoo.com/quote/%5ESOX/",
+   "published_at": "2026-11-27",
+   "id": "sox",
+   "series_key": "SOX",
+   "group": "Equities",
+   "orientation": 1,
+   "score_method": "deterministic",
+   "stale": false,
+   "source": "Yahoo Finance (^SOX)",
+   "z20": -1.41,
+   "z5": -0.38,
+   "delta_value": -20.242,
+   "delta_unit": "pct",
+   "sens": {
+    "priced_in_x": 0.3,
+    "priced_in_y": -0.1,
+    "flow_x": 0.35,
+    "flow_y": -0.1
+   },
+   "read": "The funding-sensitive end of US tech. It leads Korean chip flows.",
+   "short": "US Semis",
+   "range_pct": 31,
+   "range_label": "1-year",
+   "notes": []
+  }
+ ],
+ "editorial": [
+  {
+   "asset_or_theme": "SOFR repo funding",
+   "claim": "The Secured Overnight Financing Rate was 3.95% on November 25, 2026, up from 3.92% on November 20, on volume of $3.145 trillion, according to the New York Fed.",
+   "source_url": "https://markets.newyorkfed.org/api/rates/secured/sofr/last/5.json",
+   "published_at": "2026-11-25",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "US 7-year Treasury auction",
+   "claim": "Treasury sold $44 billion of 7-year notes on November 25, 2026 at a high yield of 4.708%, with a bid-to-cover ratio of 2.43.",
+   "source_url": "https://www.treasurydirect.gov/instit/annceresult/press/preanre/2026/R_20261125_3.pdf",
+   "published_at": "2026-11-25",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "US PCE inflation",
+   "claim": "The PCE price index rose 3.8% from a year earlier in October 2026, and 3.3% excluding food and energy, according to BEA.",
+   "source_url": "https://www.bea.gov/news/2026/personal-income-and-outlays-october-2026",
+   "published_at": "2026-11-25",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "US real GDP growth",
+   "claim": "BEA's second estimate put US real GDP growth at a 4.3% annual rate in the third quarter of 2026, revised up from 3.4% in the advance estimate.",
+   "source_url": "https://www.bea.gov/news/2026/gdp-second-estimate-and-corporate-profits-3rd-quarter-2026",
+   "published_at": "2026-11-25",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "US initial jobless claims",
+   "claim": "Seasonally adjusted US initial jobless claims fell by 13,000 to 189,000 in the week ending November 21, 2026, according to the Labor Department.",
+   "source_url": "https://oui.doleta.gov/press/2026/112526.pdf",
+   "published_at": "2026-11-25",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "Bank of Korea base rate",
+   "claim": "The Bank of Korea raised its Base Rate by 25 basis points to 3.25% on November 26, 2026, citing stronger growth, above-target inflation and financial stability risks.",
+   "source_url": "https://www.bok.or.kr/eng/bbs/E0000634/view.do?menuNo=400069&nttId=11067086",
+   "published_at": "2026-11-26",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "Tokyo core CPI (BOJ)",
+   "claim": "Tokyo's core CPI excluding fresh food rose 2.9% from a year earlier in mid-November 2026, up from 2.6% in October, while headline CPI rose 2.8%, according to Japan's Statistics Bureau.",
+   "source_url": "https://www.e-stat.go.jp/stat-search/file-download?fileKind=2&statInfId=000040525998",
+   "published_at": "2026-11-27",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "Spot bitcoin ETF flows",
+   "claim": "US spot bitcoin ETFs have lost a net $5.39 billion in November 2026 through Nov. 25, the largest monthly outflow since their January 2024 debut, CoinDesk reported, citing SoSoValue data.",
+   "source_url": "https://www.coindesk.com/daybook-us/2026/11/26/bitcoin-etfs-are-bleeding-cash-and-the-fed-is-unlikely-to-help",
+   "published_at": "2026-11-26",
+   "score_method": "llm"
+  },
+  {
+   "asset_or_theme": "Bitcoin trend (50/200-day SMA)",
+   "claim": "As of Nov. 27, 2026, bitcoin's 50-day simple moving average was about 3.45% above its 200-day average, down from a 12% gap a month earlier, CoinDesk reported.",
+   "source_url": "https://www.coindesk.com/daybook-us/2026/11/27/bitcoin-death-cross-is-coming-here-s-what-happened-after-previous-13",
+   "published_at": "2026-11-27",
+   "score_method": "llm"
   }
  ],
  "claims_kept": 12,
