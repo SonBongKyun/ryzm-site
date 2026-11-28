@@ -916,7 +916,7 @@
 <!-- ryzm-dash -->
 <section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
   <div class="ck-head">
-    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Compass computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Current reading</span></div></div>
+    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Regime Dial &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Compass computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Current reading</span></div></div>
     <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
     <button type="button" class="ck-reset" id="ck-reset" hidden>Reset to current</button>
   </div>
@@ -937,7 +937,7 @@
 
   <div class="ck-grid">
     <div class="ck-compass">
-      <div class="ck-panel-h"><h3>Macro Compass</h3><span class="cap">US rates and funding regime</span></div>
+      <div class="ck-panel-h"><h3>Regime Dial</h3><span class="cap">US rates and funding regime</span></div>
       <svg id="compass-svg" viewBox="0 0 300 300" role="img" aria-labelledby="regime-name" focusable="false"></svg>
       <div class="cmp-legend"><span class="lg-now">Now</span><span class="lg-ghost">1W ago</span><span class="lg-vals" id="ghost-note"></span></div>
       <div class="cmp-cap">US rates and funding regime</div>
@@ -973,7 +973,7 @@
 {
  "@context": "https://schema.org",
  "@type": "Dataset",
- "name": "RYZM Macro Compass reading",
+ "name": "RYZM Regime Dial reading",
  "description": "Safe-Haven Bond Crowding. Rate pressure −3.8 and liquidity flow −26.2 on a -50 to +50 scale, computed from the RYZM market snapshot (Nov 28 08:40 KST). Drivers: DXY +1.9% in 20 sessions: tighter dollar liquidity. US 10Y −11 bp in 20 sessions: less rate pressure. US 2Y +2 bp in 20 sessions: more rate pressure. Reads market structure; not a forecast.",
  "url": "https://ryzm.app/#cockpit",
  "dateModified": "2026-11-28T13:19+09:00",
@@ -1018,7 +1018,7 @@
 
   <p class="ck-error" id="cockpit-error" hidden>Live dashboard data could not load; the reading shown is the last published one.</p>
   <div class="ck-fine">
-    <span class="ck-fine-txt">Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/data/dashboard_state.json">Data</a></span>
+    <span class="ck-fine-txt">Not a forecast or investment advice &middot; <span id="data-stamp">Compass: computed from the market snapshot.</span> &middot; Bubble scores: model proxies &middot; Scenarios and sliders: illustrative &middot; <a href="/regime/">Regime ledger</a> &middot; <a href="/data/dashboard_state.json">Data</a></span>
   </div>
 </section>
 <!-- /ryzm-dash -->

@@ -136,6 +136,7 @@ Commit only these paths (one commit, message `Dashboard refresh (<date> <HH:MM> 
 ```
 index.html  data/snapshot.json  data/snapshot_history.json  data/dashboard_state.json
 data/compass_history.json  data/nodes/  data/pipeline/
+data/regime_ledger.json  regime/index.html
 ```
 
 When writing through the GitHub API, send file content by file path, never inline, so

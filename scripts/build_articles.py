@@ -1553,7 +1553,7 @@ def write_sitemap(arts, briefs=(), about_lastmod=None):
             urls.append((SITE + cat_href(c), cat_mod, "weekly"))
     urls += [(SITE + "/closes/", newest, "daily"), (SITE + "/archive/", newest, "daily"),
              (SITE + "/search/", today, None), (SITE + "/membership/", today, None),
-             (SITE + "/community-guidelines/", today, None)]
+             (SITE + "/community-guidelines/", today, None), (SITE + "/regime/", today, "daily")]
     urls += [(SITE + "/llms.txt", today, None), (SITE + "/subscribe/", today, None)]
     if about_lastmod:
         urls.append((SITE + "/about/", about_lastmod, None))
@@ -2192,7 +2192,7 @@ def write_membership():
       <div class="tier-price">$0</div>
       <ul>
         <li>The weekly RYZM brief by email</li>
-        <li>The live Macro Compass and bubble map</li>
+        <li>The live Regime Dial, bubble map and Regime Ledger</li>
         <li>Daily briefs, market closes and framework notes</li>
       </ul>
       <a class="tier-cta" href="/subscribe/">Get the free brief</a>

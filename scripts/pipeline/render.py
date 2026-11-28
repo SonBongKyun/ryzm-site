@@ -107,7 +107,7 @@ def summary_html(state):
     note = rg["note"]
     ld = {
         "@context": "https://schema.org", "@type": "Dataset",
-        "name": "RYZM Macro Compass reading",
+        "name": "RYZM Regime Dial reading",
         "description": "%s. Rate pressure %s and liquidity flow %s on a -50 to +50 scale, computed from the RYZM market snapshot (%s). Drivers: %s Reads market structure; not a forecast." % (
             rg["label"], fmt(cp["y"]), fmt(cp["x"]), stamp, " ".join(d["text"] for d in rg["drivers"][:3])),
         "url": "https://ryzm.app/#cockpit", "dateModified": state["generated_at"],
@@ -189,6 +189,9 @@ def main():
         return 1
     c.write_json(os.path.join(c.DATA, "dashboard_state.json"), state)
     append_history(state)
+    from pipeline import ledger   # public Regime Ledger: one record per reading
+    ledger.append(state)
+    ledger.build_page()
     if "--no-html" not in sys.argv:
         write_summary(state)
     if state["compass"] and state["regime"]["drivers"]:
