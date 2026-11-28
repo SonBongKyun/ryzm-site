@@ -92,6 +92,23 @@ def md(iso):
     return "%s %d" % (d.strftime("%b"), d.day)
 
 
+def is_new_session(snap_item, last_d, last_v=None):
+    """True when the ticker date is a later weekday than the last history date.
+    update_ticker.py stamps Yahoo quotes on the exchange calendar (as common.py does), so a
+    same-session quote carries the same date; the weekend guard covers older KST-stamped tickers."""
+    d = snap_item["date"]
+    return d > last_d and datetime.strptime(d[:10], "%Y-%m-%d").weekday() < 5
+
+
+def range_label(hist):
+    """'1-year' when the history covers about a year, else the real span (e.g. '167-day')."""
+    try:
+        span = (datetime.strptime(hist[-1][0][:10], "%Y-%m-%d") - datetime.strptime(hist[0][0][:10], "%Y-%m-%d")).days
+    except (ValueError, IndexError):
+        return "1-year"
+    return "1-year" if span >= 330 else "%d-day" % span
+
+
 def code_items(full, snapshot):
     series = {s["key"]: s for s in full.get("series", [])}
     out = {n: [] for n in c.NODE_IDS}
@@ -103,15 +120,23 @@ def code_items(full, snapshot):
         snap_item = (snapshot.get("items") or {}).get(key)
         last_v, last_d = hist[-1][1], hist[-1][0]
         if snap_item and snap_item.get("date") and snap_item["date"] >= last_d:
-            last_v, last_d = snap_item["value"], snap_item["date"]
-            hist = hist + [(last_d, last_v)] if snap_item["date"] > hist[-1][0] else hist[:-1] + [(last_d, last_v)]
+            if is_new_session(snap_item, last_d, last_v):
+                last_v, last_d = snap_item["value"], snap_item["date"]
+                hist = hist + [(last_d, last_v)]
+            else:
+                # The ticker stamps Yahoo quotes with the KST date (often the next calendar day or a
+                # weekend), while the history uses the exchange date. Same close = same session:
+                # refresh the value but keep the exchange date, so no session is counted twice.
+                last_v = snap_item["value"]
+                hist = hist[:-1] + [(last_d, last_v)]
         sc = scoring.bubble_scores(hist, s["unit"], orient)
         if not sc:
             continue
         unit = "index100" if key == "MEMORY" else s["unit"]
         range_pct = round(sc["priced_in_score"] if orient > 0 else 100 - sc["priced_in_score"])
-        claim = "%s at %s on %s; %s over 20 sessions; %d%% of its 1-year range." % (
-            s["label"], fmt_value(unit, last_v), md(last_d), fmt_delta(s["unit"], sc["change_20"]), range_pct)
+        rlabel = range_label(hist)
+        claim = "%s at %s on %s; %s over 20 sessions; %d%% of its %s range." % (
+            s["label"], fmt_value(unit, last_v), md(last_d), fmt_delta(s["unit"], sc["change_20"]), range_pct, rlabel)
         out[s["node_id"]].append({
             "node_id": s["node_id"], "asset_or_theme": label,
             "metric_value": fmt_value(unit, last_v), "delta": fmt_delta(s["unit"], sc["change_20"]) + " (20 sessions)",
@@ -123,7 +148,7 @@ def code_items(full, snapshot):
             "score_method": "deterministic", "stale": bool(s.get("stale")), "source": s["source"],
             "z20": sc["z20"], "z5": sc["z5"], "delta_value": sc["change_20"], "delta_unit": unit,
             "sens": {"priced_in_x": sens[0], "priced_in_y": sens[1], "flow_x": sens[2], "flow_y": sens[3]},
-            "read": read, "short": SHORT.get(bid, label), "range_pct": range_pct,
+            "read": read, "short": SHORT.get(bid, label), "range_pct": range_pct, "range_label": rlabel,
         })
     return out
 

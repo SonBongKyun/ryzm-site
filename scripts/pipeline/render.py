@@ -36,7 +36,7 @@ def note_for(agg):
     if not top:
         return {"text": "Bubble inputs are unavailable this run.", "source_url": None, "kind": "notice"}
     rng = top.get("range_pct")
-    return {"text": ("Highest tension: %s (%d), at %d%% of its 1-year range." % (top.get("short") or top["asset_or_theme"], round(top["tension_score"]), rng))
+    return {"text": ("Highest tension: %s (%d), at %d%% of its %s range." % (top.get("short") or top["asset_or_theme"], round(top["tension_score"]), rng, top.get("range_label") or "1-year"))
             if rng is not None else ("Highest tension: %s (%d)." % (top.get("short") or top["asset_or_theme"], round(top["tension_score"]))),
         "source_url": top["source_url"], "kind": "highest_tension"}
 
@@ -44,7 +44,7 @@ def note_for(agg):
 def bubble_out(b):
     return {
         "id": b.get("id"), "label": b["asset_or_theme"], "short": b.get("short") or b["asset_or_theme"], "group": b.get("group", ""), "node_id": b["node_id"],
-        "metric_value": b["metric_value"], "delta": b["delta"],
+        "metric_value": b["metric_value"], "delta": b["delta"], "range_label": b.get("range_label") or "1-year",
         "priced_in": b["priced_in_score"], "flow": b["momentum_score"], "tension": b["tension_score"],
         "priced_in_score": b["priced_in_score"], "momentum_score": b["momentum_score"], "tension_score": b["tension_score"],
         "concentration": b["tension_score"], "disagreement": b["tension_score"],
@@ -87,6 +87,7 @@ def build_state(agg, run_id):
             "bubbles": bubbles,
         },
         "top_tension": [b["id"] for b in sorted(bubbles, key=lambda b: -b["tension"])],
+        "editorial_items": agg.get("editorial", []),
         "scenarios": scen,
         "pipeline": {"returned_nodes": agg["returned_nodes"], "nodes": agg["nodes"], "warnings": agg["warnings"],
                      "claims_kept": agg["claims_kept"], "claims_dropped": len(agg["claims_dropped"]),

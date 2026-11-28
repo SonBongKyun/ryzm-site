@@ -37,9 +37,9 @@ PLACEHOLDER = """<!-- regime-summary -->
 BLOCK = """<!-- ryzm-dash -->
 <section class="ryzm-dash" id="cockpit" data-theme="paper" aria-labelledby="ck-title">
   <div class="ck-head">
-    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Live snapshot</span></div></div>
+    <div><span class="ck-kicker">Not a forecast &middot; a reading of where markets stand</span><h2 class="ck-title" id="ck-title">RYZM Macro Compass &amp; Priced-In Bubble Map</h2><div class="ck-sub-row"><span class="ck-subtitle">Compass computed from the market snapshot above.</span><span class="ck-mode live" id="ck-mode" aria-live="polite">Current reading</span></div></div>
     <div class="sc-row" id="scenario-pills" role="group" aria-label="Scenarios"></div>
-    <button type="button" class="ck-reset" id="ck-reset" hidden>Reset to Live</button>
+    <button type="button" class="ck-reset" id="ck-reset" hidden>Reset to current</button>
   </div>
 
   <div class="ck-controls">

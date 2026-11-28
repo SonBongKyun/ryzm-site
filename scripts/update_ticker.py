@@ -85,7 +85,9 @@ def yahoo(symbol, label, fmt, show_change=False):
     data = json.loads(get("https://query1.finance.yahoo.com/v8/finance/chart/%s?range=5d&interval=1d" % symbol))
     m = data["chart"]["result"][0]["meta"]
     price = float(m["regularMarketPrice"])
-    d = datetime.fromtimestamp(int(m["regularMarketTime"]), KST)
+    # exchange calendar date (gmtoffset), the same rule as pipeline/common.py, so the
+    # snapshot date matches the history date for the same session
+    d = datetime.fromtimestamp(int(m["regularMarketTime"]), timezone(timedelta(seconds=int(m.get("gmtoffset") or 0))))
     val = fmt.format(price)
     if show_change and m.get("regularMarketChangePercent") is not None:
         val += " %+.1f%%" % float(m["regularMarketChangePercent"])

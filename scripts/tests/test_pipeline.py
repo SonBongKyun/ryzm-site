@@ -116,5 +116,23 @@ class Fallback(unittest.TestCase):
         self.assertTrue(any(it["node_id"] == "crypto_leverage" and it["stale"] for it in items))
 
 
+
+class TickerSession(unittest.TestCase):
+    """The ticker stamps Yahoo quotes with the KST date; that must not add a fake session."""
+    def test_same_close_next_kst_day_is_not_a_session(self):
+        from pipeline.prepare import is_new_session
+        self.assertFalse(is_new_session({"date": "2026-11-28", "value": 1333.0}, "2026-11-27", 1333.0))   # Saturday KST
+        self.assertFalse(is_new_session({"date": "2026-11-27", "value": 104.03}, "2026-11-27", 104.014))  # same exchange date
+
+    def test_new_weekday_value_is_a_session(self):
+        from pipeline.prepare import is_new_session
+        self.assertTrue(is_new_session({"date": "2026-11-24", "value": 1340.5}, "2026-11-23", 1333.0))
+        self.assertTrue(is_new_session({"date": "2026-11-24", "value": 1333.0}, "2026-11-23", 1333.0))   # flat close is still a session
+
+    def test_range_label(self):
+        from pipeline.prepare import range_label
+        self.assertEqual(range_label([("2025-11-27", 1), ("2026-11-27", 2)]), "1-year")
+        self.assertEqual(range_label([("2026-06-14", 1), ("2026-11-27", 2)]), "166-day")
+
 if __name__ == "__main__":
     unittest.main()

@@ -192,11 +192,18 @@
   var bm = {}, W = 520, H = 300, PAD = { l: 40, r: 12, t: 14, b: 34 }, FD = 60;
   function sx(v) { return PAD.l + v / 100 * (W - PAD.l - PAD.r); }
   function sy(v) { return PAD.t + (FD - v) / (2 * FD) * (H - PAD.t - PAD.b); }
-  function soft(v, mid, half) { return mid + half * Math.tanh((v - mid) / half); }
+  /* move a published score v by a simulated shift d, saturating smoothly at [lo, hi]:
+     d = 0 returns v exactly, so the current reading and a 1-tick slider move never jump */
+  function push(v, d, lo, hi) {
+    if (d >= 0) { var up = Math.max(hi - v, 1); return clamp(v + up * Math.tanh(d / up), lo, hi); }
+    var dn = Math.max(v - lo, 1); return clamp(v - dn * Math.tanh(-d / dn), lo, hi);
+  }
+  /* keep a bubble of radius r inside the plot so 0 and 100 never cross the axis lines */
+  function bx(heat, r) { return clamp(sx(heat), sx(0) + r + 2, sx(100) - r - 2); }
   function model(b, px, py) {
     var dx = (px === undefined ? state.x : px) - base.x, dy = (py === undefined ? state.y : py) - base.y, s = b.sens || {}, K = 0.6;
-    var heat = soft(b.priced_in + K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 50, 47);
-    var flow = soft(b.flow + K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), 0, 55);
+    var heat = push(clamp(b.priced_in, 0, 100), K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 0, 100);
+    var flow = push(clamp(b.flow, -58, 58), K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), -58, 58);
     var tension = clamp(b.disagreement + 0.12 * Math.sqrt(dx * dx + dy * dy), 0, 99);
     var conc = clamp(b.concentration + 0.3 * (heat - b.priced_in), 10, 100);
     return { heat: heat, flow: flow, tension: tension, conc: conc };
@@ -281,7 +288,7 @@
     if (!bm.nodes) return;
     var k = BK();
     bm.nodes.forEach(function (n) {
-      var m = model(n.b), r = (8 + m.conc / 100 * 20) * k, x = sx(m.heat), y = sy(m.flow);
+      var m = model(n.b), r = (8 + m.conc / 100 * 20) * k, x = bx(m.heat, r), y = sy(m.flow);
       n.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
       var rs = r.toFixed(1), rr = (r + 3.5).toFixed(1);
       n.c.setAttribute('r', rs); n.sel.setAttribute('r', rr); n.ring.setAttribute('r', rr); n.ring2.setAttribute('r', rr);
@@ -302,7 +309,8 @@
     var k = BK();
     var T = bm.nodes.map(function (n) {
       var m = model(n.b, tgt.x, tgt.y);
-      return { b: n.b, t: n.t, x: sx(m.heat), y: sy(m.flow), r: (8 + m.conc / 100 * 20) * k, tw: 0 };
+      var rr = (8 + m.conc / 100 * 20) * k;
+      return { b: n.b, t: n.t, x: bx(m.heat, rr), y: sy(m.flow), r: rr, tw: 0 };
     });
     var win = declutter(T);
     bm.nodes.forEach(function (n, i) {
@@ -486,7 +494,8 @@
     var src = $('ap-src'); src.textContent = '';
     if (n.b.metric_value != null) {
       var nb = function (t) { return String(t).replace(/ /g, '\u00a0'); };
-      src.appendChild(document.createTextNode(nb(n.b.metric_value) + (n.b.delta ? ' \u00b7 ' + nb(n.b.delta) : '') + (n.b.published_at ? ' \u00b7 ' + nb(md(n.b.published_at)) : '') + '\u00a0\u00b7 '));
+      src.appendChild(document.createTextNode(nb(n.b.metric_value) + (n.b.delta ? ' \u00b7 ' + nb(n.b.delta) : '') + (n.b.published_at ? ' \u00b7 ' + nb(md(n.b.published_at)) : '') +
+        (n.b.range_label && n.b.range_label !== '1-year' ? ' \u00b7 ' + nb(n.b.range_label + ' range') : '') + '\u00a0\u00b7 '));
       if (n.b.source_url) { var a = document.createElement('a'); a.href = n.b.source_url; a.rel = 'noopener'; a.target = '_blank'; a.textContent = n.b.stale ? 'source (cached)' : 'source'; src.appendChild(a); }
     }
     $('ap-read').textContent = n.b.read || n.b.note || '';
@@ -508,7 +517,7 @@
     put($('ro-rates'), sgn(state.y, 1)); put($('ro-liq'), sgn(state.x, 1));
     var stEl = $('regime-static'), tag = $('regime-mode'), live = !touched;
     var mode = $('ck-mode'), rs = $('ck-reset');
-    if (mode) { put(mode, live ? 'Live snapshot' : 'Simulation mode'); var mc = 'ck-mode ' + (live ? 'live' : 'sim'); if (mode.className !== mc) mode.className = mc; }
+    if (mode) { put(mode, live ? 'Current reading' : 'Simulation mode'); var mc = 'ck-mode ' + (live ? 'live' : 'sim'); if (mode.className !== mc) mode.className = mc; }
     if (rs) rs.hidden = live;
     root.classList.toggle('is-sim', !live);
     if (stEl) stEl.classList.toggle('is-sim', !live);
@@ -611,10 +620,14 @@
     state.x = tgt.x = base.x; state.y = tgt.y = base.y;
     needle.x = reduce || !ghost ? base.x : ghost.x; needle.y = reduce || !ghost ? base.y : ghost.y;
     buildCompass(); drawGhost(); buildControls(); buildNodeLegend(); buildBubbles(); buildList();
-    $('ghost-note').textContent = ghost ? 'rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
+    $('ghost-note').textContent = ghost ? '1W ago: rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
-    $('data-stamp').textContent = 'Snapshot ' + data.snapshotStamp + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +
+    /* the compass is recomputed from the ticker; the bubbles come from the last pipeline run: show both when they differ */
+    var bubbleStamp = (reg.compass && reg.compass.snapshot_stamp) || reg.as_of || '';
+    var stampText = !bubbleStamp || bubbleStamp === data.snapshotStamp ? 'Snapshot ' + data.snapshotStamp
+      : 'Compass: snapshot ' + data.snapshotStamp + ' \u00b7 Bubbles: snapshot ' + bubbleStamp;
+    $('data-stamp').textContent = stampText + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +
       (nStale ? ' \u00b7 ' + nStale + ' signal group' + (nStale > 1 ? 's' : '') + ' on cached data' : '') + (trends._cached || reg._cached ? ' \u00b7 cached copy' : '');
     render(true);
     root.classList.add('is-ready');
@@ -623,7 +636,7 @@
     if (rmq && rmq.addEventListener) rmq.addEventListener('change', function (e) { reduce = e.matches; if (reduce) settle(); });
     document.addEventListener('click', function (e) { if (bm.tipFor && !(e.target.closest && e.target.closest('.bm-b'))) hideTip(null, true); });
     var rt = null, lw = window.innerWidth; window.addEventListener('resize', function () { if (window.innerWidth === lw) return; lw = window.innerWidth; clearTimeout(rt); rt = setTimeout(function () { buildBubbles(); }, 120); });
-    $('ap-room').addEventListener('click', function () { $('ap-room-note').textContent = 'Not open yet \u00b7 slot ' + ($('ap-room').getAttribute('data-slot') || 'n/a'); });
+    $('ap-room').addEventListener('click', function () { $('ap-room-note').textContent = 'Not open yet'; });
   }
   var hist = load('/data/snapshot_history.json', 'ryzm.hist.v3').catch(function () { return null; });
   Promise.all([load('/data/dashboard_state.json', 'ryzm.state.v3'), hist])

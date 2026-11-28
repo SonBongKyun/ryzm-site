@@ -168,7 +168,9 @@ def main():
         warnings.append("WARNING returned_nodes=%d (expected %d)" % (returned, len(c.NODE_IDS)))
     llm, dropped, rejected = load_claims(warnings)
     code, notes, extra = dedupe(code, llm)
-    bubbles = pick_bubbles(code + extra)
+    # The bubble map is labelled "sourced prices, model scores": only deterministic items may be
+    # plotted. Verified LLM themes without a matching asset are kept as editorial items (not drawn).
+    bubbles = pick_bubbles(code)
     for b in bubbles:
         b["notes"] = [{"claim": n["claim"], "source_url": n["source_url"], "published_at": n["published_at"]}
                       for n in notes if n.get("attaches_to") == b.get("id")]
@@ -186,7 +188,10 @@ def main():
         "compass": now, "compass_stale": compass_stale,
         "prev_needle": (now or {}).get("prev_needle") if compass_stale else ghost(history, snapshot.get("items") or {}, now, hist_entries),
         "drivers": drivers(now) if now and not compass_stale and now.get("contributions") else (prev_state.get("regime") or {}).get("drivers", []),
-        "bubbles": bubbles, "claims_kept": len(llm), "claims_dropped": dropped, "claims_rejected": rejected,
+        "bubbles": bubbles, "editorial": [{"asset_or_theme": e["asset_or_theme"], "claim": e["claim"],
+                                           "source_url": e["source_url"], "published_at": e["published_at"],
+                                           "score_method": "llm"} for e in extra],
+        "claims_kept": len(llm), "claims_dropped": dropped, "claims_rejected": rejected,
         "stale_series": full.get("stale_series", []), "source_errors": full.get("errors", []),
     }
     c.write_json(os.path.join(c.PIPE, "aggregate.json"), agg)
