@@ -2,3 +2,5 @@
 /og-image.png
 /favicon-32.png
 /apple-touch-icon.png
+.vercel
+.env*
