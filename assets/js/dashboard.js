@@ -1,4 +1,4 @@
-/* RYZM Macro Compass & Priced-In / Tension Map (v3, 2026-11-27).
+/* RYZM Macro Compass & Priced-In / Tension Map (v3.1, motion pass 2026-11-28).
    Vanilla JS + SVG, editorial palette (ink + terracotta via CSS variables).
    Data flow:
      1. Endpoints = the MARKET SNAPSHOT values in this page's ticker block.
@@ -9,6 +9,10 @@
           liquidity_flow = 50*tanh(-(0.6*dDXY_pct/2 + 0.4*dONRRP_bn/50))
      4. /data/dashboard_state.json supplies quadrants, scenarios, the ghost
         needle (prev_needle) and the bubbles (sourced prices, model scores).
+   Motion (all light, off under prefers-reduced-motion): the needle sweeps in from the
+   1W-ago position, scenario buttons and sliders glide needle + bubbles (exponential
+   chase, ~0.3-0.7 s) and labels follow their bubbles, priced-in 80+ / tension 75+
+   bubbles pulse a thin ring, and hover/focus/tap shows a short tooltip.
    Fallbacks: last-good JSON in localStorage; if nothing loads, the static
    summary already in the HTML stays and the dashboard shows a notice. */
 (function () {
@@ -16,12 +20,13 @@
   var root = document.getElementById('cockpit');
   if (!root || !window.fetch || !document.createElementNS) return;
   var NS = 'http://www.w3.org/2000/svg';
-  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var rmq = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)'), reduce = !!(rmq && rmq.matches);
   var $ = function (id) { return document.getElementById(id); };
   var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var WINDOW = 20, WEEK = 5;
   var data, trends, base = { x: 0, y: 0 }, ghost = null, bubbles = [], quadrants = {}, selected = null;
-  var state = { x: 0, y: 0 }, anim = null, activeScenario = 'current', inputs = {}, touched = false;
+  var state = { x: 0, y: 0 }, tgt = { x: 0, y: 0 }, needle = { x: 0, y: 0 }, loop = null, lastTs = 0, lastLayout = 0, labelsDirty = false,
+      tcfg = { ts: 95, tn: 120, sync: true }, listKey = '', activeScenario = 'current', inputs = {}, touched = false;
 
   function el(tag, attrs, parent) {
     var n = document.createElementNS(NS, tag);
@@ -133,7 +138,8 @@
       cmp.qlabel[qq.id] = t;
     });
     cmp.ghost = el('g', { class: 'cmp-ghost' }, svg);
-    cmp.gl = el('line', { x1: C, y1: C, x2: C, y2: C }, cmp.ghost);
+    cmp.gtrail = el('line', { x1: C, y1: C, x2: C, y2: C, class: 'cmp-trail' }, cmp.ghost);
+    cmp.gn = el('path', { d: '', class: 'cmp-ghost-needle' }, cmp.ghost);
     cmp.gd = el('circle', { cx: C, cy: C, r: 4 }, cmp.ghost);
     cmp.gt = el('text', { x: C, y: C, class: 'cmp-ghost-t', 'text-anchor': 'middle' }, cmp.ghost); cmp.gt.textContent = '1W AGO';
     cmp.nl = el('path', { d: '', class: 'cmp-needle' }, svg);
@@ -145,27 +151,35 @@
     el('circle', { cx: C, cy: C, r: 1.8, class: 'cmp-hub-dot' }, svg);
   }
   /* tapered needle: tip at the reading, narrow waist at the hub, short counterweight tail */
-  function needlePath(px, py) {
+  function needlePath(px, py, wide) {
     var dx = px - C, dy = py - C, L = Math.sqrt(dx * dx + dy * dy);
     if (L < 2) return '';
-    var ux = dx / L, uy = dy / L, nx = -uy, ny = ux, w = 3.2, tail = 13;
+    var ux = dx / L, uy = dy / L, nx = -uy, ny = ux, w = wide || 3.2, tail = 13;
     var f = function (v) { return v.toFixed(2); };
     return 'M' + f(px) + ' ' + f(py) + 'L' + f(C + nx * w) + ' ' + f(C + ny * w) + 'L' + f(C - ux * tail) + ' ' + f(C - uy * tail) +
       'L' + f(C - nx * w) + ' ' + f(C - ny * w) + 'Z';
   }
+  /* the needle shows `needle` (it chases `state`, so it sweeps in from the 1W-ago reading on load);
+     the zone lights up where the needle is; the readout text follows `state` (the real reading) */
   function drawCompass() {
-    var p = toXY(state.x, state.y);
+    var p = toXY(needle.x, needle.y);
     cmp.nl.setAttribute('d', needlePath(p[0], p[1]));
     ['tip', 'halo'].forEach(function (k) { cmp[k].setAttribute('cx', p[0].toFixed(2)); cmp[k].setAttribute('cy', p[1].toFixed(2)); });
-    var qid = quadrantOf(state.x, state.y);
-    for (var id in cmp.quad) { cmp.quad[id].classList.toggle('on', id === qid); if (cmp.qlabel[id]) cmp.qlabel[id].classList.toggle('on', id === qid); }
-    return qid;
+    var nq = quadrantOf(needle.x, needle.y);
+    for (var id in cmp.quad) { cmp.quad[id].classList.toggle('on', id === nq); if (cmp.qlabel[id]) cmp.qlabel[id].classList.toggle('on', id === nq); }
+    if (ghost && cmp.gtrail) {
+      var g = toXY(ghost.x, ghost.y), len = Math.hypot(p[0] - g[0], p[1] - g[1]);
+      cmp.gtrail.setAttribute('x1', g[0].toFixed(2)); cmp.gtrail.setAttribute('y1', g[1].toFixed(2));
+      cmp.gtrail.setAttribute('x2', p[0].toFixed(2)); cmp.gtrail.setAttribute('y2', p[1].toFixed(2));
+      cmp.gtrail.style.opacity = len > 7 ? '' : '0';
+    }
+    return quadrantOf(state.x, state.y);
   }
   function drawGhost() {
     if (!ghost) { cmp.ghost.style.display = 'none'; return; }
     cmp.ghost.style.display = '';
     var p = toXY(ghost.x, ghost.y), dx = p[0] - C, dy = p[1] - C, L = Math.sqrt(dx * dx + dy * dy) || 1;
-    cmp.gl.setAttribute('x2', p[0]); cmp.gl.setAttribute('y2', p[1]); cmp.gd.setAttribute('cx', p[0]); cmp.gd.setAttribute('cy', p[1]);
+    cmp.gn.setAttribute('d', needlePath(p[0], p[1], 4.6)); cmp.gd.setAttribute('cx', p[0]); cmp.gd.setAttribute('cy', p[1]);
     /* label beyond the dot along its own direction; near the horizontal axis it drops below the dot,
        clear of the CONTRACTION / EXPANSION captions that sit just above the axis */
     var lx = p[0] + dx / L * 14, ly = p[1] + dy / L * 14 + 3.5, an = dx > 10 ? 'start' : dx < -10 ? 'end' : 'middle';
@@ -179,8 +193,8 @@
   function sx(v) { return PAD.l + v / 100 * (W - PAD.l - PAD.r); }
   function sy(v) { return PAD.t + (FD - v) / (2 * FD) * (H - PAD.t - PAD.b); }
   function soft(v, mid, half) { return mid + half * Math.tanh((v - mid) / half); }
-  function model(b) {
-    var dx = state.x - base.x, dy = state.y - base.y, s = b.sens || {}, K = 0.6;
+  function model(b, px, py) {
+    var dx = (px === undefined ? state.x : px) - base.x, dy = (py === undefined ? state.y : py) - base.y, s = b.sens || {}, K = 0.6;
     var heat = soft(b.priced_in + K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 50, 47);
     var flow = soft(b.flow + K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), 0, 55);
     var tension = clamp(b.disagreement + 0.12 * Math.sqrt(dx * dx + dy * dy), 0, 99);
@@ -242,47 +256,85 @@
     var my = (PAD.t + H - PAD.b) / 2, a4 = el('text', { x: 11, y: my, class: 'bm-axl bm-axt', 'text-anchor': 'middle', transform: 'rotate(-90 11 ' + my + ')' }, svg);
     a4.textContent = 'FLOW MOMENTUM';
     bm.caps = [a1, a2, czt];
-    bm.layer = el('g', {}, svg);
-    bm.nodes = bubbles.map(function (b) {
+    bm.layer = el('g', { class: 'bm-layer' }, svg);
+    makeTip();
+    bm.nodes = bubbles.map(function (b, i) {
       var node = el('g', { class: 'bm-b', tabindex: '0', role: 'button', 'data-id': b.id, 'aria-label': b.label + (b.example ? ' (example data)' : '') + ': show details' }, bm.layer);
-      var ring = el('circle', { r: 10, class: 'bm-ring' }, node), sel = el('circle', { r: 10, class: 'bm-sel' }, node), c = el('circle', { r: 10, class: 'bm-c' }, node);
-      el('title', {}, node).textContent = b.label;
+      var ring2 = el('circle', { r: 10, class: 'bm-ring bm-ring2' }, node), ring = el('circle', { r: 10, class: 'bm-ring' }, node), sel = el('circle', { r: 10, class: 'bm-sel' }, node), c = el('circle', { r: 10, class: 'bm-c' }, node);
       var t = el('text', { class: 'bm-label', 'text-anchor': 'middle' }, node); t.textContent = shortOf(b);
-      var full = function (on) { t.textContent = on ? b.label : shortOf(b); node.classList.toggle('is-hover', on); if (on) bm.layer.appendChild(node); };
-      node.addEventListener('mouseenter', function () { full(true); }); node.addEventListener('mouseleave', function () { full(false); });
-      node.addEventListener('focus', function () { full(true); }); node.addEventListener('blur', function () { full(false); });
-      node.addEventListener('click', function () { select(b.id, true); });
-      node.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(b.id, true); } });
-      return { b: b, g: node, c: c, ring: ring, sel: sel, t: t };
+      var nd = { b: b, g: node, c: c, ring: ring, ring2: ring2, sel: sel, t: t, hover: false, cls: '' };
+      /* stagger the pulse so rings do not beat in unison */
+      var ph = ((i * 0.83) % 2.6).toFixed(2); node.style.setProperty('--pd', '-' + ph + 's');
+      var hov = function (on, sticky) { nd.hover = on; node.classList.toggle('is-hover', on); bm.layer.classList.toggle('has-hover', on); if (on) showTip(nd, sticky); else hideTip(nd); };
+      node.addEventListener('mouseenter', function () { hov(true); }); node.addEventListener('mouseleave', function () { hov(false); });
+      node.addEventListener('focus', function () { hov(true); }); node.addEventListener('blur', function () { hov(false); });
+      node.addEventListener('pointerdown', function (e) { nd.ptype = e.pointerType; });
+      node.addEventListener('click', function () { select(b.id, true); if (nd.ptype === 'touch') { hov(true, true); } });
+      node.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(b.id, true); } else if (e.key === 'Escape') hideTip(nd, true); });
+      return nd;
     });
-    drawBubbles();
+    drawBubbles(true);
   }
-  function drawBubbles() {
+  var BK = function () { return W < 460 ? 0.62 : 0.85; };
+  /* positions follow `state` (the tweened reading); labels are placed for the target reading and glide there */
+  function paintBubbles() {
     if (!bm.nodes) return;
-    var k = W < 460 ? 0.62 : 0.85;
+    var k = BK();
     bm.nodes.forEach(function (n) {
       var m = model(n.b), r = (8 + m.conc / 100 * 20) * k, x = sx(m.heat), y = sy(m.flow);
       n.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
-      n.c.setAttribute('r', r.toFixed(1)); n.sel.setAttribute('r', (r + 3.5).toFixed(1)); n.ring.setAttribute('r', (r + 3.5).toFixed(1));
+      var rs = r.toFixed(1), rr = (r + 3.5).toFixed(1);
+      n.c.setAttribute('r', rs); n.sel.setAttribute('r', rr); n.ring.setAttribute('r', rr); n.ring2.setAttribute('r', rr);
       var tone = m.flow > 12 ? 'in' : m.flow < -12 ? 'out' : 'flat';
-      n.g.setAttribute('class', 'bm-b n-' + nodeKey(n.b) + ' tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : ''));
+      var cls = 'bm-b n-' + nodeKey(n.b) + ' tone-' + tone + (m.heat >= 80 || m.tension >= 75 ? ' warn' : '') + (selected === n.b.id ? ' is-sel' : '') + (n.hover ? ' is-hover' : '');
+      if (cls !== n.cls) { n.g.setAttribute('class', cls); n.cls = cls; }
       n.m = m; n.x = x; n.y = y; n.r = r; n.below = y + r + 13 < H - PAD.b;
     });
-    declutter();
+  }
+  function drawBubbles(snap) {
+    if (!bm.nodes) return;
+    paintBubbles(); placeLabels(snap || reduce);
     if (selected) renderDetail();
+  }
+  /* target label placement: run declutter on the bubbles as they will be at the target reading */
+  function placeLabels(snap) {
+    if (!bm.nodes) return;
+    var k = BK();
+    var T = bm.nodes.map(function (n) {
+      var m = model(n.b, tgt.x, tgt.y);
+      return { b: n.b, t: n.t, x: sx(m.heat), y: sy(m.flow), r: (8 + m.conc / 100 * 20) * k, tw: 0 };
+    });
+    var win = declutter(T);
+    bm.nodes.forEach(function (n, i) {
+      var b = win[i], w = T[i].tw || 0;
+      n.lab = { x: b[0], y: b[1], an: b[2], cx: b[0] + (b[2] === 'start' ? w / 2 : b[2] === 'end' ? -w / 2 : 0) };
+      if (snap || !n.lc) n.lc = { x: n.lab.cx, y: n.lab.y };
+    });
+    labelsDirty = false; lastLayout = performance.now();
+    applyLabels(snap);
+    if (!snap && !reduce) kick();
+  }
+  /* settled: real anchor + exact spot. moving: centered on the label's own box so a glide never swaps anchors */
+  function applyLabels(settled) {
+    bm.nodes.forEach(function (n) {
+      if (!n.lab) return;
+      if (settled) { n.lc.x = n.lab.cx; n.lc.y = n.lab.y; n.t.setAttribute('x', n.lab.x.toFixed(1)); n.t.setAttribute('y', n.lab.y.toFixed(1)); n.t.setAttribute('text-anchor', n.lab.an); }
+      else { n.t.setAttribute('x', n.lc.x.toFixed(1)); n.t.setAttribute('y', n.lc.y.toFixed(1)); n.t.setAttribute('text-anchor', 'middle'); }
+      n.t.style.opacity = '';
+    });
   }
   /* Labels: short names, always shown. Try 64 spots around each bubble (16 directions x 4 distances), measured
      with the real text size, and keep the lowest-cost one: no label/label contact, no caption cover, no bubble
      cover, and never nearer another bubble than its own. Re-run on every scenario/slider change. */
-  function declutter() {
+  function declutter(nodes) {
     var fs = W < 460 ? 5.9 : 6.5, lh = 12, GAP = 3;
     /* measure the real rendered size (font + halo stroke) so neighbouring labels never touch */
-    var px = 0; try { px = parseFloat(getComputedStyle(bm.nodes[0].t).fontSize) || 0; } catch (e) { px = 0; }
+    var px = 0; try { px = parseFloat(getComputedStyle(nodes[0].t).fontSize) || 0; } catch (e) { px = 0; }
     if (px) lh = Math.ceil(px * 1.2 + 3);
     var caps = [[PAD.l + 2, PAD.t, PAD.l + 66, PAD.t + 15], [PAD.l + 2, H - PAD.b - 19, PAD.l + 74, H - PAD.b], [sx(75) + 4, H - PAD.b - 19, sx(100) - 4, H - PAD.b]];
     /* use the real caption boxes when the browser can measure them */
     if (bm.caps) { try { var cp = bm.caps.map(function (c) { var b = c.getBBox(); return [b.x - 2, b.y - 2, b.x + b.width + 2, b.y + b.height + 2]; }); if (cp.every(function (b) { return b[2] - b[0] > 6; })) caps = cp; } catch (e) { /* keep estimates */ } }
-    var nodes = bm.nodes, N = nodes.length, boxes = new Array(N);
+    var N = nodes.length, boxes = new Array(N);
     function hit(bx, p, gap) { var ox = Math.min(bx[2], p[2]) - Math.max(bx[0], p[0]) + gap, oy = Math.min(bx[3], p[3]) - Math.max(bx[1], p[1]) + gap; return ox > 0 && oy > 0 ? ox * oy : 0; }
     function edgeDist(bx, n) { var cx = clamp(n.x, bx[0], bx[2]), cy = clamp(n.y, bx[1], bx[3]); return Math.sqrt((cx - n.x) * (cx - n.x) + (cy - n.y) * (cy - n.y)) - n.r; }
     /* Cost of a label box. Hard rules: never touch another label (1000), never sit nearer another bubble than
@@ -303,7 +355,8 @@
     }
     var cands = nodes.map(function (n) {
       var lw = shortOf(n.b).length * fs + 6, list = [];
-      if (px) { var keep = n.t.textContent; n.t.textContent = shortOf(n.b); var tw = 0; try { tw = n.t.getComputedTextLength(); } catch (e) { tw = 0; } n.t.textContent = keep; if (tw > 0) lw = tw + 6; }
+      if (px) { var tw = 0; try { tw = n.t.getComputedTextLength(); } catch (e) { tw = 0; } if (tw > 0) lw = tw + 6; }
+      n.tw = lw - 6;
       [0, 8, 16, 26].forEach(function (far) {
         var g = n.r + 5 + far;
         for (var s = 0; s < 16; s++) {
@@ -337,16 +390,58 @@
       for (var pass = 0; pass < 4; pass++) { var moved = false; ord.forEach(function (k) { var b = bestFor(k); if (b !== boxes[k]) { boxes[k] = b; moved = true; } }); if (!moved) break; }
       var t = total(); if (t < winT) { winT = t; win = boxes.slice(); }
     });
-    nodes.forEach(function (n, k) {
-      var best = win[k];
-      n.t.setAttribute('x', best[0].toFixed(1)); n.t.setAttribute('y', best[1].toFixed(1)); n.t.setAttribute('text-anchor', best[2]); n.t.style.opacity = '';
-    });
+    return win;
+  }
+
+  /* ---------------- tooltip (hover, keyboard focus, tap) ---------------- */
+  function makeTip() {
+    var wrap = $('bubble-svg').parentNode;
+    bm.tip = wrap.querySelector('.bm-tip');
+    if (!bm.tip) { bm.tip = document.createElement('div'); bm.tip.className = 'bm-tip'; bm.tip.id = 'bm-tip'; bm.tip.setAttribute('role', 'tooltip'); wrap.appendChild(bm.tip); }
+    bm.tipFor = null; bm.tip.classList.remove('on');
+  }
+  function flowWord(f) { return f > 12 ? 'inflow' : f < -12 ? 'outflow' : 'neutral'; }
+  function showTip(n, sticky) {
+    var t = bm.tip; if (!t || !n.m) return;
+    clearTimeout(bm.tipTimer); bm.tipFor = n; bm.tipH = '';
+    t.className = 'bm-tip n-' + nodeKey(n.b); n.g.setAttribute('aria-describedby', 'bm-tip');
+    refreshTip(); t.classList.add('on');
+    if (sticky) bm.tipTimer = setTimeout(function () { hideTip(n, true); }, 3600);
+  }
+  function refreshTip() {
+    var n = bm.tipFor, t = bm.tip; if (!n || !t || !n.m) return;
+    var m = n.m, b = n.b, row = function (k, v) { return '<span><i>' + k + '</i> <b>' + v + '</b></span>'; };
+    var h = '<div class="tp-n">' + esc(b.label) + '</div>' +
+      '<div class="tp-r">' + row('Priced-in', Math.round(m.heat) + '%') + row('Flow', sgn(m.flow) + ' ' + flowWord(m.flow)) + row('Tension', Math.round(m.tension)) + '</div>' +
+      (b.metric_value != null ? '<div class="tp-v">' + esc(b.metric_value) + (b.delta ? ' \u00b7 ' + esc(b.delta) : '') + '</div>' : '') +
+      (b.example ? '<div class="tp-x">Example data</div>' : '');
+    if (h !== bm.tipH) { t.innerHTML = h; bm.tipH = h; }
+    placeTip();
+  }
+  function hideTip(n, force) {
+    if (!bm.tip) return;
+    if (n && bm.tipFor && bm.tipFor !== n && !force) return;
+    clearTimeout(bm.tipTimer);
+    var f = bm.tipFor; bm.tipFor = null; bm.tip.classList.remove('on');
+    if (f) { f.g.removeAttribute('aria-describedby'); if (f.hover) { f.hover = false; f.g.classList.toggle('is-hover', false); f.cls = ''; } }
+    if (bm.layer) bm.layer.classList.remove('has-hover');
+  }
+  function esc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function placeTip() {
+    var n = bm.tipFor, t = bm.tip; if (!n || !t) return;
+    var svg = $('bubble-svg'), wr = svg.parentNode.getBoundingClientRect(), sr = svg.getBoundingClientRect();
+    if (!sr.width) return;
+    var k = sr.width / W, px = sr.left - wr.left + n.x * k, py = sr.top - wr.top + n.y * k, rr = (n.r + 4) * k;
+    var w = t.offsetWidth, h = t.offsetHeight, left = clamp(px - w / 2, 0, Math.max(0, wr.width - w)), top = py - rr - h - 7, below = top < -40;
+    if (below) top = py + rr + 7;
+    t.style.left = left.toFixed(1) + 'px'; t.style.top = top.toFixed(1) + 'px';
+    t.classList.toggle('below', below);
   }
 
   /* ---------------- ranked list (mobile < 430px) ---------------- */
   var tt = {};
   function buildList() {
-    var ol = $('tension-list'); if (!ol) return; ol.textContent = ''; tt = {};
+    var ol = $('tension-list'); if (!ol) return; ol.textContent = ''; tt = {}; listKey = '';
     bubbles.forEach(function (b) {
       var li = document.createElement('li'), btn = document.createElement('button');
       btn.type = 'button'; btn.setAttribute('aria-label', b.label + ': show details');
@@ -368,21 +463,23 @@
       t.fill.style.transform = 'scaleX(' + clamp(n.m.tension, 0, 100) / 100 + ')';
       t.sm.textContent = (n.m.flow > 12 ? 'inflow' : n.m.flow < -12 ? 'outflow' : 'neutral') + ' \u00b7 priced-in ' + Math.round(n.m.heat);
       t.li.className = 'n-' + t.node + (n.b.id === selected ? ' is-sel' : '') + (n.m.heat >= 80 || n.m.tension >= 75 ? ' warn' : '');
-      ol.appendChild(t.li);
     });
+    var key = order.map(function (n) { return n.b.id; }).join();
+    if (key !== listKey) { listKey = key; order.forEach(function (n) { var t = tt[n.b.id]; if (t) ol.appendChild(t.li); }); }
   }
 
   /* ---------------- detail ---------------- */
+  function put(e, v) { v = String(v); if (e && e.textContent !== v) e.textContent = v; }
   function bar(id, pct) { var e = $(id); if (e) e.style.transform = 'scaleX(' + clamp(pct, 0, 100) / 100 + ')'; }
   function select(id, fromUser) {
-    selected = id; drawBubbles();
+    selected = id; drawBubbles(false);
     if (fromUser && window.innerWidth < 900) { var d = $('asset-panel'); if (d && d.scrollIntoView) d.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' }); }
   }
   function renderDetail() {
     var n = null; bm.nodes.forEach(function (x) { if (x.b.id === selected) n = x; });
     if (!n || !n.m) return;
     var m = n.m;
-    $('ap-name').textContent = n.b.label; $('ap-group').textContent = n.b.group;
+    put($('ap-name'), n.b.label); put($('ap-group'), n.b.group);
     var ap = $('asset-panel'); if (ap) ap.setAttribute('data-node', nodeKey(n.b));
     $('ap-group').setAttribute('title', NODE_NAMES[nodeKey(n.b)] || '');
     $('ap-ex').hidden = !n.b.example;
@@ -393,7 +490,7 @@
       if (n.b.source_url) { var a = document.createElement('a'); a.href = n.b.source_url; a.rel = 'noopener'; a.target = '_blank'; a.textContent = n.b.stale ? 'source (cached)' : 'source'; src.appendChild(a); }
     }
     $('ap-read').textContent = n.b.read || n.b.note || '';
-    $('ap-heat').textContent = Math.round(m.heat); $('ap-flow').textContent = sgn(m.flow); $('ap-tension').textContent = Math.round(m.tension);
+    put($('ap-heat'), Math.round(m.heat)); put($('ap-flow'), sgn(m.flow)); put($('ap-tension'), Math.round(m.tension));
     bar('ap-heat-bar', m.heat); bar('ap-tension-bar', m.tension);
     drawList();
     var fb = $('ap-flow-bar'), f = clamp(m.flow, -60, 60) / 60;
@@ -406,38 +503,76 @@
   /* ---------------- readouts & controls ---------------- */
   function readout(qid) {
     var q = quadrants[qid] || {};
-    $('regime-name').textContent = q.label || '';
-    $('regime-read').textContent = (q.read || []).join(' ');
-    $('ro-rates').textContent = sgn(state.y, 1); $('ro-liq').textContent = sgn(state.x, 1);
+    put($('regime-name'), q.label || '');
+    put($('regime-read'), (q.read || []).join(' '));
+    put($('ro-rates'), sgn(state.y, 1)); put($('ro-liq'), sgn(state.x, 1));
     var stEl = $('regime-static'), tag = $('regime-mode'), live = !touched;
     var mode = $('ck-mode'), rs = $('ck-reset');
-    if (mode) { mode.textContent = live ? 'Live snapshot' : 'Simulation mode'; mode.className = 'ck-mode ' + (live ? 'live' : 'sim'); }
+    if (mode) { put(mode, live ? 'Live snapshot' : 'Simulation mode'); var mc = 'ck-mode ' + (live ? 'live' : 'sim'); if (mode.className !== mc) mode.className = mc; }
     if (rs) rs.hidden = live;
     root.classList.toggle('is-sim', !live);
     if (stEl) stEl.classList.toggle('is-sim', !live);
-    if (live) { tag.textContent = 'Sourced \u00b7 snapshot ' + (data.snapshotStamp || ''); tag.className = 'rg-mode'; }
-    else { tag.textContent = activeScenario === 'custom' ? 'Simulated position \u00b7 sliders' : 'Illustrative scenario'; tag.className = 'rg-mode sim'; }
+    if (live) { put(tag, 'Sourced \u00b7 snapshot ' + (data.snapshotStamp || '')); tag.className = 'rg-mode'; }
+    else { put(tag, activeScenario === 'custom' ? 'Simulated position \u00b7 sliders' : 'Illustrative scenario'); tag.className = 'rg-mode sim'; }
   }
-  function syncSliders() {
+  function syncSliders(px, py) {
     var r = $('sl-rates'), l = $('sl-liq');
-    r.value = Math.round(state.y); l.value = Math.round(state.x);
-    $('sl-rates-v').textContent = sgn(state.y); $('sl-liq-v').textContent = sgn(state.x);
+    r.value = Math.round(py); l.value = Math.round(px);
+    put($('sl-rates-v'), sgn(py)); put($('sl-liq-v'), sgn(px));
     r.style.setProperty('--p', (+r.value + 50) + '%'); l.style.setProperty('--p', (+l.value + 50) + '%');
   }
-  function render() { var qid = drawCompass(); drawBubbles(); readout(qid); syncSliders(); }
-  function ease(t) { return 1 - Math.pow(1 - t, 4); }
-  function animateTo(x, y) {
-    if (anim) cancelAnimationFrame(anim);
-    if (reduce) { state.x = x; state.y = y; render(); return; }
-    var x0 = state.x, y0 = state.y, t0 = null, dur = 850;
-    function step(ts) { if (t0 === null) t0 = ts; var t = Math.min(1, (ts - t0) / dur), e = ease(t);
-      state.x = x0 + (x - x0) * e; state.y = y0 + (y - y0) * e; render(); anim = t < 1 ? requestAnimationFrame(step) : null; }
-    anim = requestAnimationFrame(step);
+  function render(snap) {
+    var qid = drawCompass(); paintBubbles(); readout(qid);
+    if (snap) { placeLabels(true); if (selected) renderDetail(); }
+    if (snap || tcfg.sync) syncSliders(state.x, state.y);
+  }
+  /* Light tween: `state` (the reading that drives bubbles, numbers and sliders) chases the target with an
+     exponential ease; the compass needle chases `state`, so it trails a touch and settles softly. Retargeting
+     mid-flight (dragging a slider) just changes the target, so there is never a jump. Labels glide to the spots
+     declutter() picked for the target reading, then snap to their exact anchors. No timers, no libraries. */
+  function kick() { if (!loop) { lastTs = 0; loop = requestAnimationFrame(frame); } }
+  function settle() {
+    if (loop) { cancelAnimationFrame(loop); loop = null; }
+    state.x = tgt.x; state.y = tgt.y; needle.x = state.x; needle.y = state.y;
+    var qid = drawCompass(); paintBubbles(); readout(qid); placeLabels(true);
+    if (tcfg.sync) syncSliders(state.x, state.y);
+    if (selected) renderDetail();
+    var side = root.querySelector('.ck-side'); if (side) side.setAttribute('aria-busy', 'false');
+    refreshTip();
+  }
+  function frame(ts) {
+    var dt = lastTs ? Math.min(64, ts - lastTs) : 16; lastTs = ts;
+    var ks = 1 - Math.exp(-dt / tcfg.ts), kn = 1 - Math.exp(-dt / tcfg.tn), done = true;
+    state.x += (tgt.x - state.x) * ks; state.y += (tgt.y - state.y) * ks;
+    needle.x += (state.x - needle.x) * kn; needle.y += (state.y - needle.y) * kn;
+    if (Math.abs(tgt.x - state.x) > 0.03 || Math.abs(tgt.y - state.y) > 0.03 || Math.abs(state.x - needle.x) > 0.03 || Math.abs(state.y - needle.y) > 0.03) done = false;
+    if (bm.nodes) {
+      if (labelsDirty && ts - lastLayout > 90) placeLabels(false);
+      bm.nodes.forEach(function (n) {
+        if (!n.lab) return;
+        n.lc.x += (n.lab.cx - n.lc.x) * ks; n.lc.y += (n.lab.y - n.lc.y) * ks;
+        if (Math.abs(n.lab.cx - n.lc.x) > 0.2 || Math.abs(n.lab.y - n.lc.y) > 0.2) done = false;
+      });
+    }
+    if (done && !labelsDirty) { loop = null; settle(); return; }
+    var qid = drawCompass(); paintBubbles(); readout(qid); applyLabels(false);
+    if (tcfg.sync) syncSliders(state.x, state.y);
+    if (selected) renderDetail();
+    refreshTip();
+    loop = requestAnimationFrame(frame);
+  }
+  /* o: { ts, tn } time constants in ms (state, needle); sync: move the slider thumbs too */
+  function animateTo(x, y, o) {
+    tcfg = { ts: (o && o.ts) || 95, tn: (o && o.tn) || 120, sync: !o || o.sync !== false };
+    tgt.x = x; tgt.y = y; labelsDirty = true;
+    if (reduce) { settle(); return; }
+    var side = root.querySelector('.ck-side'); if (side) side.setAttribute('aria-busy', 'true');
+    kick();
   }
   function pressed(id) { [].forEach.call(document.querySelectorAll('#scenario-pills button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-id') === id ? 'true' : 'false'); }); }
-  function setScenario(id) {
+  function setScenario(id, o) {
     var s = null; data.scenarios.forEach(function (x) { if (x.id === id) s = x; }); if (!s) return;
-    activeScenario = id; touched = id !== 'current'; pressed(id); $('scenario-note').textContent = s.note || ''; animateTo(s.x, s.y);
+    activeScenario = id; touched = id !== 'current'; pressed(id); $('scenario-note').textContent = s.note || ''; animateTo(s.x, s.y, o);
   }
   function buildControls() {
     var wrap = $('scenario-pills'); wrap.textContent = '';
@@ -446,9 +581,11 @@
       b.setAttribute('aria-pressed', 'false'); b.textContent = s.label; b.addEventListener('click', function () { setScenario(s.id); }); wrap.appendChild(b);
     });
     function onSlide() {
-      if (anim) { cancelAnimationFrame(anim); anim = null; }
-      state.y = +$('sl-rates').value; state.x = +$('sl-liq').value; activeScenario = 'custom'; touched = true; pressed('');
-      $('scenario-note').textContent = 'Custom position from the sliders (illustrative).'; render();
+      var y = +$('sl-rates').value, x = +$('sl-liq').value;
+      activeScenario = 'custom'; touched = true; pressed('');
+      $('scenario-note').textContent = 'Custom position from the sliders (illustrative).';
+      syncSliders(x, y);
+      animateTo(x, y, { ts: 55, tn: 80, sync: false });
     }
     $('sl-rates').addEventListener('input', onSlide); $('sl-liq').addEventListener('input', onSlide);
     [$('sl-rates'), $('sl-liq')].forEach(function (s) { s.disabled = false; });
@@ -470,15 +607,21 @@
     bubbles = (reg.bubble_map && reg.bubble_map.bubbles) || [];
     selected = (reg.bubble_map && reg.bubble_map.default_selected) || (bubbles[0] && bubbles[0].id);
     if (reg.bubble_map && reg.bubble_map.example) { var mt = $('map-tag'); if (mt) { mt.textContent = 'Example data'; mt.className = 'ck-tag ex'; } }
+    /* open on the real reading: bubbles and numbers are already in place; only the needle sweeps in from 1W ago */
+    state.x = tgt.x = base.x; state.y = tgt.y = base.y;
+    needle.x = reduce || !ghost ? base.x : ghost.x; needle.y = reduce || !ghost ? base.y : ghost.y;
     buildCompass(); drawGhost(); buildControls(); buildNodeLegend(); buildBubbles(); buildList();
     $('ghost-note').textContent = ghost ? 'rates ' + sgn(ghost.y, 1) + ' \u00b7 liq. ' + sgn(ghost.x, 1) : 'n/a';
     var hist = (trends.series || []).filter(function (s) { return s.available && s.history && s.history.length; }).map(function (s) { return s.history[s.history.length - 1].date; }).sort();
     var p = reg.pipeline || {}, nStale = 0; for (var k in (p.nodes || {})) if (p.nodes[k].status !== 'ok') nStale++;
     $('data-stamp').textContent = 'Snapshot ' + data.snapshotStamp + (hist.length ? ' \u00b7 history to ' + md(hist[hist.length - 1]) : '') +
       (nStale ? ' \u00b7 ' + nStale + ' signal group' + (nStale > 1 ? 's' : '') + ' on cached data' : '') + (trends._cached || reg._cached ? ' \u00b7 cached copy' : '');
-    state.x = 0; state.y = 0; render();
+    render(true);
     root.classList.add('is-ready');
-    setTimeout(function () { setScenario('current'); }, reduce ? 0 : 200);
+    setTimeout(function () { setScenario('current', { ts: 80, tn: 230 }); }, reduce ? 0 : 350);
+    if (window.IntersectionObserver) { try { new IntersectionObserver(function (es) { root.classList.toggle('is-offscreen', !es[es.length - 1].isIntersecting); }, { threshold: 0 }).observe(root); } catch (e) { /* pulses keep running */ } }
+    if (rmq && rmq.addEventListener) rmq.addEventListener('change', function (e) { reduce = e.matches; if (reduce) settle(); });
+    document.addEventListener('click', function (e) { if (bm.tipFor && !(e.target.closest && e.target.closest('.bm-b'))) hideTip(null, true); });
     var rt = null, lw = window.innerWidth; window.addEventListener('resize', function () { if (window.innerWidth === lw) return; lw = window.innerWidth; clearTimeout(rt); rt = setTimeout(function () { buildBubbles(); }, 120); });
     $('ap-room').addEventListener('click', function () { $('ap-room-note').textContent = 'Not open yet \u00b7 slot ' + ($('ap-room').getAttribute('data-slot') || 'n/a'); });
   }
