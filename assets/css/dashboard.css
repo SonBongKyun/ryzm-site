@@ -706,3 +706,51 @@
 .ryzm-dash .sc-pill[aria-pressed="true"]::before { background: var(--sc, var(--rd-terra)); box-shadow: 0 0 0 1.5px var(--rd-surface); }
 .ryzm-dash .sc-pill:hover:not([aria-pressed="true"]) { border-color: var(--sc, var(--rd-ink)); }
 @media (prefers-reduced-motion: reduce) { .ryzm-dash .asset-panel { transition: none; } }
+
+/* ---------------------------------------------------------------------------
+   Motion pass (2026-11-28): light, print-calm movement only.
+   ghost needle, pulse rings, hover/tap tooltip. No glow, gradients or heavy shadow.
+   Tweens for the needle, bubbles and labels run in dashboard.js.
+   --------------------------------------------------------------------------- */
+/* ghost needle: the 1W-ago reading as a faint dashed needle plus a hollow dot and label */
+.ryzm-dash .cmp-ghost .cmp-ghost-needle { fill: color-mix(in srgb, var(--rd-ink) 7%, transparent); stroke: var(--rd-ink); stroke-opacity: 0.6; stroke-width: 1.1; stroke-dasharray: 3.5 2.5; stroke-linejoin: round; }
+.ryzm-dash .cmp-ghost .cmp-trail { stroke: var(--ink-terra, var(--rd-terra)); stroke-opacity: 0.55; stroke-width: 1.4; stroke-dasharray: 0.5 4; stroke-linecap: round; transition: opacity 0.3s ease; }
+.ryzm-dash .cmp-ghost circle { stroke-opacity: 0.7; }
+.ryzm-dash.is-ready .cmp-ghost { animation: rdGhostIn 0.7s ease-out 0.1s backwards; }
+@keyframes rdGhostIn { from { opacity: 0; } to { opacity: 1; } }
+/* needle tip: a slow breath on the halo so the reading feels live */
+.ryzm-dash .cmp-halo { transform-box: fill-box; transform-origin: center; animation: rdHalo 3.2s ease-in-out infinite; }
+@keyframes rdHalo { 0%, 100% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.28); opacity: 0.45; } }
+
+/* pulse: two thin rings, staggered per bubble (--pd), on priced-in 80+ or tension 75+ */
+.ryzm-dash .bm-ring { fill: none; stroke: none; transform-box: fill-box; transform-origin: center; pointer-events: none; }
+.ryzm-dash .bm-b.warn .bm-ring { stroke: var(--nd, var(--rd-terra)); stroke-width: 1.4; stroke-dasharray: none; stroke-opacity: 0.85; opacity: 0; animation: rdRing 2.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite; animation-delay: var(--pd, 0s); }
+.ryzm-dash .bm-b.warn .bm-ring2 { stroke-width: 1; animation-delay: calc(var(--pd, 0s) - 1.3s); }
+@keyframes rdRing { 0% { transform: scale(1); opacity: 0.85; } 75% { transform: scale(1.75); opacity: 0; } 100% { transform: scale(1.75); opacity: 0; } }
+.ryzm-dash.is-offscreen .bm-b.warn .bm-ring, .ryzm-dash.is-offscreen .cmp-halo { animation-play-state: paused; }
+
+/* hover / focus / tap: lift the bubble, quiet the rest, show a short tooltip */
+.ryzm-dash .bm-b .bm-c { transform-box: fill-box; transform-origin: center; transition: transform 0.18s ease, stroke-width 0.18s ease, fill-opacity 0.25s ease; }
+.ryzm-dash .bm-b:hover .bm-c, .ryzm-dash .bm-b.is-hover .bm-c, .ryzm-dash .bm-b:focus-visible .bm-c { transform: scale(1.07); }
+.ryzm-dash .bm-b { transition: opacity 0.2s ease; }
+.ryzm-dash .bm-layer.has-hover .bm-b:not(.is-hover) { opacity: 0.4; }
+.ryzm-dash .bm-wrap { position: relative; }
+.ryzm-dash .bm-tip { position: absolute; left: 0; top: 0; z-index: 8; width: max-content; max-width: min(250px, 100%); box-sizing: border-box; padding: 7px 10px 8px; background: var(--rd-surface); color: var(--rd-text-2);
+  border: 1px solid var(--rd-ink); border-left: 3px solid var(--nc, var(--rd-ink)); border-radius: 2px; font-family: var(--rd-sans); font-size: 11.5px; line-height: 1.4; pointer-events: none;
+  opacity: 0; transform: translateY(4px); transition: opacity 0.14s ease, transform 0.16s ease; }
+.ryzm-dash .bm-tip.below { transform: translateY(-4px); }
+.ryzm-dash .bm-tip.on { opacity: 1; transform: none; }
+.ryzm-dash .bm-tip .tp-n { font-weight: 700; color: var(--nd, var(--rd-ink)); font-size: 12.5px; margin-bottom: 2px; }
+.ryzm-dash .bm-tip .tp-r { display: flex; flex-wrap: wrap; gap: 1px 10px; font-variant-numeric: tabular-nums; }
+.ryzm-dash .bm-tip .tp-r i { font-style: normal; color: var(--rd-text-muted); }
+.ryzm-dash .bm-tip .tp-r b { color: var(--rd-ink); font-weight: 600; }
+.ryzm-dash .bm-tip .tp-v { margin-top: 3px; font-family: var(--rd-mono); font-size: 10.5px; color: var(--rd-text-muted); }
+.ryzm-dash .bm-tip .tp-x { margin-top: 3px; font-family: var(--rd-mono); font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rd-text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+  .ryzm-dash .cmp-halo, .ryzm-dash.is-ready .cmp-ghost { animation: none !important; }
+  .ryzm-dash .bm-b.warn .bm-ring { animation: none !important; opacity: 0.7; stroke-dasharray: 2 2; transform: none; }
+  .ryzm-dash .bm-b.warn .bm-ring2 { display: none; }
+  .ryzm-dash .bm-b .bm-c { transform: none !important; transition: none; }
+  .ryzm-dash .bm-tip { transition: none; transform: none; }
+}
