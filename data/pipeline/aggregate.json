@@ -1,30 +1,30 @@
 {
- "generated_at": "2026-11-28T13:19+09:00",
+ "generated_at": "2026-11-28T13:24+09:00",
  "snapshot_stamp": "Nov 28 08:40 KST",
  "returned_nodes": 4,
  "nodes": {
   "rates_funding": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T13:19+09:00",
+   "generated_at": "2026-11-28T13:24+09:00",
    "items": 3
   },
   "global_credit_macro": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T13:19+09:00",
+   "generated_at": "2026-11-28T13:24+09:00",
    "items": 2
   },
   "asia_early_signal": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T13:19+09:00",
+   "generated_at": "2026-11-28T13:24+09:00",
    "items": 5
   },
   "crypto_leverage": {
    "status": "ok",
    "source": "current",
-   "generated_at": "2026-11-28T13:19+09:00",
+   "generated_at": "2026-11-28T13:24+09:00",
    "items": 2
   }
  },

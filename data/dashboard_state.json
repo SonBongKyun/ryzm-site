@@ -1,7 +1,7 @@
 {
  "version": 3,
- "generated_at": "2026-11-28T13:19+09:00",
- "run_id": "20261128T1319",
+ "generated_at": "2026-11-28T13:24+09:00",
+ "run_id": "20261128T1324",
  "as_of": "Nov 28 08:40 KST",
  "disclaimer": "Reads recent market structure. Not a forecast, signal or investment advice.",
  "axes": {
@@ -574,25 +574,25 @@
    "rates_funding": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-28T13:19+09:00",
+    "generated_at": "2026-11-28T13:24+09:00",
     "items": 3
    },
    "global_credit_macro": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-28T13:19+09:00",
+    "generated_at": "2026-11-28T13:24+09:00",
     "items": 2
    },
    "asia_early_signal": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-28T13:19+09:00",
+    "generated_at": "2026-11-28T13:24+09:00",
     "items": 5
    },
    "crypto_leverage": {
     "status": "ok",
     "source": "current",
-    "generated_at": "2026-11-28T13:19+09:00",
+    "generated_at": "2026-11-28T13:24+09:00",
     "items": 2
    }
   },

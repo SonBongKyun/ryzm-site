@@ -192,15 +192,18 @@
   var bm = {}, W = 520, H = 300, PAD = { l: 40, r: 12, t: 14, b: 34 }, FD = 60;
   function sx(v) { return PAD.l + v / 100 * (W - PAD.l - PAD.r); }
   function sy(v) { return PAD.t + (FD - v) / (2 * FD) * (H - PAD.t - PAD.b); }
-  function soft(v, mid, half) { return mid + half * Math.tanh((v - mid) / half); }
+  /* move a published score v by a simulated shift d, saturating smoothly at [lo, hi]:
+     d = 0 returns v exactly, so the current reading and a 1-tick slider move never jump */
+  function push(v, d, lo, hi) {
+    if (d >= 0) { var up = Math.max(hi - v, 1); return v + up * Math.tanh(d / up); }
+    var dn = Math.max(v - lo, 1); return v - dn * Math.tanh(-d / dn);
+  }
+  /* keep a bubble of radius r inside the plot so 0 and 100 never cross the axis lines */
+  function bx(heat, r) { return clamp(sx(heat), sx(0) + r + 2, sx(100) - r - 2); }
   function model(b, px, py) {
     var dx = (px === undefined ? state.x : px) - base.x, dy = (py === undefined ? state.y : py) - base.y, s = b.sens || {}, K = 0.6;
-    /* the current reading shows the sourced scores as published; the soft limiter only shapes simulated moves */
-    if (Math.abs(dx) < 1e-9 && Math.abs(dy) < 1e-9) {
-      return { heat: clamp(b.priced_in, 0, 100), flow: clamp(b.flow, -58, 58), tension: clamp(b.disagreement, 0, 99), conc: clamp(b.concentration, 10, 100) };
-    }
-    var heat = soft(b.priced_in + K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 50, 47);
-    var flow = soft(b.flow + K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), 0, 55);
+    var heat = push(clamp(b.priced_in, 0, 100), K * ((s.priced_in_x || 0) * dx + (s.priced_in_y || 0) * dy), 0, 100);
+    var flow = push(clamp(b.flow, -58, 58), K * ((s.flow_x || 0) * dx + (s.flow_y || 0) * dy), -58, 58);
     var tension = clamp(b.disagreement + 0.12 * Math.sqrt(dx * dx + dy * dy), 0, 99);
     var conc = clamp(b.concentration + 0.3 * (heat - b.priced_in), 10, 100);
     return { heat: heat, flow: flow, tension: tension, conc: conc };
@@ -285,7 +288,7 @@
     if (!bm.nodes) return;
     var k = BK();
     bm.nodes.forEach(function (n) {
-      var m = model(n.b), r = (8 + m.conc / 100 * 20) * k, x = sx(m.heat), y = sy(m.flow);
+      var m = model(n.b), r = (8 + m.conc / 100 * 20) * k, x = bx(m.heat, r), y = sy(m.flow);
       n.g.setAttribute('transform', 'translate(' + x.toFixed(1) + ' ' + y.toFixed(1) + ')');
       var rs = r.toFixed(1), rr = (r + 3.5).toFixed(1);
       n.c.setAttribute('r', rs); n.sel.setAttribute('r', rr); n.ring.setAttribute('r', rr); n.ring2.setAttribute('r', rr);
@@ -306,7 +309,8 @@
     var k = BK();
     var T = bm.nodes.map(function (n) {
       var m = model(n.b, tgt.x, tgt.y);
-      return { b: n.b, t: n.t, x: sx(m.heat), y: sy(m.flow), r: (8 + m.conc / 100 * 20) * k, tw: 0 };
+      var rr = (8 + m.conc / 100 * 20) * k;
+      return { b: n.b, t: n.t, x: bx(m.heat, rr), y: sy(m.flow), r: rr, tw: 0 };
     });
     var win = declutter(T);
     bm.nodes.forEach(function (n, i) {
@@ -490,7 +494,8 @@
     var src = $('ap-src'); src.textContent = '';
     if (n.b.metric_value != null) {
       var nb = function (t) { return String(t).replace(/ /g, '\u00a0'); };
-      src.appendChild(document.createTextNode(nb(n.b.metric_value) + (n.b.delta ? ' \u00b7 ' + nb(n.b.delta) : '') + (n.b.published_at ? ' \u00b7 ' + nb(md(n.b.published_at)) : '') + '\u00a0\u00b7 '));
+      src.appendChild(document.createTextNode(nb(n.b.metric_value) + (n.b.delta ? ' \u00b7 ' + nb(n.b.delta) : '') + (n.b.published_at ? ' \u00b7 ' + nb(md(n.b.published_at)) : '') +
+        (n.b.range_label && n.b.range_label !== '1-year' ? ' \u00b7 ' + nb(n.b.range_label + ' range') : '') + '\u00a0\u00b7 '));
       if (n.b.source_url) { var a = document.createElement('a'); a.href = n.b.source_url; a.rel = 'noopener'; a.target = '_blank'; a.textContent = n.b.stale ? 'source (cached)' : 'source'; src.appendChild(a); }
     }
     $('ap-read').textContent = n.b.read || n.b.note || '';

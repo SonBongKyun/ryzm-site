@@ -92,12 +92,12 @@ def md(iso):
     return "%s %d" % (d.strftime("%b"), d.day)
 
 
-def is_new_session(snap_item, last_d, last_v):
-    """True only when the ticker value is a later weekday observation with a different value."""
+def is_new_session(snap_item, last_d, last_v=None):
+    """True when the ticker date is a later weekday than the last history date.
+    update_ticker.py stamps Yahoo quotes on the exchange calendar (as common.py does), so a
+    same-session quote carries the same date; the weekend guard covers older KST-stamped tickers."""
     d = snap_item["date"]
-    if d <= last_d or datetime.strptime(d[:10], "%Y-%m-%d").weekday() >= 5:
-        return False
-    return abs(float(snap_item["value"]) - float(last_v)) > 1e-4 * max(1.0, abs(float(last_v)))
+    return d > last_d and datetime.strptime(d[:10], "%Y-%m-%d").weekday() < 5
 
 
 def range_label(hist):

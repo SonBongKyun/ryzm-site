@@ -122,11 +122,12 @@ class TickerSession(unittest.TestCase):
     def test_same_close_next_kst_day_is_not_a_session(self):
         from pipeline.prepare import is_new_session
         self.assertFalse(is_new_session({"date": "2026-11-28", "value": 1333.0}, "2026-11-27", 1333.0))   # Saturday KST
-        self.assertFalse(is_new_session({"date": "2026-11-24", "value": 104.01}, "2026-11-23", 104.014))  # rounded ticker value
+        self.assertFalse(is_new_session({"date": "2026-11-27", "value": 104.03}, "2026-11-27", 104.014))  # same exchange date
 
     def test_new_weekday_value_is_a_session(self):
         from pipeline.prepare import is_new_session
         self.assertTrue(is_new_session({"date": "2026-11-24", "value": 1340.5}, "2026-11-23", 1333.0))
+        self.assertTrue(is_new_session({"date": "2026-11-24", "value": 1333.0}, "2026-11-23", 1333.0))   # flat close is still a session
 
     def test_range_label(self):
         from pipeline.prepare import range_label
